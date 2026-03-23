@@ -5,6 +5,13 @@
     <artifactId>ProyectoUC2-BDA</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <modules>
+        <module>RestauranteDominio</module>
+        <module>RestaurantePersistencia</module>
+        <module>RestauranteNegocio</module>
+        <module>RestauranteDtos</module>
+        <module>RestaurantePresentacion</module>
+    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

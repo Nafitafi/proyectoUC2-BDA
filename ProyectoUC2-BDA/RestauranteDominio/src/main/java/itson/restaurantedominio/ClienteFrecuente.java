@@ -14,8 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Clase entidad: ClienteFrecuente
- * Representa a los clientes frecuentes en la base de datos.
+ * Clase entidad: ClienteFrecuente Representa a los clientes frecuentes en la 
+ * base de datos.
+ *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 @Entity
@@ -29,22 +30,22 @@ public class ClienteFrecuente implements Serializable {
 
     @Column(name = "nombre", nullable = false)
     private String nombre;
-    
+
     @Column(name = "apellido_paterno", nullable = false)
     private String apellidoP;
-    
+
     @Column(name = "apellido_materno", nullable = false)
     private String apellidoM;
-    
+
     @Column(name = "telefono", nullable = false)
     private String numeroTelefono;
-    
+
     @Column(name = "correo")
     private String correo;
-    
+
     @Column(name = "puntos", nullable = false)
     private Integer puntos;
-    
+
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fechaRegistro;
 
@@ -63,9 +64,7 @@ public class ClienteFrecuente implements Serializable {
         this.puntos = 0; // Por defecto al registrarse por lo del cliente general
     }
 
-    
     // Getters & Setters
-    
     public String getNombre() {
         return nombre;
     }
@@ -121,7 +120,7 @@ public class ClienteFrecuente implements Serializable {
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-    
+
     public Long getIdCliente() {
         return idCliente;
     }
@@ -154,5 +153,5 @@ public class ClienteFrecuente implements Serializable {
     public String toString() {
         return "itson.restaurantedominio.ClienteFrecuente[ id=" + idCliente + " ]";
     }
-    
+
 }

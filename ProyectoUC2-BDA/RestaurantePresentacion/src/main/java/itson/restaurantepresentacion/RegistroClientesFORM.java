@@ -4,11 +4,19 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
+import itson.restaurantenegocio.IClientesFrecuentesBO;
+import itson.restaurantenegocio.NegocioException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Zaira
  */
 public class RegistroClientesFORM extends javax.swing.JFrame {
+    private IClientesFrecuentesBO clientesBO;
 
     /**
      * Creates new form RegistroClientes
@@ -200,6 +208,25 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegresarActionPerformed
 
+    public void registrarCliente(){
+        String nombre = txtNombre.getText();
+        String apellidoP = txtApellidoP.getText();
+        String apellidoM = txtApellidoM.getText();
+        String telefono = txtTelefono.getText();
+        String correo = txtCorreo.getText();
+        
+        ClienteFrecuenteNuevoDTO clienteNuevo = new ClienteFrecuenteNuevoDTO
+        (nombre, apellidoP, apellidoM, telefono, correo);
+        
+        try {
+            clientesBO.crearCliente(clienteNuevo);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR);
+        }
+        
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;

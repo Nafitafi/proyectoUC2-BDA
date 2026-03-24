@@ -4,12 +4,16 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
+import itson.restaurantenegocio.IClientesFrecuentesBO;
+
 /**
  *
  * @author Zaira
  */
 public class ActualizarClientesFORM extends javax.swing.JFrame {
-
+    private IClientesFrecuentesBO clientesBO;
+    
     /**
      * Creates new form ActualizarClientes
      */
@@ -49,18 +53,23 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(254, 178, 26));
 
         lblNombre.setBackground(new java.awt.Color(254, 178, 26));
+        lblNombre.setForeground(new java.awt.Color(19, 70, 134));
         lblNombre.setText("Nombre(s):");
 
         lblApellidoP.setBackground(new java.awt.Color(254, 178, 26));
+        lblApellidoP.setForeground(new java.awt.Color(19, 70, 134));
         lblApellidoP.setText("Apellido Paterno:");
 
         lblApellidoM.setBackground(new java.awt.Color(254, 178, 26));
+        lblApellidoM.setForeground(new java.awt.Color(19, 70, 134));
         lblApellidoM.setText("Apellido Materno:");
 
         lblTelefono.setBackground(new java.awt.Color(254, 178, 26));
+        lblTelefono.setForeground(new java.awt.Color(19, 70, 134));
         lblTelefono.setText("Teléfono:");
 
         lblCorreo1.setBackground(new java.awt.Color(254, 178, 26));
+        lblCorreo1.setForeground(new java.awt.Color(19, 70, 134));
         lblCorreo1.setText("Correo:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -134,6 +143,7 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         });
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(19, 70, 134));
         lblTitulo.setText("Actualizar Cliente Frecuente");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -188,6 +198,15 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegresarActionPerformed
 
+    public void actualizarCliente(){
+        
+        
+//        try {
+//            clientesBO.actualizarCliente(clienteActualizado);
+//        } catch (NegocioException ex) {
+//            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR);
+//        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;

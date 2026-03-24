@@ -4,14 +4,48 @@
  */
 package itson.restaurantenegocio;
 
+import itson.restaurantedominio.ClienteFrecuente;
+import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
+import itson.restaurantedtos.ClienteFrecuenteDTO;
+import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
+import java.util.List;
+
 /**
  *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public interface IClientesFrecuentesBO {
     
-//    public abstract ClienteFrecuente crearCliente(ClienteFrecuenteDTO clienteNuevo) throws NegocioException;
-//    
-//    public abstract ClienteFrecuente actualizarCliente(ClienteFrecuenteActualizadoDTO clienteRegistrado) throws NegocioException;
+    /**
+     * Método que se asegura de validar que la entrada de la busqueda es correcta.
+     * 
+     * @param busqueda filtro aplicado
+     * @return Lista de objetos tipo ClienteFrecuenteDTO
+     * @throws NegocioException en caso de que algo falle en el 
+     */
+    public abstract List<ClienteFrecuenteDTO> buscarClientes(String busqueda) throws NegocioException;
+    
+    /**
+     * Método intermedio entre la presentación y persistencia que verifica los datos recibidos del cliente a registrar 
+     * para determinar si estos son válidos o no.
+     * 
+     * @param clienteNuevo DTO con los datos del cliente nuevo a registrar.
+     * @return Objeto tipo ClienteFrecuente con los datos que fueron almacenados 
+     * en la base de datos.
+     * @throws NegocioException si algún dato es inválido o si surge un error en la capa de persistencia.
+     */
+    public abstract ClienteFrecuente crearCliente(ClienteFrecuenteNuevoDTO clienteNuevo) throws NegocioException;
+    
+    /**
+     * Método intermedio entre la presentación y persistencia que verifica los datos recibidos del cliente a actualizar 
+     * para determinar si estos son válidos o no.
+     * 
+     * @param clienteActualizado DTO con la información a actualizar del
+     * cliente.
+     * @return Objeto tipo ClienteFrecuente con los datos que fueron actualizados 
+     * en la base de datos.
+     * @throws NegocioException si algún dato es inválido o si surge un error en la capa de persistencia.
+     */
+    public abstract ClienteFrecuente actualizarCliente(ClienteFrecuenteActualizadoDTO clienteActualizado) throws NegocioException;
     
 }

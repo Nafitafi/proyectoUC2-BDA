@@ -72,11 +72,25 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
             entityManager.getTransaction().begin();
 
             ClienteFrecuente clienteRegistrado = entityManager.find(ClienteFrecuente.class, clienteActualizado.getId());
-            clienteRegistrado.setNombre(clienteActualizado.getNombre());
-            clienteRegistrado.setApellidoP(clienteActualizado.getApellidoP());
-            clienteRegistrado.setApellidoM(clienteActualizado.getApellidoM());
-            clienteRegistrado.setNumeroTelefono(clienteActualizado.getNumeroTelefono());
-            clienteRegistrado.setCorreo(clienteActualizado.getCorreo());
+            if (clienteActualizado.getNombre() != null){
+                clienteRegistrado.setNombre(clienteActualizado.getNombre());
+            }
+            
+            if (clienteActualizado.getApellidoP() != null){
+                clienteRegistrado.setApellidoP(clienteActualizado.getApellidoP());
+            }
+            
+            if (clienteActualizado.getApellidoM() != null){
+                clienteRegistrado.setApellidoM(clienteActualizado.getApellidoM());
+            }
+            
+            if (clienteActualizado.getNumeroTelefono() != null){
+                clienteRegistrado.setNumeroTelefono(clienteActualizado.getNumeroTelefono());
+            }
+            
+            if (clienteActualizado.getCorreo() != null){
+                clienteRegistrado.setCorreo(clienteActualizado.getCorreo());
+            }
 
             entityManager.persist(clienteRegistrado);
             entityManager.getTransaction().commit();

@@ -8,12 +8,12 @@ package itson.restaurantepresentacion;
  *
  * @author Zaira
  */
-public class ActualizarClientes extends javax.swing.JFrame {
+public class ActualizarClientesFORM extends javax.swing.JFrame {
 
     /**
      * Creates new form ActualizarClientes
      */
-    public ActualizarClientes() {
+    public ActualizarClientesFORM() {
         initComponents();
     }
 
@@ -48,39 +48,19 @@ public class ActualizarClientes extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(254, 178, 26));
 
-        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
-        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtApellidoP.setBackground(new java.awt.Color(255, 255, 255));
-        txtApellidoP.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtApellidoM.setBackground(new java.awt.Color(255, 255, 255));
-        txtApellidoM.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtTelefono.setBackground(new java.awt.Color(255, 255, 255));
-        txtTelefono.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtCorreo.setBackground(new java.awt.Color(255, 255, 255));
-        txtCorreo.setForeground(new java.awt.Color(0, 0, 0));
-
         lblNombre.setBackground(new java.awt.Color(254, 178, 26));
-        lblNombre.setForeground(new java.awt.Color(0, 0, 0));
         lblNombre.setText("Nombre(s):");
 
         lblApellidoP.setBackground(new java.awt.Color(254, 178, 26));
-        lblApellidoP.setForeground(new java.awt.Color(0, 0, 0));
         lblApellidoP.setText("Apellido Paterno:");
 
         lblApellidoM.setBackground(new java.awt.Color(254, 178, 26));
-        lblApellidoM.setForeground(new java.awt.Color(0, 0, 0));
         lblApellidoM.setText("Apellido Materno:");
 
         lblTelefono.setBackground(new java.awt.Color(254, 178, 26));
-        lblTelefono.setForeground(new java.awt.Color(0, 0, 0));
         lblTelefono.setText("Teléfono:");
 
         lblCorreo1.setBackground(new java.awt.Color(254, 178, 26));
-        lblCorreo1.setForeground(new java.awt.Color(0, 0, 0));
         lblCorreo1.setText("Correo:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -154,7 +134,6 @@ public class ActualizarClientes extends javax.swing.JFrame {
         });
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo.setText("Actualizar Cliente Frecuente");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -209,40 +188,6 @@ public class ActualizarClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ActualizarClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ActualizarClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ActualizarClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ActualizarClientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ActualizarClientes().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;

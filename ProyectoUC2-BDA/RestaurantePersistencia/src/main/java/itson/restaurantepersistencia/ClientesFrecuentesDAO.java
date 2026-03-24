@@ -6,10 +6,12 @@ package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
-import itson.restaurantedtos.ClienteFrecuenteDTO;
+import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -20,63 +22,119 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
     private static final Logger LOGGER = Logger.getLogger(ClientesFrecuentesDAO.class.getName());
 
     /**
-     * Método que permite almacenar en la base de datos la información de un cliente frecuente;
-     * nombre, apellidos, número de teléfono y correo.
+     * Método que permite almacenar en la base de datos la información de un
+     * cliente frecuente; nombre, apellidos, número de teléfono y correo.
+     *
      * @param clienteNuevo DTO con la información del cliente a guardar.
-     * @return Objeto tipo ClienteFrecuente con los datos que fueron almacenados en la base de datos.
-     * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
+     * @return Objeto tipo ClienteFrecuente con los datos que fueron almacenados
+     * en la base de datos.
+     * @throws PersistenciaException si hay un problema con la conexión a la
+     * base de datos.
      */
     @Override
-    public ClienteFrecuente guardar(ClienteFrecuenteDTO clienteNuevo) throws PersistenciaException {
-        ClienteFrecuente cliente = new ClienteFrecuente
-       (clienteNuevo.getNombre(), clienteNuevo.getApellidoP(),clienteNuevo.getApellidoM(), clienteNuevo.getNumeroTelefono());
-        
-        if (clienteNuevo.getCorreo() != null) cliente.setCorreo(clienteNuevo.getCorreo());
-        
+    public ClienteFrecuente guardar(ClienteFrecuenteNuevoDTO clienteNuevo) throws PersistenciaException {
+        ClienteFrecuente cliente = new ClienteFrecuente(clienteNuevo.getNombre(), clienteNuevo.getApellidoP(), clienteNuevo.getApellidoM(), clienteNuevo.getNumeroTelefono());
+
+        if (clienteNuevo.getCorreo() != null) {
+            cliente.setCorreo(clienteNuevo.getCorreo());
+        }
+
         try {
             EntityManager entityManager = ManejadorConexiones.crearEntityManager();
             entityManager.getTransaction().begin();
             entityManager.persist(cliente);
             entityManager.getTransaction().commit();
-            
+
             return cliente;
-            
-        } catch (PersistenceException ex){
+
+        } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible guardar al cliente.");
         }
     }
 
     /**
-     *Método que permite actualizar en la base de datos la información de un cliente frecuente registrado;
-     * nombre, apellidos, número de teléfono y correo.
-     * @param clienteActualizado DTO con la información a actualizar del cliente.
-     * @return Objeto tipo ClienteFrecuente con los datos que fueron actualizados en la base de datos.
-     * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
+     * Método que permite actualizar en la base de datos la información de un
+     * cliente frecuente registrado; nombre, apellidos, número de teléfono y
+     * correo.
+     *
+     * @param clienteActualizado DTO con la información a actualizar del
+     * cliente.
+     * @return Objeto tipo ClienteFrecuente con los datos que fueron
+     * actualizados en la base de datos.
+     * @throws PersistenciaException si hay un problema con la conexión a la
+     * base de datos.
      */
     @Override
     public ClienteFrecuente actualizar(ClienteFrecuenteActualizadoDTO clienteActualizado) throws PersistenciaException {
         try {
             EntityManager entityManager = ManejadorConexiones.crearEntityManager();
             entityManager.getTransaction().begin();
-            
+
             ClienteFrecuente clienteRegistrado = entityManager.find(ClienteFrecuente.class, clienteActualizado.getId());
             clienteRegistrado.setNombre(clienteActualizado.getNombre());
             clienteRegistrado.setApellidoP(clienteActualizado.getApellidoP());
             clienteRegistrado.setApellidoM(clienteActualizado.getApellidoM());
             clienteRegistrado.setNumeroTelefono(clienteActualizado.getNumeroTelefono());
             clienteRegistrado.setCorreo(clienteActualizado.getCorreo());
-            
+
             entityManager.persist(clienteRegistrado);
             entityManager.getTransaction().commit();
-            
+
             return clienteRegistrado;
-            
-        } catch (PersistenceException ex){
+
+        } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible actualizar al cliente.");
         }
     }
 
+    /**
+     * Método que permite realizar la consulta en la base de datos sobre la
+     * información de todos los clientes registrados.
+     *
+     * @return Lista de objetos tipo ClienteFrecuente con los datos que fueron
+     * almacenados en la base de datos.
+     * @throws PersistenciaException si hay un problema con la conexión a la
+     * base de datos.
+     */
+    @Override
+    public List<ClienteFrecuente> bucarTodosClientes() throws PersistenciaException {
+        EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+        try {
+            return entityManager.createQuery("SELECT c FROM ClienteFrecuente c", ClienteFrecuente.class).getResultList();
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar a los clientes.");
+        }
+    }
+
+     /**
+     * Método que permita la consulta en la base de datos sobre la información de clientes registrados que coincidan con
+     * el filtro (ya sea nombre, correo electronico o número) proporcionado en el parámetro.
+     * 
+     * @param filtro Filtro que se solicita aplicar para la consulta.
+     * @return 
+     * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
+     */
+    @Override
+    public List<ClienteFrecuente> buscarPorFiltro(String filtro) throws PersistenciaException {
+        EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+        try {
+            String consulta = "SELECT c FROM ClienteFrecuente c "
+                    + "WHERE LOWER(c.nombre) LIKE :filtro "
+                    + "OR LOWER(c.apellidoP) LIKE :filtro "
+                    + "OR LOWER(c.apellidoM) LIKE :filtro "
+                    + "OR c.numeroTelefono LIKE :filtro "
+                    + "OR LOWER(c.correo) LIKE :filtro";
+            TypedQuery<ClienteFrecuente> query = entityManager.createQuery(consulta, ClienteFrecuente.class);
+            query.setParameter("filtro", "%" + filtro.toLowerCase() + "%");
+            return query.getResultList();
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar a los clientes.");
+        }
+
+    }
 
 }

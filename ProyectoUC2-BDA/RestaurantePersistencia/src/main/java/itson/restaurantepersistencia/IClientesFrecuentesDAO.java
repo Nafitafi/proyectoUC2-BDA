@@ -6,7 +6,8 @@ package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
-import itson.restaurantedtos.ClienteFrecuenteDTO;
+import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
+import java.util.List;
 
 /**
  * Interfaz que define la clase ClientesFrecuentesDAO.
@@ -21,7 +22,7 @@ public interface IClientesFrecuentesDAO {
      * @return Objeto tipo ClienteFrecuente con los datos que fueron almacenados en la base de datos.
      * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
      */
-    public abstract ClienteFrecuente guardar(ClienteFrecuenteDTO clienteNuevo) throws PersistenciaException;
+    public abstract ClienteFrecuente guardar(ClienteFrecuenteNuevoDTO clienteNuevo) throws PersistenciaException;
     
     /**
      * Método que permite actualizar en la base de datos la información de un cliente frecuente registrado;
@@ -31,4 +32,20 @@ public interface IClientesFrecuentesDAO {
      * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
      */
     public abstract ClienteFrecuente actualizar(ClienteFrecuenteActualizadoDTO clienteActualizado) throws PersistenciaException;
+    
+    /**
+     * Método que permite realizar la consulta en la base de datos sobre la información de todos los clientes registrados.
+     * @return Lista de objetos tipo ClienteFrecuente con los datos que fueron almacenados en la base de datos.
+     * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
+     */
+    public List<ClienteFrecuente> bucarTodosClientes() throws PersistenciaException;
+    
+    /**
+     * Método que permita la consulta en la base de datos sobre la información de clientes registrados que coincidan con
+     * el filtro (ya sea nombre, correo electronico o número) proporcionado en el parámetro.
+     * @param filtro Filtro que se solicita aplicar para la consulta.
+     * @return 
+     * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
+     */
+    public List<ClienteFrecuente> buscarPorFiltro(String filtro) throws PersistenciaException;
 }

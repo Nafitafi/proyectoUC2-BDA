@@ -11,64 +11,101 @@ import java.time.LocalDate;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ClienteFrecuenteDTO {
+    private Long id;
     private String nombre;
     private String apellidoP;
     private String apellidoM; 
     private String numeroTelefono;
     private String correo; 
+    private Integer puntos;
     private LocalDate fechaRegistro;
 
     /**
-     * Constructor por defecto
+     * COnstructor de clase
+     * @param id
+     * @param nombre
+     * @param apellidoP
+     * @param apellidoM
+     * @param numeroTelefono
+     * @param correo
+     * @param puntos
+     * @param fechaRegistro 
      */
-    public ClienteFrecuenteDTO() {
-    }
-
-    public ClienteFrecuenteDTO(String nombre, String apellidoP, String apellidoM, String numeroTelefono) {
-        this.nombre = nombre;
-        this.apellidoP = apellidoP;
-        this.apellidoM = apellidoM;
-        this.numeroTelefono = numeroTelefono;
-        this.fechaRegistro = LocalDate.now();
-    }
-
-    
-    public ClienteFrecuenteDTO(String nombre, String apellidoP, String apellidoM, String numeroTelefono, String correo) {
+    public ClienteFrecuenteDTO(Long id, String nombre, String apellidoP, String apellidoM, String numeroTelefono, String correo, Integer puntos, LocalDate fechaRegistro) {
+        this.id = id;
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
         this.numeroTelefono = numeroTelefono;
         this.correo = correo;
-        this.fechaRegistro = LocalDate.now();
+        this.puntos = puntos;
+        this.fechaRegistro = fechaRegistro;
     }
-    
-    
 
-   //Getters y Setters
+    //Getters & Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getApellidoP() {
         return apellidoP;
     }
 
+    public void setApellidoP(String apellidoP) {
+        this.apellidoP = apellidoP;
+    }
+
     public String getApellidoM() {
         return apellidoM;
+    }
+
+    public void setApellidoM(String apellidoM) {
+        this.apellidoM = apellidoM;
     }
 
     public String getNumeroTelefono() {
         return numeroTelefono;
     }
 
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+
     public String getCorreo() {
         return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public Integer getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(Integer puntos) {
+        this.puntos = puntos;
     }
 
     public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
-    
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
     
     
 }

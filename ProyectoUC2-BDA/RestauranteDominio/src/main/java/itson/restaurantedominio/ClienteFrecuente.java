@@ -42,6 +42,9 @@ public class ClienteFrecuente implements Serializable {
     @Column(name = "correo")
     private String correo;
     
+    @Column(name = "puntos", nullable = false)
+    private Integer puntos;
+    
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fechaRegistro;
 
@@ -57,6 +60,7 @@ public class ClienteFrecuente implements Serializable {
         this.apellidoM = apellidoM;
         this.numeroTelefono = numeroTelefono;
         this.fechaRegistro = LocalDate.now();
+        this.puntos = 0; // Por defecto al registrarse por lo del cliente general
     }
 
     
@@ -104,6 +108,14 @@ public class ClienteFrecuente implements Serializable {
 
     public LocalDate getFechaRegistro() {
         return fechaRegistro;
+    }
+
+    public Integer getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(Integer puntos) {
+        this.puntos = puntos;
     }
 
     public void setFechaRegistro(LocalDate fechaRegistro) {

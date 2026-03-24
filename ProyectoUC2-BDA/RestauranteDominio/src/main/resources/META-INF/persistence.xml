@@ -3,6 +3,7 @@
   <persistence-unit name="RestaurantePU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>itson.restaurantedominio.ClienteFrecuente</class>
+    <class>itson.restaurantedominio.Comanda</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sistema_restaurante?createDatabaseIfNotExist=true"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

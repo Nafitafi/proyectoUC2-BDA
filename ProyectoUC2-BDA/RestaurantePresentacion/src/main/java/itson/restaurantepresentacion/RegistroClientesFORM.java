@@ -4,7 +4,9 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
+import itson.restaurantenegocio.ClientesFrecuentesBO;
 import itson.restaurantenegocio.IClientesFrecuentesBO;
 import itson.restaurantenegocio.NegocioException;
 import java.util.logging.Level;
@@ -12,8 +14,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Zaira
+ * Forma de registro de clientes
+ * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class RegistroClientesFORM extends javax.swing.JFrame {
     private IClientesFrecuentesBO clientesBO;
@@ -23,6 +25,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
      */
     public RegistroClientesFORM() {
         initComponents();
+        this.clientesBO = new ClientesFrecuentesBO();
     }
 
     /**
@@ -51,7 +54,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Resgistro de cliente");
 
         pnlPrincipal.setBackground(new java.awt.Color(253, 244, 227));
@@ -142,6 +145,11 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         btnRegistrar.setBackground(new java.awt.Color(19, 70, 134));
         btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setBackground(new java.awt.Color(237, 63, 39));
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
@@ -204,26 +212,74 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Este botón cierra la forma de registro de clientes.
+     * @param evt click al botón regresar.
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    public void registrarCliente(){
-        String nombre = txtNombre.getText();
-        String apellidoP = txtApellidoP.getText();
-        String apellidoM = txtApellidoM.getText();
-        String telefono = txtTelefono.getText();
-        String correo = txtCorreo.getText();
+    /**
+     * Botón que llama al método registrarCliente(), en caso de un registro éxitoso
+     * lanza un mensaje y cierra la ventana. En caso contrario, muestra mensajes de error.
+     * @param evt click al botón registrar.
+     */
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        ClienteFrecuente cF = registrarCliente();
+        if (cF != null) {
+            JOptionPane.showMessageDialog(null, "¡Cliente agregado con éxito! Cerrando ventana.");
+            this.dispose();
+        } 
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    /**
+     * Este método recupera y válida los datos de la forma para registrar con ellos
+     * un nuevo cliente en la base de datos.
+     * @return un objeto tipo ClienteFrecuente con los datos del cliente registrado.
+     */
+    public ClienteFrecuente registrarCliente(){
+        String nombre = null;
+        String apellidoP = null;
+        String apellidoM = null;
+        String telefono = null;
+        String correo = null;
+    
+        if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()){
+            nombre = txtNombre.getText();
+        } 
+        
+        if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()){
+            apellidoP = txtApellidoP.getText();
+        }
+        
+        if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()){
+            apellidoM = txtApellidoM.getText();
+        }
+        
+        if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()){
+            telefono = txtTelefono.getText();
+        }
+        
+        if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()){
+            correo = txtCorreo.getText();
+        } 
+        
+        if ((nombre == null || apellidoP == null) || (apellidoM == null || telefono == null)){
+            JOptionPane.showMessageDialog(null, "Un campo obligatorio se encuentra vacío. Verifica la información", 
+                    "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+        }
         
         ClienteFrecuenteNuevoDTO clienteNuevo = new ClienteFrecuenteNuevoDTO
         (nombre, apellidoP, apellidoM, telefono, correo);
         
         try {
-            clientesBO.crearCliente(clienteNuevo);
+            ClienteFrecuente cliente = clientesBO.crearCliente(clienteNuevo);
+            return cliente;
         } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR);
+            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            return null;
         }
-        
     }
     
     

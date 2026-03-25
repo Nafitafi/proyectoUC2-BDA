@@ -21,8 +21,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author Carmen Andrea Lara Osuna
+ * Clase de control para las formas de clientes frecuentes; consulta, registro y actualización.
+ * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ClientesFrecuentesControl {
 
@@ -54,6 +54,10 @@ public class ClientesFrecuentesControl {
         cargarTabla("");
     }
 
+    /**
+     * Método encargado de llenar la tabla de clientes tanto con un filtro como sin él.
+     * @param filtro búsqueda deseada en la lista de clientes.
+     */
     private void cargarTabla(String filtro) {
         try {
             List<ClienteFrecuenteDTO> listaClientes = clientesBO.buscarClientes(filtro);
@@ -79,10 +83,19 @@ public class ClientesFrecuentesControl {
         }
     }
     
+    /**
+     * Método que llama a la ventana para actualizar un cliente.
+     * @param row el número de fila del cliente seleccionado
+     */
     public void actualizar(int row){
         abrirActualizarCliente(row);
     }
 
+    /**
+     * Método privado encargado de recibir de la tabla de clientes la información del cliente seleccionado
+     * para permitir que el usuario la actualice en una ventana nueva.
+     * @param row el número de fila del cliente seleccionado
+     */
     private void abrirActualizarCliente(int row) {
         JTable tabla = clientesForm.getTablaClientes();
 
@@ -104,6 +117,11 @@ public class ClientesFrecuentesControl {
         }
     }
 
+    /**
+     * Método utilizado por abrirActualizarCliente() que se encarga de actualizar la fila en la que
+     * se encuentra el cliente que fue actualizado.
+     * @param cliente objeto ClienteFrecuente con la información actualizada.
+     */
     private void actualizarFilaEditada(ClienteFrecuente cliente) {
         DefaultTableModel modelo = (DefaultTableModel) clientesForm.getTablaClientes().getModel();
         for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -120,6 +138,9 @@ public class ClientesFrecuentesControl {
         }
     }
 
+    /**
+     * Método privado para abrir la ventana de registro de clientes
+     */
     private void abrirRegistroCliente() {
         RegistroClientesFORM registroForm = new RegistroClientesFORM();
         registroForm.setVisible(true);

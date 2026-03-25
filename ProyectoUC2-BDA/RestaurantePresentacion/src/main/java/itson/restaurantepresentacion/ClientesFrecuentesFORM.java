@@ -127,18 +127,18 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        pnlClientesFrecuentes = new javax.swing.JPanel();
+        pnlMenu = new javax.swing.JPanel();
+        lblMenu = new javax.swing.JLabel();
+        btnInventario = new javax.swing.JButton();
+        btnPlatillos = new javax.swing.JButton();
+        btnClientes = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        btnReporteComandas = new javax.swing.JButton();
+        btnReporteClientes = new javax.swing.JButton();
+        lblClientes = new javax.swing.JLabel();
         pnlBuscador = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        lblBuscar = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnAñadirCliente = new javax.swing.JButton();
@@ -148,112 +148,112 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         setTitle("Clientes Frecuentes");
         setBackground(new java.awt.Color(253, 244, 227));
 
-        jPanel1.setBackground(new java.awt.Color(253, 244, 227));
+        pnlClientesFrecuentes.setBackground(new java.awt.Color(253, 244, 227));
 
-        jPanel2.setBackground(new java.awt.Color(19, 70, 134));
+        pnlMenu.setBackground(new java.awt.Color(19, 70, 134));
 
-        jLabel1.setBackground(new java.awt.Color(253, 244, 227));
-        jLabel1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(253, 244, 227));
-        jLabel1.setText("Menú");
+        lblMenu.setBackground(new java.awt.Color(253, 244, 227));
+        lblMenu.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
+        lblMenu.setForeground(new java.awt.Color(253, 244, 227));
+        lblMenu.setText("Menú");
 
-        jButton1.setBackground(new java.awt.Color(19, 70, 134));
-        jButton1.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(253, 244, 227));
-        jButton1.setText("Inventario");
-        jButton1.setBorder(null);
-        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnInventario.setBackground(new java.awt.Color(19, 70, 134));
+        btnInventario.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        btnInventario.setForeground(new java.awt.Color(253, 244, 227));
+        btnInventario.setText("Inventario");
+        btnInventario.setBorder(null);
+        btnInventario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jButton2.setBackground(new java.awt.Color(19, 70, 134));
-        jButton2.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(253, 244, 227));
-        jButton2.setText("Gestionar platillos");
-        jButton2.setBorder(null);
-        jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPlatillos.setBackground(new java.awt.Color(19, 70, 134));
+        btnPlatillos.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        btnPlatillos.setForeground(new java.awt.Color(253, 244, 227));
+        btnPlatillos.setText("Gestionar platillos");
+        btnPlatillos.setBorder(null);
+        btnPlatillos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jButton3.setBackground(new java.awt.Color(254, 178, 26));
-        jButton3.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(253, 244, 227));
-        jButton3.setText("Clientes");
-        jButton3.setBorder(null);
-        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnClientes.setBackground(new java.awt.Color(254, 178, 26));
+        btnClientes.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        btnClientes.setForeground(new java.awt.Color(253, 244, 227));
+        btnClientes.setText("Clientes");
+        btnClientes.setBorder(null);
+        btnClientes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jButton4.setBackground(new java.awt.Color(19, 70, 134));
-        jButton4.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(253, 244, 227));
-        jButton4.setText("Reportes");
-        jButton4.setToolTipText("");
-        jButton4.setBorder(null);
-        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnReportes.setBackground(new java.awt.Color(19, 70, 134));
+        btnReportes.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        btnReportes.setForeground(new java.awt.Color(253, 244, 227));
+        btnReportes.setText("Reportes");
+        btnReportes.setToolTipText("");
+        btnReportes.setBorder(null);
+        btnReportes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jButton5.setBackground(new java.awt.Color(19, 70, 134));
-        jButton5.setFont(new java.awt.Font("Segoe UI Historic", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(253, 244, 227));
-        jButton5.setText("Reportes de comandas");
-        jButton5.setToolTipText("");
-        jButton5.setBorder(null);
-        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton5.addActionListener(this::jButton5ActionPerformed);
+        btnReporteComandas.setBackground(new java.awt.Color(19, 70, 134));
+        btnReporteComandas.setFont(new java.awt.Font("Segoe UI Historic", 1, 12)); // NOI18N
+        btnReporteComandas.setForeground(new java.awt.Color(253, 244, 227));
+        btnReporteComandas.setText("Reportes de comandas");
+        btnReporteComandas.setToolTipText("");
+        btnReporteComandas.setBorder(null);
+        btnReporteComandas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnReporteComandas.addActionListener(this::btnReporteComandasActionPerformed);
 
-        jButton6.setBackground(new java.awt.Color(19, 70, 134));
-        jButton6.setFont(new java.awt.Font("Segoe UI Historic", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(253, 244, 227));
-        jButton6.setText("Reportes de clientes");
-        jButton6.setToolTipText("");
-        jButton6.setBorder(null);
-        jButton6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton6.addActionListener(this::jButton6ActionPerformed);
+        btnReporteClientes.setBackground(new java.awt.Color(19, 70, 134));
+        btnReporteClientes.setFont(new java.awt.Font("Segoe UI Historic", 1, 12)); // NOI18N
+        btnReporteClientes.setForeground(new java.awt.Color(253, 244, 227));
+        btnReporteClientes.setText("Reportes de clientes");
+        btnReporteClientes.setToolTipText("");
+        btnReporteClientes.setBorder(null);
+        btnReporteClientes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnReporteClientes.addActionListener(this::btnReporteClientesActionPerformed);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
+        pnlMenu.setLayout(pnlMenuLayout);
+        pnlMenuLayout.setHorizontalGroup(
+            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPlatillos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
                 .addContainerGap(23, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnReporteComandas)
+                    .addComponent(btnReporteClientes))
                 .addGap(20, 20, 20))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlMenuLayout.setVerticalGroup(
+            pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMenuLayout.createSequentialGroup()
                 .addGap(70, 70, 70)
-                .addComponent(jLabel1)
+                .addComponent(lblMenu)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPlatillos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
+                .addComponent(btnReporteComandas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
+                .addComponent(btnReporteClientes)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel2.setBackground(new java.awt.Color(19, 70, 134));
-        jLabel2.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(19, 70, 134));
-        jLabel2.setText("Clientes");
+        lblClientes.setBackground(new java.awt.Color(19, 70, 134));
+        lblClientes.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        lblClientes.setForeground(new java.awt.Color(19, 70, 134));
+        lblClientes.setText("Clientes");
 
         pnlBuscador.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI Emoji", 2, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(19, 70, 134));
-        jLabel3.setText("Buscar clientes por su nombre, número de teléfono o correo:");
+        lblBuscar.setFont(new java.awt.Font("Segoe UI Emoji", 2, 12)); // NOI18N
+        lblBuscar.setForeground(new java.awt.Color(19, 70, 134));
+        lblBuscar.setText("Buscar clientes por su nombre, número de teléfono o correo:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -281,43 +281,43 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         btnAñadirCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnAñadirCliente.addActionListener(this::btnAñadirClienteActionPerformed);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlClientesFrecuentesLayout = new javax.swing.GroupLayout(pnlClientesFrecuentes);
+        pnlClientesFrecuentes.setLayout(pnlClientesFrecuentesLayout);
+        pnlClientesFrecuentesLayout.setHorizontalGroup(
+            pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
+                .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
                                 .addGap(511, 511, 511)
                                 .addComponent(pnlBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
+                                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(170, 170, 170)
                                 .addComponent(btnAñadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
                         .addGap(339, 339, 339)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlClientesFrecuentesLayout.setVerticalGroup(
+            pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel2)
+                .addComponent(lblClientes)
                 .addGap(20, 20, 20)
                 .addComponent(pnlBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
+                        .addComponent(lblBuscar)
                         .addGap(4, 4, 4)
                         .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAñadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -331,24 +331,24 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 931, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlClientesFrecuentes, javax.swing.GroupLayout.PREFERRED_SIZE, 931, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlClientesFrecuentes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnReporteComandasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteComandasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnReporteComandasActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnReporteClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteClientesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btnReporteClientesActionPerformed
 
     private void btnAñadirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirClienteActionPerformed
 
@@ -358,20 +358,20 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAñadirCliente;
+    private javax.swing.JButton btnClientes;
+    private javax.swing.JButton btnInventario;
+    private javax.swing.JButton btnPlatillos;
+    private javax.swing.JButton btnReporteClientes;
+    private javax.swing.JButton btnReporteComandas;
+    private javax.swing.JButton btnReportes;
     private itson.restaurantepresentacion.BuscadorClientesPanelFORM buscadorClientesPanelFORM1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblBuscar;
+    private javax.swing.JLabel lblClientes;
+    private javax.swing.JLabel lblMenu;
     private javax.swing.JPanel pnlBuscador;
+    private javax.swing.JPanel pnlClientesFrecuentes;
+    private javax.swing.JPanel pnlMenu;
     // End of variables declaration//GEN-END:variables
 }

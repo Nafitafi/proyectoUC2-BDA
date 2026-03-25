@@ -4,15 +4,8 @@
  */
 package itson.restaurantepresentacion;
 
-import itson.restaurantedominio.ClienteFrecuente;
-import itson.restaurantedtos.ClienteFrecuenteDTO;
-import itson.restaurantenegocio.ClientesFrecuentesBO;
-import itson.restaurantenegocio.NegocioException;
 import java.awt.Component;
-import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,7 +19,6 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
     public ClientesFrecuentesFORM() {
         initComponents();
         jTable1.getColumnModel().getColumn(10).setCellRenderer(new BotonRenderer());
-        jTable1.getColumnModel().getColumn(10).setCellEditor(new BotonModificar(new javax.swing.JCheckBox(), jTable1, new ClientesFrecuentesControl(this)));
         jTable1.setRowHeight(30);
     }
 
@@ -52,6 +44,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
             setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
         }
 
+        @Override
         public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             if (value == null) {
                 this.setText("Modificar");
@@ -279,7 +272,6 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         btnAñadirCliente.setForeground(new java.awt.Color(255, 255, 255));
         btnAñadirCliente.setText("Añadir Cliente");
         btnAñadirCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnAñadirCliente.addActionListener(this::btnAñadirClienteActionPerformed);
 
         javax.swing.GroupLayout pnlClientesFrecuentesLayout = new javax.swing.GroupLayout(pnlClientesFrecuentes);
         pnlClientesFrecuentes.setLayout(pnlClientesFrecuentesLayout);
@@ -349,11 +341,6 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
     private void btnReporteClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteClientesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReporteClientesActionPerformed
-
-    private void btnAñadirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirClienteActionPerformed
-
-
-    }//GEN-LAST:event_btnAñadirClienteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

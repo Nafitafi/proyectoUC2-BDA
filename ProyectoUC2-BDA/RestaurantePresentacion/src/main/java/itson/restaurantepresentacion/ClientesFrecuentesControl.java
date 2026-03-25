@@ -45,6 +45,7 @@ public class ClientesFrecuentesControl {
             }
         });
         
+        
         // Configurar el editor de la tabla con callback
         clientesForm.getTablaClientes().getColumnModel().getColumn(10)
                 .setCellEditor(new ClientesFrecuentesFORM.BotonModificar(
@@ -144,5 +145,6 @@ public class ClientesFrecuentesControl {
     private void abrirRegistroCliente() {
         RegistroClientesFORM registroForm = new RegistroClientesFORM();
         registroForm.setVisible(true);
+        clientesForm.dispose();
     }
 }

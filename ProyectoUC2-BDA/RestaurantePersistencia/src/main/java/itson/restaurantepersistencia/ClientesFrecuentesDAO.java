@@ -168,17 +168,17 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
     public Long obtenerVisitasClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
         try {
             EntityManager entityManager = ManejadorConexiones.crearEntityManager();
-            
+
             String consultaJPQL = """
                                     SELECT COUNT(c) FROM Comanda c
                                     WHERE c.cliente.idCliente = :idCliente
                                     AND c.estado = :estado
-                                  """; 
+                                  """;
             TypedQuery<Long> query = entityManager.createQuery(consultaJPQL, Long.class);
             query.setParameter("idCliente", idClienteFrecuente);
             query.setParameter("estado", EstadoComanda.ENTREGADA);
             return query.getSingleResult();
-            
+
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No se pudo obtener el numero de visitas del cliente : " + idClienteFrecuente);
@@ -197,7 +197,31 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
      */
     @Override
     public Double obtenerTotalGastadoClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+
+            String consultaJPQL = """
+                                    SELECT SUM(c.totalAcumulado) FROM Comanda c
+                                    WHERE c.cliente.idCliente = :idCliente
+                                    AND c.estado = :estado
+                                  """;
+            TypedQuery<Double> query = entityManager.createQuery(consultaJPQL, Double.class);
+            query.setParameter("idCliente", idClienteFrecuente);
+            query.setParameter("estado", EstadoComanda.ENTREGADA);
+            
+            Double total = query.getSingleResult();
+
+            //si no hay comandas asociadas al cliente establecemos el total a 0.0 para al momento de calcular los puntos no de problema
+            if (total == null) {
+                total = 0.0;
+            }
+
+            return total;
+            
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No se pudo obtener el total gastado del cliente : " + idClienteFrecuente);
+        }
     }
 
 }

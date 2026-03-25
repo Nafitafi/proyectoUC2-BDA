@@ -63,8 +63,8 @@
                               <Component id="jScrollPane1" alignment="0" min="-2" pref="718" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel3" alignment="0" min="-2" pref="382" max="-2" attributes="0"/>
-                                      <Component id="buscadorClientesPanelFORM1" alignment="0" min="-2" pref="312" max="-2" attributes="0"/>
+                                      <Component id="jLabel3" min="-2" pref="382" max="-2" attributes="0"/>
+                                      <Component id="buscadorClientesPanelFORM1" min="-2" pref="317" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
                                   <Component id="btnAñadirCliente" min="-2" pref="122" max="-2" attributes="0"/>
@@ -92,7 +92,7 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                           <Component id="buscadorClientesPanelFORM1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="btnAñadirCliente" min="-2" pref="32" max="-2" attributes="0"/>
@@ -350,8 +350,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="org.netbeans.modules.form.InvalidComponent" name="buscadorClientesPanelFORM1">
-        </Component>
         <Component class="javax.swing.JButton" name="btnA&#xf1;adirCliente">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -373,6 +371,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnA&#xf1;adirClienteActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="itson.restaurantepresentacion.BuscadorClientesPanelFORM" name="buscadorClientesPanelFORM1">
         </Component>
       </SubComponents>
     </Container>

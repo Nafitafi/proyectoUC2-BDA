@@ -19,18 +19,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ClientesFrecuentesFORM extends javax.swing.JFrame {
-
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ClientesFrecuentesFORM.class.getName());
-
     /**
      * Creates new form ClientesFrecuentesFORM
      */
     public ClientesFrecuentesFORM() {
         initComponents();
         jTable1.getColumnModel().getColumn(10).setCellRenderer(new BotonRenderer());
-        jTable1.getColumnModel().getColumn(10).setCellEditor(new BotonModificar(new javax.swing.JCheckBox(), jTable1));
+        jTable1.getColumnModel().getColumn(10).setCellEditor(new BotonModificar(new javax.swing.JCheckBox(), jTable1, new ClientesFrecuentesControl(this)));
         jTable1.setRowHeight(30);
-
     }
 
     public javax.swing.JButton getBtnAñadirCliente() {
@@ -44,6 +41,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
     public BuscadorClientesPanelFORM getBuscadorClientesPanelFORM1() {
         return buscadorClientesPanelFORM1;
     }
+    
 
     class BotonRenderer extends javax.swing.JButton implements javax.swing.table.TableCellRenderer {
 
@@ -71,8 +69,9 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         private boolean isPushed;
         private int currentRow;
         private javax.swing.JTable tabla;
+        private ClientesFrecuentesControl control;
 
-        public BotonModificar(javax.swing.JCheckBox checkBox, javax.swing.JTable tabla) {
+        public BotonModificar(javax.swing.JCheckBox checkBox, javax.swing.JTable tabla, ClientesFrecuentesControl control) {
             super(checkBox);
             this.tabla = tabla;
             button = new javax.swing.JButton();
@@ -85,6 +84,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
                     fireEditingStopped();
                 }
             });
+            this.control = control;
         }
 
         @Override
@@ -96,11 +96,15 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
             return button;
         }
 
+        
+        
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
                 // Solo se marca que se pulsó el botón en la fila actual
                 // El controlador usará currentRow para hacer la lógica
+                control.actualizar(currentRow);
+               
             }
             isPushed = false;
             return label;
@@ -137,8 +141,8 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        buscadorClientesPanelFORM1 = new org.netbeans.modules.form.InvalidComponent();
         btnAñadirCliente = new javax.swing.JButton();
+        buscadorClientesPanelFORM1 = new itson.restaurantepresentacion.BuscadorClientesPanelFORM();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Clientes Frecuentes");
@@ -294,7 +298,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(170, 170, 170)
                                 .addComponent(btnAñadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -314,7 +318,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(8, 8, 8)
+                        .addGap(4, 4, 4)
                         .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAñadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(94, 94, 94)
@@ -354,7 +358,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAñadirCliente;
-    private org.netbeans.modules.form.InvalidComponent buscadorClientesPanelFORM1;
+    private itson.restaurantepresentacion.BuscadorClientesPanelFORM buscadorClientesPanelFORM1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

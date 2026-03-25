@@ -86,11 +86,11 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
      */
     @Override
     public ClienteFrecuente crearCliente(ClienteFrecuenteNuevoDTO clienteNuevo) throws NegocioException {
-        if (clienteNuevo.getNombre().length() > 100) {
-            throw new NegocioException("El nombre es demasiado largo.");
-        } else if (clienteNuevo.getNombre() == null) {
+         if (clienteNuevo.getNombre() == null) {
             throw new NegocioException("El nombre es un campo obligatorio.");
-        }
+        } else if (clienteNuevo.getNombre().length() > 100) {
+            throw new NegocioException("El nombre es demasiado largo.");
+        } 
 
         if (clienteNuevo.getApellidoP().length() > 50) {
             throw new NegocioException("El apellido paterno es demasiado largo.");
@@ -137,23 +137,27 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
      */
     @Override
     public ClienteFrecuente actualizarCliente(ClienteFrecuenteActualizadoDTO clienteActualizado) throws NegocioException {
-        if (clienteActualizado.getNombre().length() > 100) {
+        if (clienteActualizado == null){
+            throw new NegocioException("Cliente vacío, no hay cambios a realizar.");
+        }
+        
+        if (clienteActualizado.getNombre() != null && clienteActualizado.getNombre().length() > 100) {
             throw new NegocioException("El nombre es demasiado largo.");
         }
 
-        if (clienteActualizado.getApellidoP().length() > 50) {
+        if (clienteActualizado.getApellidoP() != null && clienteActualizado.getApellidoP().length() > 50) {
             throw new NegocioException("El apellido paterno es demasiado largo.");
         }
 
-        if (clienteActualizado.getApellidoM().length() > 50) {
+        if (clienteActualizado.getApellidoM() != null && clienteActualizado.getApellidoM().length() > 50) {
             throw new NegocioException("El apellido materno es demasiado largo.");
         }
 
-        if (clienteActualizado.getNumeroTelefono().length() > 20) {
+        if (clienteActualizado.getNumeroTelefono() != null && clienteActualizado.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
         }
 
-        if (clienteActualizado.getCorreo().length() > 100) {
+        if (clienteActualizado.getCorreo() != null && clienteActualizado.getCorreo().length() > 100) {
             throw new NegocioException("El correo es demasiado largo.");
         }
 

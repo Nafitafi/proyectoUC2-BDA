@@ -44,12 +44,12 @@ public class ClientesFrecuentesControl {
                 cargarTabla(clientesForm.getBuscadorClientesPanelFORM1().getTextoBusqueda());
             }
         });
-
+        
         // Configurar el editor de la tabla con callback
         clientesForm.getTablaClientes().getColumnModel().getColumn(10)
                 .setCellEditor(new ClientesFrecuentesFORM.BotonModificar(
                         new JCheckBox(),
-                        clientesForm.getTablaClientes()
+                        clientesForm.getTablaClientes(), this
                 ));
         cargarTabla("");
     }
@@ -77,6 +77,10 @@ public class ClientesFrecuentesControl {
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(clientesForm, "Error al cargar clientes", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public void actualizar(int row){
+        abrirActualizarCliente(row);
     }
 
     private void abrirActualizarCliente(int row) {

@@ -56,6 +56,7 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Actualizar Cliente Frecuente");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -227,10 +228,10 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         (this, "¿Desea aplicar los cambios?", "Actualizar Cliente", JOptionPane.YES_NO_OPTION);
         if (respuesta == JOptionPane.YES_OPTION){
             this.clienteListo = actualizarCliente();
-            JOptionPane.showConfirmDialog(this, "Se aplicaron los cambios. Cerrando Ventana.");
+            JOptionPane.showMessageDialog(null, "Se aplicaron los cambios. Cerrando Ventana.");
         } else {
             this.clienteListo = null;
-            JOptionPane.showConfirmDialog(this, "No fueron aplicados los cambios. Cerrando Ventana.");
+            JOptionPane.showMessageDialog(null, "No fueron aplicados los cambios. Cerrando Ventana.");
         }
         this.dispose();
     }//GEN-LAST:event_btnActualizarActionPerformed
@@ -249,11 +250,41 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
      * @return un objeto tipo ClienteFrecuente
      */
     public ClienteFrecuente actualizarCliente(){
-        String nombre = txtNombre.getText();
-        String apellidoP = txtApellidoP.getText();
-        String apellidoM = txtApellidoM.getText();
-        String telefono = txtTelefono.getText();
-        String correo = txtCorreo.getText();
+        String nombre;
+        String apellidoP;
+        String apellidoM;
+        String telefono;
+        String correo;
+        
+        if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()){
+            nombre = txtNombre.getText();
+        } else {
+            nombre = null;
+        }
+        
+        if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()){
+            apellidoP = txtApellidoP.getText();
+        } else {
+            apellidoP = null;
+        }
+        
+        if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()){
+            apellidoM = txtApellidoM.getText();
+        } else {
+            apellidoM = null;
+        }
+        
+        if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()){
+            telefono = txtTelefono.getText();
+        } else {
+            telefono = null;
+        }
+        
+        if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()){
+            correo = txtCorreo.getText();
+        } else {
+            correo = null;
+        }
         
         ClienteFrecuenteActualizadoDTO clienteActualizado = new ClienteFrecuenteActualizadoDTO
                 (this.clienteAEditar.getId(), nombre, apellidoP, apellidoM, telefono, correo);
@@ -262,8 +293,8 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
             return clientesBO.actualizarCliente(clienteActualizado);
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR);
+            return null;
         }
-        return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

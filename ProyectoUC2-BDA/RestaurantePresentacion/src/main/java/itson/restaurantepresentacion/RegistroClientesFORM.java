@@ -50,6 +50,11 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         lblTelefono = new javax.swing.JLabel();
         lblObligatorio = new javax.swing.JLabel();
         lblCorreo1 = new javax.swing.JLabel();
+        lblEjemplo1 = new javax.swing.JLabel();
+        lblEjemploTelefono1 = new javax.swing.JLabel();
+        lblEjemplo2 = new javax.swing.JLabel();
+        lblEjemploCorreo = new javax.swing.JLabel();
+        lblEjemploTelefono2 = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
@@ -62,29 +67,60 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         pnlFormulario.setBackground(new java.awt.Color(254, 178, 26));
         pnlFormulario.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtApellidoP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtApellidoM.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtCorreo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         lblNombre.setBackground(new java.awt.Color(254, 178, 26));
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblNombre.setForeground(new java.awt.Color(19, 70, 134));
-        lblNombre.setText("Nombre(s)*:");
+        lblNombre.setText("Nombre(s):");
 
         lblApellidoP.setBackground(new java.awt.Color(254, 178, 26));
+        lblApellidoP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApellidoP.setForeground(new java.awt.Color(19, 70, 134));
-        lblApellidoP.setText("Apellido Paterno*:");
+        lblApellidoP.setText("Apellido Paterno:");
 
         lblApellidoM.setBackground(new java.awt.Color(254, 178, 26));
+        lblApellidoM.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApellidoM.setForeground(new java.awt.Color(19, 70, 134));
-        lblApellidoM.setText("Apellido Materno*:");
+        lblApellidoM.setText("Apellido Materno:");
 
         lblTelefono.setBackground(new java.awt.Color(254, 178, 26));
+        lblTelefono.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTelefono.setForeground(new java.awt.Color(19, 70, 134));
-        lblTelefono.setText("Teléfono*:");
+        lblTelefono.setText("Teléfono:");
 
         lblObligatorio.setBackground(new java.awt.Color(254, 178, 26));
+        lblObligatorio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblObligatorio.setForeground(new java.awt.Color(19, 70, 134));
-        lblObligatorio.setText("(*) Campos obligatorios");
+        lblObligatorio.setText("(*) Opcional");
 
         lblCorreo1.setBackground(new java.awt.Color(254, 178, 26));
+        lblCorreo1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblCorreo1.setForeground(new java.awt.Color(19, 70, 134));
-        lblCorreo1.setText("Correo:");
+        lblCorreo1.setText("Correo*:");
+
+        lblEjemplo1.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemplo1.setText("Ejemplo:");
+
+        lblEjemploTelefono1.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploTelefono1.setText("6441-12-12-12");
+
+        lblEjemplo2.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemplo2.setText("Ejemplo:");
+
+        lblEjemploCorreo.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploCorreo.setText("micorreo@dominio.com");
+
+        lblEjemploTelefono2.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploTelefono2.setText("(+52)6442-67-67-67");
 
         javax.swing.GroupLayout pnlFormularioLayout = new javax.swing.GroupLayout(pnlFormulario);
         pnlFormulario.setLayout(pnlFormularioLayout);
@@ -93,25 +129,37 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
             .addGroup(pnlFormularioLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(56, 56, 56)
+                            .addComponent(lblEjemplo1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEjemploTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEjemploTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(72, 72, 72)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblObligatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(33, 33, 33))
+                            .addComponent(lblEjemploCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEjemplo2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlFormularioLayout.createSequentialGroup()
+                                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtApellidoP, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                    .addComponent(lblCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblApellidoP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(56, 56, 56)
+                                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblApellidoM)
+                                    .addComponent(lblObligatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(19, 19, 19))))
         );
         pnlFormularioLayout.setVerticalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,7 +187,20 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(lblEjemplo2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEjemploCorreo))
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEjemplo1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEjemploTelefono1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEjemploTelefono2)))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         btnRegistrar.setBackground(new java.awt.Color(19, 70, 134));
@@ -187,11 +248,11 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         pnlPrincipalLayout.setVerticalGroup(
             pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPrincipalLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTitulo)
                 .addGap(27, 27, 27)
                 .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegresar)
                     .addComponent(btnRegistrar))
@@ -228,7 +289,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         ClienteFrecuente cF = registrarCliente();
         if (cF != null) {
-            JOptionPane.showMessageDialog(null, "¡Cliente agregado con éxito! Cerrando ventana.");
+            JOptionPane.showMessageDialog(null, "¡Cliente agregado con éxito!");
             ClientesFrecuentesControl.abrirClientesFrecuentes(this);
         } 
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -247,28 +308,39 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
     
         if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()){
             nombre = txtNombre.getText();
-        } 
+        } else {
+            JOptionPane.showMessageDialog
+            (null, "El nombre es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
         
         if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()){
             apellidoP = txtApellidoP.getText();
+        } else {
+            JOptionPane.showMessageDialog
+            (null, "El apellido paterno es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
         
         if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()){
             apellidoM = txtApellidoM.getText();
+        } else {
+            JOptionPane.showMessageDialog
+            (null, "El apellido materno es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
         
         if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()){
             telefono = txtTelefono.getText();
+        } else {
+            JOptionPane.showMessageDialog
+            (null, "El teléfono es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
         
         if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()){
             correo = txtCorreo.getText();
         } 
-        
-        if ((nombre == null || apellidoP == null) || (apellidoM == null || telefono == null)){
-            JOptionPane.showMessageDialog(null, "Un campo obligatorio se encuentra vacío. Verifica la información", 
-                    "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
-        }
         
         ClienteFrecuenteNuevoDTO clienteNuevo = new ClienteFrecuenteNuevoDTO
         (nombre, apellidoP, apellidoM, telefono, correo);
@@ -277,8 +349,8 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
             ClienteFrecuente cliente = clientesBO.crearCliente(clienteNuevo);
             return cliente;
         } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-            return null;
+            JOptionPane.showMessageDialog(this, "Error al agregar cliente"+ex.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+            return null; 
         }
     }
     
@@ -290,6 +362,11 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
     private javax.swing.JLabel lblApellidoM;
     private javax.swing.JLabel lblApellidoP;
     private javax.swing.JLabel lblCorreo1;
+    private javax.swing.JLabel lblEjemplo1;
+    private javax.swing.JLabel lblEjemplo2;
+    private javax.swing.JLabel lblEjemploCorreo;
+    private javax.swing.JLabel lblEjemploTelefono1;
+    private javax.swing.JLabel lblEjemploTelefono2;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblObligatorio;
     private javax.swing.JLabel lblTelefono;

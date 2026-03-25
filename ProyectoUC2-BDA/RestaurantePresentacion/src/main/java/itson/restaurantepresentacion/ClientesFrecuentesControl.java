@@ -105,8 +105,10 @@ public class ClientesFrecuentesControl {
         String apellidoPClic = tabla.getValueAt(row, 2).toString();
         String apellidoMClic = tabla.getValueAt(row, 3).toString();
         String telefonoClic = tabla.getValueAt(row, 4).toString();
-        String correoClic = tabla.getValueAt(row, 5).toString();
-
+        String correoClic = null;
+        if (tabla.getValueAt(row, 5) != null){
+            correoClic = tabla.getValueAt(row, 5).toString();
+        }
         ClienteFrecuenteDTO clienteDTO = new ClienteFrecuenteDTO(idClic, nombreClic, apellidoPClic, apellidoMClic, telefonoClic, correoClic);
 
         ActualizarClientesFORM actualizar = new ActualizarClientesFORM(clienteDTO);

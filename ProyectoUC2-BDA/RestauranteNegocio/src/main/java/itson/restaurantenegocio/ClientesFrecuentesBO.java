@@ -92,26 +92,32 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
             throw new NegocioException("El nombre es demasiado largo.");
         } 
 
-        if (clienteNuevo.getApellidoP().length() > 50) {
+        if (clienteNuevo.getApellidoP() == null) {
             throw new NegocioException("El apellido paterno es demasiado largo.");
-        } else if (clienteNuevo.getApellidoP() == null) {
+        } else if (clienteNuevo.getApellidoP().length() > 50) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
         }
 
-        if (clienteNuevo.getApellidoM().length() > 50) {
+        if (clienteNuevo.getApellidoM() == null) {
             throw new NegocioException("El apellido materno es demasiado largo.");
-        } else if (clienteNuevo.getApellidoM() == null) {
+        } else if (clienteNuevo.getApellidoM().length() > 50) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
         }
 
-        if (clienteNuevo.getNumeroTelefono().length() > 20) {
+        if (clienteNuevo.getNumeroTelefono() == null) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
-        } else if (clienteNuevo.getNumeroTelefono() == null) {
+        } else if (clienteNuevo.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El teléfono es un campo obligatorio.");
+        } else if (!clienteNuevo.getNumeroTelefono().matches("^(\\(\\+\\d{1,3}\\))?\\d{4}-\\d{2}-\\d{2}-\\d{2}$")) {
+            throw new NegocioException("Formato de teléfono no válido.");
         }
-
-        if (clienteNuevo.getCorreo().length() > 100) {
-            throw new NegocioException("El correo es demasiado largo.");
+        
+        if (clienteNuevo.getCorreo() != null) {
+            if (clienteNuevo.getCorreo().length() > 100) {
+                throw new NegocioException("El correo es demasiado largo.");
+            } else if (!clienteNuevo.getCorreo().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+                throw new NegocioException("Formato de correo no válido.");
+            }
         }
 
         try {
@@ -155,10 +161,14 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
 
         if (clienteActualizado.getNumeroTelefono() != null && clienteActualizado.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
+        } else if (clienteActualizado.getNumeroTelefono() != null && !clienteActualizado.getNumeroTelefono().matches("^(\\(\\+\\d{1,3}\\))?\\d{4}-\\d{2}-\\d{2}-\\d{2}$")){
+            throw new NegocioException("Formato de teléfono no válido.");
         }
 
         if (clienteActualizado.getCorreo() != null && clienteActualizado.getCorreo().length() > 100) {
             throw new NegocioException("El correo es demasiado largo.");
+        } else if (clienteActualizado.getCorreo() != null && !clienteActualizado.getCorreo().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+            throw new NegocioException("Formato de correo no válido.");
         }
 
         try {

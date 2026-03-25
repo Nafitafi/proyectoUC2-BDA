@@ -42,7 +42,7 @@ public class ClienteFrecuente implements Serializable {
     @Column(name = "telefono", nullable = false)
     private String numeroTelefono;
 
-    @Column(name = "correo")
+    @Column(name = "correo", nullable = true)
     private String correo;
 
     @Column(name = "puntos", nullable = false)

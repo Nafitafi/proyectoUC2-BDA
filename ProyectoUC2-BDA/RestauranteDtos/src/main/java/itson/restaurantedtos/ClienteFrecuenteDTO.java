@@ -42,6 +42,17 @@ public class ClienteFrecuenteDTO {
         this.fechaRegistro = fechaRegistro;
     }
 
+    public ClienteFrecuenteDTO(Long id, String nombre, String apellidoP, String apellidoM, String numeroTelefono, String correo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
+        this.numeroTelefono = numeroTelefono;
+        this.correo = correo;
+    }
+
+    
+    
     //Getters & Setters
     public Long getId() {
         return id;

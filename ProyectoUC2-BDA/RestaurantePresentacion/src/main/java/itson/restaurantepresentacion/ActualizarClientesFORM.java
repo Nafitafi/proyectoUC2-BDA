@@ -4,21 +4,30 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
+import itson.restaurantedtos.ClienteFrecuenteDTO;
+import itson.restaurantenegocio.ClientesFrecuentesBO;
 import itson.restaurantenegocio.IClientesFrecuentesBO;
+import itson.restaurantenegocio.NegocioException;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author Zaira
+ * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ActualizarClientesFORM extends javax.swing.JFrame {
     private IClientesFrecuentesBO clientesBO;
+    ClienteFrecuenteDTO clienteAEditar;
+    ClienteFrecuente clienteListo;
     
     /**
      * Creates new form ActualizarClientes
      */
-    public ActualizarClientesFORM() {
+    public ActualizarClientesFORM(ClienteFrecuenteDTO clienteAEditar) {
         initComponents();
+        this.clientesBO = new ClientesFrecuentesBO();
+        this.clienteAEditar = clienteAEditar;
     }
 
     /**
@@ -132,6 +141,11 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         btnActualizar.setBackground(new java.awt.Color(19, 70, 134));
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setBackground(new java.awt.Color(237, 63, 39));
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
@@ -194,18 +208,62 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Este botón cierra la ventana, ya que esta es una ventana emergente, lo que permite
+     * regresar a la pantalla anterior (ClientesFrecuentesFORM)
+     * @param evt hacer click en el botón regresar
+     */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    public void actualizarCliente(){
+    /**
+     * Este botón utiliza el método actualizarCliente después de confirmar que de verdad se desean
+     * aplicar los cambios, para despúes regresar al ClienteFrecuente y cerrar la ventana.
+     * @param evt hacer click en el botón actualizar.
+     */
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        int respuesta = JOptionPane.showConfirmDialog
+        (this, "¿Desea aplicar los cambios?", "Actualizar Cliente", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION){
+            this.clienteListo = actualizarCliente();
+            JOptionPane.showConfirmDialog(this, "Se aplicaron los cambios. Cerrando Ventana.");
+        } else {
+            this.clienteListo = null;
+            JOptionPane.showConfirmDialog(this, "No fueron aplicados los cambios. Cerrando Ventana.");
+        }
+        this.dispose();
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    /**
+     * 
+     */
+    public ClienteFrecuente getClienteActualizado(){
+        return this.clienteListo;
+    }
+    
+    /**
+     * Este método toma todos los datos del formulario para actualizar clientes
+     * y los convierte a un DTO para intentar actualizar al cliente correspondiente
+     * en la base de datos.
+     * @return un objeto tipo ClienteFrecuente
+     */
+    public ClienteFrecuente actualizarCliente(){
+        String nombre = txtNombre.getText();
+        String apellidoP = txtApellidoP.getText();
+        String apellidoM = txtApellidoM.getText();
+        String telefono = txtTelefono.getText();
+        String correo = txtCorreo.getText();
         
+        ClienteFrecuenteActualizadoDTO clienteActualizado = new ClienteFrecuenteActualizadoDTO
+                (this.clienteAEditar.getId(), nombre, apellidoP, apellidoM, telefono, correo);
         
-//        try {
-//            clientesBO.actualizarCliente(clienteActualizado);
-//        } catch (NegocioException ex) {
-//            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR);
-//        }
+        try {
+            return clientesBO.actualizarCliente(clienteActualizado);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "Error al agregar cliente", ex.getMessage(), JOptionPane.ERROR);
+        }
+        return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

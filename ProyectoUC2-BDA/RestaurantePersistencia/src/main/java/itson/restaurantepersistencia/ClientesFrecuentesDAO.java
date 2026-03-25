@@ -128,7 +128,7 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
      * el filtro (ya sea nombre, correo electronico o número) proporcionado en el parámetro.
      * 
      * @param filtro Filtro que se solicita aplicar para la consulta.
-     * @return 
+     * @return una lista de objetos tipo ClienteFrecuente con las coincidencias del filtro.
      * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
      */
     @Override

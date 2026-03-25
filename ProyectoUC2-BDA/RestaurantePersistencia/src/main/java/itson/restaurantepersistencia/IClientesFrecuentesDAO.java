@@ -48,4 +48,21 @@ public interface IClientesFrecuentesDAO {
      * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
      */
     public List<ClienteFrecuente> buscarPorFiltro(String filtro) throws PersistenciaException;
+    
+    
+    /**
+     * Método que permite obtener el número de visitas asociadas a un cliente especifico.
+     * @param idClienteFrecuente ID correspondiente al cliente del cual queremos obtener las visitas.
+     * @return numero entero de las visitas asociadas al cliente.
+     * @throws PersistenciaException si hay un problema al consultar los datos de la base de datos.
+     */
+    public Long obtenerVisitasClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException;
+    
+    /**
+     * Método que permite obtener el total que ha gastado en el restaurante un cliente en especifico.
+     * @param idClienteFrecuente ID correspondiente al cliente del cual queremos obtener el total gastado.
+     * @return total de dinero gastado del cliente.
+     * @throws PersistenciaException si hay un problema al consultar los datos de la base de datos.
+     */
+    public Double obtenerTotalGastadoClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException;
 }

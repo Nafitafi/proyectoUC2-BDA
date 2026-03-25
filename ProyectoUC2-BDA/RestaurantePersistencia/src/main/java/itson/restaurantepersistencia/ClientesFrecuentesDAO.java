@@ -5,6 +5,7 @@
 package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.ClienteFrecuente;
+import itson.restaurantedominio.EstadoComanda;
 import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
 import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
 import java.util.List;
@@ -72,23 +73,23 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
             entityManager.getTransaction().begin();
 
             ClienteFrecuente clienteRegistrado = entityManager.find(ClienteFrecuente.class, clienteActualizado.getId());
-            if (clienteActualizado.getNombre() != null){
+            if (clienteActualizado.getNombre() != null) {
                 clienteRegistrado.setNombre(clienteActualizado.getNombre());
             }
-            
-            if (clienteActualizado.getApellidoP() != null){
+
+            if (clienteActualizado.getApellidoP() != null) {
                 clienteRegistrado.setApellidoP(clienteActualizado.getApellidoP());
             }
-            
-            if (clienteActualizado.getApellidoM() != null){
+
+            if (clienteActualizado.getApellidoM() != null) {
                 clienteRegistrado.setApellidoM(clienteActualizado.getApellidoM());
             }
-            
-            if (clienteActualizado.getNumeroTelefono() != null){
+
+            if (clienteActualizado.getNumeroTelefono() != null) {
                 clienteRegistrado.setNumeroTelefono(clienteActualizado.getNumeroTelefono());
             }
-            
-            if (clienteActualizado.getCorreo() != null){
+
+            if (clienteActualizado.getCorreo() != null) {
                 clienteRegistrado.setCorreo(clienteActualizado.getCorreo());
             }
 
@@ -123,13 +124,15 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
         }
     }
 
-     /**
-     * Método que permita la consulta en la base de datos sobre la información de clientes registrados que coincidan con
-     * el filtro (ya sea nombre, correo electronico o número) proporcionado en el parámetro.
-     * 
+    /**
+     * Método que permita la consulta en la base de datos sobre la información
+     * de clientes registrados que coincidan con el filtro (ya sea nombre,
+     * correo electronico o número) proporcionado en el parámetro.
+     *
      * @param filtro Filtro que se solicita aplicar para la consulta.
-     * @return 
-     * @throws PersistenciaException si hay un problema con la conexión a la base de datos.
+     * @return
+     * @throws PersistenciaException si hay un problema con la conexión a la
+     * base de datos.
      */
     @Override
     public List<ClienteFrecuente> buscarPorFiltro(String filtro) throws PersistenciaException {
@@ -149,6 +152,52 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
             throw new PersistenciaException("No fue posible consultar a los clientes.");
         }
 
+    }
+
+    /**
+     * Método que permite obtener el número de visitas asociadas a un cliente
+     * especifico.
+     *
+     * @param idClienteFrecuente ID correspondiente al cliente del cual queremos
+     * obtener las visitas.
+     * @return numero entero de las visitas asociadas al cliente.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    @Override
+    public Long obtenerVisitasClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
+        try {
+            EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+            
+            String consultaJPQL = """
+                                    SELECT COUNT(c) FROM Comanda c
+                                    WHERE c.cliente.idCliente = :idCliente
+                                    AND c.estado = :estado
+                                  """; 
+            TypedQuery<Long> query = entityManager.createQuery(consultaJPQL, Long.class);
+            query.setParameter("idCliente", idClienteFrecuente);
+            query.setParameter("estado", EstadoComanda.ENTREGADA);
+            return query.getSingleResult();
+            
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No se pudo obtener el numero de visitas del cliente : " + idClienteFrecuente);
+        }
+    }
+
+    /**
+     * Método que permite obtener el total que ha gastado en el restaurante un
+     * cliente en especifico.
+     *
+     * @param idClienteFrecuente ID correspondiente al cliente del cual queremos
+     * obtener el total gastado.
+     * @return total de dinero gastado del cliente.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    @Override
+    public Double obtenerTotalGastadoClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

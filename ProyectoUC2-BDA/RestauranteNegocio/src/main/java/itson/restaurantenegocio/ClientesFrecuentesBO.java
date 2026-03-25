@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
-public class ClientesFrecuentesBO implements IClientesFrecuentesBO{
+public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
 
     private static final Logger LOGGER = Logger.getLogger(ClientesFrecuentesBO.class.getName());
     private IClientesFrecuentesDAO clienteDAO;
@@ -32,71 +32,88 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO{
         this.clienteDAO = new ClientesFrecuentesDAO();
     }
 
-    
-    
     /**
-     * Método que se asegura de validar que la entrada de la busqueda es correcta.
-     * 
+     * Método que se asegura de validar que la entrada de la busqueda es
+     * correcta.
+     *
      * @param busqueda filtro aplicado
      * @return Lista de objetos tipo ClienteFrecuenteDTO
-     * @throws NegocioException en caso de que algo falle en el 
+     * @throws NegocioException en caso de que algo falle en el
      */
+    @Override
     public List<ClienteFrecuenteDTO> buscarClientes(String busqueda) throws NegocioException {
         List<ClienteFrecuente> resultadosEntidad;
+
         try {
             // Si el buscador está vacío, se hace SELECT *
             if (busqueda == null || busqueda.trim().isEmpty()) {
                 resultadosEntidad = clienteDAO.bucarTodosClientes();
-            } 
-            else { // Si el usuario si escribió algo, se manda
+            } else {
                 resultadosEntidad = clienteDAO.buscarPorFiltro(busqueda.trim());
             }
-            return convertirADTO(resultadosEntidad);
-        }catch(PersistenciaException ex){
+
+            //convertimos a clienteFrecuenteDTO para mostrarlo luego
+            List<ClienteFrecuenteDTO> listaDTO = convertirADTO(resultadosEntidad);
+
+            
+            //A cada cliente le agregamos los datos de visitas, total gastado y los puntos calculados
+            for (ClienteFrecuenteDTO dto : listaDTO) {
+                Long id = dto.getId();
+
+                dto.setVisitas(obtenerVisitas(id));
+                dto.setTotalGastado(obtenerTotalGastado(id));
+                dto.setPuntos(calcularPuntos(id));
+            }
+
+            return listaDTO;
+
+        } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NegocioException("No fue posible consultar a los clientes.");
         }
     }
 
     /**
-     * Método intermedio entre la presentación y persistencia que verifica los datos recibidos del cliente a registrar 
-     * para determinar si estos son válidos o no.
-     * 
+     * Método intermedio entre la presentación y persistencia que verifica los
+     * datos recibidos del cliente a registrar para determinar si estos son
+     * válidos o no.
+     *
      * @param clienteNuevo DTO con los datos del cliente nuevo a registrar.
-     * @return Objeto tipo ClienteFrecuente con los datos que fueron almacenados 
+     * @return Objeto tipo ClienteFrecuente con los datos que fueron almacenados
      * en la base de datos.
-     * @throws NegocioException si algún dato es inválido o si surge un error en la capa de persistencia.
+     * @throws NegocioException si algún dato es inválido o si surge un error en
+     * la capa de persistencia.
      */
     @Override
     public ClienteFrecuente crearCliente(ClienteFrecuenteNuevoDTO clienteNuevo) throws NegocioException {
         if (clienteNuevo.getNombre().length() > 100) {
             throw new NegocioException("El nombre es demasiado largo.");
-        } else if (clienteNuevo.getNombre() == null){
+        } else if (clienteNuevo.getNombre() == null) {
             throw new NegocioException("El nombre es un campo obligatorio.");
         }
-        
+
         if (clienteNuevo.getApellidoP().length() > 50) {
             throw new NegocioException("El apellido paterno es demasiado largo.");
-        } else if (clienteNuevo.getApellidoP() == null){
+        } else if (clienteNuevo.getApellidoP() == null) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
         }
-        
+
         if (clienteNuevo.getApellidoM().length() > 50) {
             throw new NegocioException("El apellido materno es demasiado largo.");
-        } else if (clienteNuevo.getApellidoM() == null){
+        } else if (clienteNuevo.getApellidoM() == null) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
         }
-        
+
         if (clienteNuevo.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
-        } else if (clienteNuevo.getNumeroTelefono() == null){
+        } else if (clienteNuevo.getNumeroTelefono() == null) {
             throw new NegocioException("El teléfono es un campo obligatorio.");
         }
-        
+
         if (clienteNuevo.getCorreo().length() > 100) {
             throw new NegocioException("El correo es demasiado largo.");
         }
-        
+
         try {
             ClienteFrecuente cliente = clienteDAO.guardar(clienteNuevo);
             return cliente;
@@ -107,37 +124,39 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO{
     }
 
     /**
-     * Método intermedio entre la presentación y persistencia que verifica los datos recibidos del cliente a actualizar 
-     * para determinar si estos son válidos o no.
-     * 
+     * Método intermedio entre la presentación y persistencia que verifica los
+     * datos recibidos del cliente a actualizar para determinar si estos son
+     * válidos o no.
+     *
      * @param clienteActualizado DTO con la información a actualizar del
      * cliente.
-     * @return Objeto tipo ClienteFrecuente con los datos que fueron actualizados 
-     * en la base de datos.
-     * @throws NegocioException si algún dato es inválido o si surge un error en la capa de persistencia.
+     * @return Objeto tipo ClienteFrecuente con los datos que fueron
+     * actualizados en la base de datos.
+     * @throws NegocioException si algún dato es inválido o si surge un error en
+     * la capa de persistencia.
      */
     @Override
     public ClienteFrecuente actualizarCliente(ClienteFrecuenteActualizadoDTO clienteActualizado) throws NegocioException {
         if (clienteActualizado.getNombre().length() > 100) {
             throw new NegocioException("El nombre es demasiado largo.");
-        } 
-        
+        }
+
         if (clienteActualizado.getApellidoP().length() > 50) {
             throw new NegocioException("El apellido paterno es demasiado largo.");
-        } 
-        
+        }
+
         if (clienteActualizado.getApellidoM().length() > 50) {
             throw new NegocioException("El apellido materno es demasiado largo.");
-        } 
-        
+        }
+
         if (clienteActualizado.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
-        } 
-        
+        }
+
         if (clienteActualizado.getCorreo().length() > 100) {
             throw new NegocioException("El correo es demasiado largo.");
         }
-        
+
         try {
             ClienteFrecuente cliente = clienteDAO.actualizar(clienteActualizado);
             return cliente;
@@ -145,6 +164,98 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO{
             LOGGER.severe(ex.getMessage());
             throw new NegocioException("No fue posible crear al cliente.");
         }
-        
+
+    }
+
+    /**
+     * Método con validaciones que evita errores imprevistos al consultar datos
+     * del cliente.
+     *
+     * @param IdClienteFrecuente Id correspondiente al cliente a consultar .
+     * @return numero de visitas asociadas al cliente.
+     * @throws NegocioException en caso de que algun dato no sea optimo.
+     */
+    @Override
+    public Long obtenerVisitas(Long IdClienteFrecuente) throws NegocioException {
+
+        if (IdClienteFrecuente == null) {
+            throw new NegocioException("El cliente es obligatorio.");
+        }
+
+        try {
+            ClienteFrecuente cliente = clienteDAO.buscarPorId(IdClienteFrecuente);
+
+            if (cliente == null) {
+                throw new NegocioException("El cliente no existe.");
+            }
+
+            Long visitas = clienteDAO.obtenerVisitasClienteFrecuente(IdClienteFrecuente);
+
+            if (visitas == null || visitas < 0) {
+                visitas = 0L;
+            }
+
+            return visitas;
+
+        } catch (PersistenciaException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NegocioException("No fue posible calcular las visitas.");
+        }
+    }
+
+    /**
+     * Método con validaciones que evita errores imprevistos al consultar datos
+     * del cliente.
+     *
+     * @param IdClienteFrecuente Id correspondiente al cliente a consultar .
+     * @return total gastado por el cliente.
+     * @throws NegocioException en caso de que algun dato no sea optimo.
+     */
+    @Override
+    public Double obtenerTotalGastado(Long IdClienteFrecuente) throws NegocioException {
+        if (IdClienteFrecuente == null) {
+            throw new NegocioException("El cliente es obligatorio.");
+        }
+
+        try {
+            ClienteFrecuente cliente = clienteDAO.buscarPorId(IdClienteFrecuente);
+
+            if (cliente == null) {
+                throw new NegocioException("El cliente no existe.");
+            }
+
+            Double totalGastado = clienteDAO.obtenerTotalGastadoClienteFrecuente(IdClienteFrecuente);
+
+            if (totalGastado == null || totalGastado < 0) {
+                totalGastado = 0.0;
+            }
+
+            return totalGastado;
+
+        } catch (PersistenciaException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NegocioException("No fue posible calcular las visitas.");
+        }
+    }
+
+    /**
+     * Método que calcula los puntos de un cliente en especifico (en base a su
+     * total gastado).
+     *
+     * @param IdClienteFrecuente Id correspondiente al cliente a calcular sus
+     * puntos .
+     * @return numero de puntos del cliente.
+     * @throws NegocioException en caso de que algun dato no sea optimo.
+     */
+    @Override
+    public int calcularPuntos(Long IdClienteFrecuente) throws NegocioException {
+
+        Double total = obtenerTotalGastado(IdClienteFrecuente);
+
+        if (total <= 0) {
+            return 0;
+        }
+
+        return (int) Math.floor(total / 20);
     }
 }

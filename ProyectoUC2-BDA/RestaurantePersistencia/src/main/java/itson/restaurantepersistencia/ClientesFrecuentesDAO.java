@@ -208,7 +208,7 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
             TypedQuery<Double> query = entityManager.createQuery(consultaJPQL, Double.class);
             query.setParameter("idCliente", idClienteFrecuente);
             query.setParameter("estado", EstadoComanda.ENTREGADA);
-            
+
             Double total = query.getSingleResult();
 
             //si no hay comandas asociadas al cliente establecemos el total a 0.0 para al momento de calcular los puntos no de problema
@@ -217,11 +217,30 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
             }
 
             return total;
-            
+
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No se pudo obtener el total gastado del cliente : " + idClienteFrecuente);
         }
     }
 
+    /**
+     * Método que permite obtener un cliente a partir de su id.
+     *
+     * @param idClienteFrecuente ID correspondiente al cliente que se desea
+     * buscar.
+     * @return Objeto ClienteFrecuente encontrado en la base de datos, o null si
+     * no existe.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    @Override
+    public ClienteFrecuente buscarPorId(Long idClienteFrecuente) throws PersistenciaException {
+        try {
+            EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+            return entityManager.find(ClienteFrecuente.class, idClienteFrecuente);
+        } catch (PersistenceException ex) {
+            throw new PersistenciaException("No se pudo buscar el cliente", ex);
+        }
+    }
 }

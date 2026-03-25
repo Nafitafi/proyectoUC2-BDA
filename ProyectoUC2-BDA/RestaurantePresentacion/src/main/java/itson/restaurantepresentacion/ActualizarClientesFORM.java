@@ -215,7 +215,7 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
      * @param evt hacer click en el botón regresar
      */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        this.dispose();
+        ClientesFrecuentesControl.abrirClientesFrecuentes(this);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**
@@ -233,7 +233,7 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
             this.clienteListo = null;
             JOptionPane.showMessageDialog(null, "No fueron aplicados los cambios. Cerrando Ventana.");
         }
-        this.dispose();
+        ClientesFrecuentesControl.abrirClientesFrecuentes(this);
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     /**

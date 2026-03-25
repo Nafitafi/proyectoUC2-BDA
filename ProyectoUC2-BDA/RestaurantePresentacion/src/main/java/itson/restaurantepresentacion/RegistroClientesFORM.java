@@ -217,7 +217,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
      * @param evt click al botón regresar.
      */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        this.dispose();
+        ClientesFrecuentesControl.abrirClientesFrecuentes(this);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**
@@ -229,7 +229,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         ClienteFrecuente cF = registrarCliente();
         if (cF != null) {
             JOptionPane.showMessageDialog(null, "¡Cliente agregado con éxito! Cerrando ventana.");
-            this.dispose();
+            ClientesFrecuentesControl.abrirClientesFrecuentes(this);
         } 
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

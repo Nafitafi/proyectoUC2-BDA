@@ -147,4 +147,20 @@ public class ClientesFrecuentesControl {
         registroForm.setVisible(true);
         clientesForm.dispose();
     }
+    
+    /**
+     * Método estático para abrir el formulario ClientesFrecuentesFORM desde 
+     * cualquier otra ventana.
+     * * @param ventanaAnterior (Opcional) El JFrame desde donde se está llamando. 
+     * Se usa para cerrarlo. Se pasa null si no se desea mantener la otra ventana abierta.
+     */
+    public static void abrirClientesFrecuentes(javax.swing.JFrame ventanaAnterior) {
+        ClientesFrecuentesFORM clientesForm = new ClientesFrecuentesFORM();
+        ClientesFrecuentesControl control = new ClientesFrecuentesControl(clientesForm);
+        clientesForm.setLocationRelativeTo(null);
+        clientesForm.setVisible(true);
+        if (ventanaAnterior != null) {
+            ventanaAnterior.dispose();
+        }
+    }
 }

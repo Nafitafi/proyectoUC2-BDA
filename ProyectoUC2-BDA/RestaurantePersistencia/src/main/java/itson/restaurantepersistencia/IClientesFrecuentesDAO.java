@@ -100,4 +100,6 @@ public interface IClientesFrecuentesDAO {
      * de la base de datos.
      */
     public ClienteFrecuente buscarPorId(Long idClienteFrecuente) throws PersistenciaException;
+    
+    
 }

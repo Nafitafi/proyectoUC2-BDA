@@ -5,6 +5,7 @@
 package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.ClienteFrecuente;
+import itson.restaurantedominio.EstadoComanda;
 import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
 import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
 import java.util.List;
@@ -135,12 +136,14 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
     public List<ClienteFrecuente> buscarPorFiltro(String filtro) throws PersistenciaException {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
         try {
-            String consulta = "SELECT c FROM ClienteFrecuente c "
-                    + "WHERE LOWER(c.nombre) LIKE :filtro "
-                    + "OR LOWER(c.apellidoP) LIKE :filtro "
-                    + "OR LOWER(c.apellidoM) LIKE :filtro "
-                    + "OR c.numeroTelefono LIKE :filtro "
-                    + "OR LOWER(c.correo) LIKE :filtro";
+            String consulta = """
+                    SELECT c FROM ClienteFrecuente c 
+                    WHERE LOWER(c.nombre) LIKE :filtro 
+                    OR LOWER(c.apellidoP) LIKE :filtro
+                    OR LOWER(c.apellidoM) LIKE :filtro
+                    OR c.numeroTelefono LIKE :filtro
+                    OR LOWER(c.correo) LIKE :filtro
+            """;
             TypedQuery<ClienteFrecuente> query = entityManager.createQuery(consulta, ClienteFrecuente.class);
             query.setParameter("filtro", "%" + filtro.toLowerCase() + "%");
             return query.getResultList();
@@ -151,4 +154,93 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
 
     }
 
+    /**
+     * Método que permite obtener el número de visitas asociadas a un cliente
+     * especifico.
+     *
+     * @param idClienteFrecuente ID correspondiente al cliente del cual queremos
+     * obtener las visitas.
+     * @return numero entero de las visitas asociadas al cliente.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    @Override
+    public Long obtenerVisitasClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
+        try {
+            EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+            
+            String consultaJPQL = """
+                                    SELECT COUNT(c) FROM Comanda c
+                                    WHERE c.cliente.idCliente = :idCliente
+                                    AND c.estado = :estado
+                                  """; 
+            TypedQuery<Long> query = entityManager.createQuery(consultaJPQL, Long.class);
+            query.setParameter("idCliente", idClienteFrecuente);
+            query.setParameter("estado", EstadoComanda.ENTREGADA);
+            return query.getSingleResult();
+            
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No se pudo obtener el numero de visitas del cliente : " + idClienteFrecuente);
+        }
+    }
+
+    /**
+     * Método que permite obtener el total que ha gastado en el restaurante un
+     * cliente en especifico.
+     *
+     * @param idClienteFrecuente ID correspondiente al cliente del cual queremos
+     * obtener el total gastado.
+     * @return total de dinero gastado del cliente.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+     @Override
+    public Double obtenerTotalGastadoClienteFrecuente(Long idClienteFrecuente) throws PersistenciaException {
+        try {
+            EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+
+            String consultaJPQL = """
+                                    SELECT SUM(c.totalAcumulado) FROM Comanda c
+                                    WHERE c.cliente.idCliente = :idCliente
+                                    AND c.estado = :estado
+                                  """;
+            TypedQuery<Double> query = entityManager.createQuery(consultaJPQL, Double.class);
+            query.setParameter("idCliente", idClienteFrecuente);
+            query.setParameter("estado", EstadoComanda.ENTREGADA);
+            
+            Double total = query.getSingleResult();
+
+            //si no hay comandas asociadas al cliente establecemos el total a 0.0 para al momento de calcular los puntos no de problema
+            if (total == null) {
+                total = 0.0;
+            }
+
+            return total;
+            
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No se pudo obtener el total gastado del cliente : " + idClienteFrecuente);
+        }
+    }
+    
+    /**
+     * Método que permite obtener un cliente a partir de su id.
+     *
+     * @param idClienteFrecuente ID correspondiente al cliente que se desea
+     * buscar.
+     * @return Objeto ClienteFrecuente encontrado en la base de datos, o null si
+     * no existe.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    @Override
+    public ClienteFrecuente buscarPorId(Long idClienteFrecuente) throws PersistenciaException {
+        try {
+            EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+            return entityManager.find(ClienteFrecuente.class, idClienteFrecuente);
+        } catch (PersistenceException ex) {
+            throw new PersistenciaException("No se pudo buscar el cliente", ex);
+        }
+    }
 }

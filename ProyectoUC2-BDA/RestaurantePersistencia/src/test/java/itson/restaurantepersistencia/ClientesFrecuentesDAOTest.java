@@ -70,22 +70,25 @@ public class ClientesFrecuentesDAOTest {
         em.getTransaction().begin();
 
         Comanda c1 = new Comanda();
+        c1.setFolio("FOLIO-001");
         c1.setCliente(clientePrueba);
         c1.setEstado(EstadoComanda.ENTREGADA);
         c1.setTotalAcumulado(200.0);
         c1.setFechaHora(LocalDate.now());
 
         Comanda c2 = new Comanda();
+        c2.setFolio("FOLIO-002");
         c2.setCliente(clientePrueba);
         c2.setEstado(EstadoComanda.ENTREGADA);
         c2.setTotalAcumulado(100.0);
         c2.setFechaHora(LocalDate.now());
 
         Comanda c3 = new Comanda();
-        c2.setCliente(clientePrueba);
-        c2.setEstado(EstadoComanda.CANCELADA);
-        c2.setTotalAcumulado(0.0);
-        c2.setFechaHora(LocalDate.now());
+        c3.setFolio("FOLIO-003");
+        c3.setCliente(clientePrueba);
+        c3.setEstado(EstadoComanda.CANCELADA);
+        c3.setTotalAcumulado(0.0);
+        c3.setFechaHora(LocalDate.now());
         
         em.persist(c1);
         em.persist(c2);
@@ -109,22 +112,25 @@ public class ClientesFrecuentesDAOTest {
         em.getTransaction().begin();
 
         Comanda c1 = new Comanda();
+        c1.setFolio("FOLIO-004");
         c1.setCliente(clientePrueba);
         c1.setEstado(EstadoComanda.ENTREGADA);
         c1.setTotalAcumulado(300.0);
         c1.setFechaHora(LocalDate.now());
 
         Comanda c2 = new Comanda();
+        c2.setFolio("FOLIO-005");
         c2.setCliente(clientePrueba);
         c2.setEstado(EstadoComanda.ENTREGADA);
         c2.setTotalAcumulado(100.0);
         c2.setFechaHora(LocalDate.now());
 
         Comanda c3 = new Comanda();
-        c2.setCliente(clientePrueba);
-        c2.setEstado(EstadoComanda.CANCELADA);
-        c2.setTotalAcumulado(0.0);
-        c2.setFechaHora(LocalDate.now());
+        c3.setFolio("FOLIO-006");
+        c3.setCliente(clientePrueba);
+        c3.setEstado(EstadoComanda.CANCELADA);
+        c3.setTotalAcumulado(0.0);
+        c3.setFechaHora(LocalDate.now());
         
         em.persist(c1);
         em.persist(c2);

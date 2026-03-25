@@ -16,8 +16,11 @@ public class SistemaRestaurante {
      */
     public static void main(String[] args) {
         ClientesFrecuentesFORM ventana = new ClientesFrecuentesFORM();
+        ClientesFrecuentesControl control = new ClientesFrecuentesControl(ventana);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
+        
+        
     }
 
 }

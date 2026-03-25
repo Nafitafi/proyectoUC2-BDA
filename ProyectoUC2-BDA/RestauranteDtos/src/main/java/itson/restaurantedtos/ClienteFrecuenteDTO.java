@@ -19,6 +19,8 @@ public class ClienteFrecuenteDTO {
     private String correo; 
     private Integer puntos;
     private LocalDate fechaRegistro;
+    private Double TotalGastado;
+    private Long visitas;
 
     /**
      * COnstructor de clase
@@ -116,6 +118,22 @@ public class ClienteFrecuenteDTO {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public Double getTotalGastado() {
+        return TotalGastado;
+    }
+
+    public void setTotalGastado(Double TotalGastado) {
+        this.TotalGastado = TotalGastado;
+    }
+
+    public Long getVisitas() {
+        return visitas;
+    }
+
+    public void setVisitas(Long visitas) {
+        this.visitas = visitas;
     }
     
     

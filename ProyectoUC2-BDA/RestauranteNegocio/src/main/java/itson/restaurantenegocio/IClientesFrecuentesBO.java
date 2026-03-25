@@ -48,4 +48,31 @@ public interface IClientesFrecuentesBO {
      */
     public abstract ClienteFrecuente actualizarCliente(ClienteFrecuenteActualizadoDTO clienteActualizado) throws NegocioException;
     
+    /**
+     * Método con validaciones que evita errores imprevistos al consultar datos del cliente.
+     * 
+     * @param IdClienteFrecuente Id correspondiente al cliente a consultar .
+     * @return numero de visitas asociadas al cliente.
+     * @throws NegocioException en caso de que algun dato no sea optimo.
+     */
+    public abstract Long obtenerVisitas(Long IdClienteFrecuente) throws NegocioException;
+    
+    /**
+     * Método con validaciones que evita errores imprevistos al consultar datos del cliente.
+     * 
+     * @param IdClienteFrecuente Id correspondiente al cliente a consultar .
+     * @return total gastado por el cliente.
+     * @throws NegocioException en caso de que algun dato no sea optimo.
+     */
+    public abstract Double obtenerTotalGastado(Long IdClienteFrecuente) throws NegocioException;
+    
+    
+    /**
+     * Método que calcula los puntos de un cliente en especifico (en base a su total gastado).
+     * 
+     * @param IdClienteFrecuente Id correspondiente al cliente a calcular sus puntos .
+     * @return numero de puntos del cliente.
+     * @throws NegocioException en caso de que algun dato no sea optimo.
+     */
+    public abstract int calcularPuntos(Long IdClienteFrecuente) throws NegocioException;
 }

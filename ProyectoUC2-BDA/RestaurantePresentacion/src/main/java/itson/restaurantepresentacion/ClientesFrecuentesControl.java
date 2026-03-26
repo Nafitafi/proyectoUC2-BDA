@@ -13,15 +13,20 @@ import itson.restaurantepersistencia.ClientesFrecuentesDAO;
 import itson.restaurantepersistencia.IClientesFrecuentesDAO;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Clase de control para las formas de clientes frecuentes; consulta, registro y actualización.
+ * Clase de control para las formas de clientes frecuentes; consulta, registro y
+ * actualización.
+ *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ClientesFrecuentesControl {
@@ -44,8 +49,7 @@ public class ClientesFrecuentesControl {
                 cargarTabla(clientesForm.getBuscadorClientesPanelFORM1().getTextoBusqueda());
             }
         });
-        
-        
+
         // Configurar el editor de la tabla con callback
         clientesForm.getTablaClientes().getColumnModel().getColumn(10)
                 .setCellEditor(new ClientesFrecuentesFORM.BotonModificar(
@@ -56,7 +60,9 @@ public class ClientesFrecuentesControl {
     }
 
     /**
-     * Método encargado de llenar la tabla de clientes tanto con un filtro como sin él.
+     * Método encargado de llenar la tabla de clientes tanto con un filtro como
+     * sin él.
+     *
      * @param filtro búsqueda deseada en la lista de clientes.
      */
     private void cargarTabla(String filtro) {
@@ -83,18 +89,21 @@ public class ClientesFrecuentesControl {
             JOptionPane.showMessageDialog(clientesForm, "Error al cargar clientes", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
      * Método que llama a la ventana para actualizar un cliente.
+     *
      * @param row el número de fila del cliente seleccionado
      */
-    public void actualizar(int row){
+    public void actualizar(int row) {
         abrirActualizarCliente(row);
     }
 
     /**
-     * Método privado encargado de recibir de la tabla de clientes la información del cliente seleccionado
-     * para permitir que el usuario la actualice en una ventana nueva.
+     * Método privado encargado de recibir de la tabla de clientes la
+     * información del cliente seleccionado para permitir que el usuario la
+     * actualice en una ventana nueva.
+     *
      * @param row el número de fila del cliente seleccionado
      */
     private void abrirActualizarCliente(int row) {
@@ -106,12 +115,13 @@ public class ClientesFrecuentesControl {
         String apellidoMClic = tabla.getValueAt(row, 3).toString();
         String telefonoClic = tabla.getValueAt(row, 4).toString();
         String correoClic = null;
-        if (tabla.getValueAt(row, 5) != null){
+        if (tabla.getValueAt(row, 5) != null) {
             correoClic = tabla.getValueAt(row, 5).toString();
         }
         ClienteFrecuenteDTO clienteDTO = new ClienteFrecuenteDTO(idClic, nombreClic, apellidoPClic, apellidoMClic, telefonoClic, correoClic);
 
         ActualizarClientesFORM actualizar = new ActualizarClientesFORM(clienteDTO);
+        accionAlCerrar(actualizar, clientesForm);
         actualizar.setVisible(true);
 
         ClienteFrecuente clienteActualizado = actualizar.getClienteActualizado();
@@ -121,8 +131,9 @@ public class ClientesFrecuentesControl {
     }
 
     /**
-     * Método utilizado por abrirActualizarCliente() que se encarga de actualizar la fila en la que
-     * se encuentra el cliente que fue actualizado.
+     * Método utilizado por abrirActualizarCliente() que se encarga de
+     * actualizar la fila en la que se encuentra el cliente que fue actualizado.
+     *
      * @param cliente objeto ClienteFrecuente con la información actualizada.
      */
     private void actualizarFilaEditada(ClienteFrecuente cliente) {
@@ -146,15 +157,18 @@ public class ClientesFrecuentesControl {
      */
     private void abrirRegistroCliente() {
         RegistroClientesFORM registroForm = new RegistroClientesFORM();
+        accionAlCerrar(registroForm, clientesForm);
         registroForm.setVisible(true);
         clientesForm.dispose();
     }
-    
+
     /**
-     * Método estático para abrir el formulario ClientesFrecuentesFORM desde 
+     * Método estático para abrir el formulario ClientesFrecuentesFORM desde
      * cualquier otra ventana.
-     * * @param ventanaAnterior (Opcional) El JFrame desde donde se está llamando. 
-     * Se usa para cerrarlo. Se pasa null si no se desea mantener la otra ventana abierta.
+     *
+     * * @param ventanaAnterior (Opcional) El JFrame desde donde se está
+     * llamando. Se usa para cerrarlo. Se pasa null si no se desea mantener la
+     * otra ventana abierta.
      */
     public static void abrirClientesFrecuentes(javax.swing.JFrame ventanaAnterior) {
         ClientesFrecuentesFORM clientesForm = new ClientesFrecuentesFORM();
@@ -164,5 +178,14 @@ public class ClientesFrecuentesControl {
         if (ventanaAnterior != null) {
             ventanaAnterior.dispose();
         }
+    }
+
+    public static void accionAlCerrar(JFrame ventanaActual, JFrame ventanaPrincipal) {
+        ventanaActual.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ventanaPrincipal.setVisible(true);
+            }
+        });
     }
 }

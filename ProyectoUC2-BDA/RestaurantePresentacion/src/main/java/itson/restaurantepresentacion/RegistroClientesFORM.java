@@ -15,9 +15,11 @@ import javax.swing.JOptionPane;
 
 /**
  * Forma de registro de clientes
+ *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class RegistroClientesFORM extends javax.swing.JFrame {
+
     private IClientesFrecuentesBO clientesBO;
 
     /**
@@ -26,6 +28,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
     public RegistroClientesFORM() {
         initComponents();
         this.clientesBO = new ClientesFrecuentesBO();
+
     }
 
     /**
@@ -275,6 +278,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
 
     /**
      * Este botón cierra la forma de registro de clientes.
+     *
      * @param evt click al botón regresar.
      */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -282,8 +286,10 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**
-     * Botón que llama al método registrarCliente(), en caso de un registro éxitoso
-     * lanza un mensaje y cierra la ventana. En caso contrario, muestra mensajes de error.
+     * Botón que llama al método registrarCliente(), en caso de un registro
+     * éxitoso lanza un mensaje y cierra la ventana. En caso contrario, muestra
+     * mensajes de error.
+     *
      * @param evt click al botón registrar.
      */
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -291,70 +297,66 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         if (cF != null) {
             JOptionPane.showMessageDialog(null, "¡Cliente agregado con éxito!");
             ClientesFrecuentesControl.abrirClientesFrecuentes(this);
-        } 
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     /**
-     * Este método recupera y válida los datos de la forma para registrar con ellos
-     * un nuevo cliente en la base de datos.
-     * @return un objeto tipo ClienteFrecuente con los datos del cliente registrado.
+     * Este método recupera y válida los datos de la forma para registrar con
+     * ellos un nuevo cliente en la base de datos.
+     *
+     * @return un objeto tipo ClienteFrecuente con los datos del cliente
+     * registrado.
      */
-    public ClienteFrecuente registrarCliente(){
+    public ClienteFrecuente registrarCliente() {
         String nombre = null;
         String apellidoP = null;
         String apellidoM = null;
         String telefono = null;
         String correo = null;
-    
-        if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()){
+
+        if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()) {
             nombre = txtNombre.getText();
         } else {
-            JOptionPane.showMessageDialog
-            (null, "El nombre es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El nombre es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        
-        if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()){
+
+        if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()) {
             apellidoP = txtApellidoP.getText();
         } else {
-            JOptionPane.showMessageDialog
-            (null, "El apellido paterno es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El apellido paterno es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        
-        if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()){
+
+        if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()) {
             apellidoM = txtApellidoM.getText();
         } else {
-            JOptionPane.showMessageDialog
-            (null, "El apellido materno es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El apellido materno es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        
-        if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()){
+
+        if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()) {
             telefono = txtTelefono.getText();
         } else {
-            JOptionPane.showMessageDialog
-            (null, "El teléfono es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El teléfono es obligatorio ", "Campo obligatorio vacío", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        
-        if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()){
+
+        if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()) {
             correo = txtCorreo.getText();
-        } 
-        
-        ClienteFrecuenteNuevoDTO clienteNuevo = new ClienteFrecuenteNuevoDTO
-        (nombre, apellidoP, apellidoM, telefono, correo);
-        
+        }
+
+        ClienteFrecuenteNuevoDTO clienteNuevo = new ClienteFrecuenteNuevoDTO(nombre, apellidoP, apellidoM, telefono, correo);
+
         try {
             ClienteFrecuente cliente = clientesBO.crearCliente(clienteNuevo);
             return cliente;
         } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "Error al agregar cliente"+ex.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
-            return null; 
+            JOptionPane.showMessageDialog(this, "Error al agregar cliente" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrar;

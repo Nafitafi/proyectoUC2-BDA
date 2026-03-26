@@ -17,10 +17,11 @@ import javax.swing.JOptionPane;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ActualizarClientesFORM extends javax.swing.JFrame {
+
     private IClientesFrecuentesBO clientesBO;
     ClienteFrecuenteDTO clienteAEditar;
     ClienteFrecuente clienteListo;
-    
+
     /**
      * Creates new form ActualizarClientes
      */
@@ -29,6 +30,7 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         this.clientesBO = new ClientesFrecuentesBO();
         this.clienteAEditar = clienteAEditar;
         llenarCampos();
+
     }
 
     /**
@@ -257,8 +259,9 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Este botón cierra la ventana, ya que esta es una ventana emergente, lo que permite
-     * regresar a la pantalla anterior (ClientesFrecuentesFORM)
+     * Este botón cierra la ventana, ya que esta es una ventana emergente, lo
+     * que permite regresar a la pantalla anterior (ClientesFrecuentesFORM)
+     *
      * @param evt hacer click en el botón regresar
      */
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -266,95 +269,99 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**
-     * Este botón utiliza el método actualizarCliente después de confirmar que de verdad se desean
-     * aplicar los cambios, para despúes regresar al ClienteFrecuente y cerrar la ventana.
+     * Este botón utiliza el método actualizarCliente después de confirmar que
+     * de verdad se desean aplicar los cambios, para despúes regresar al
+     * ClienteFrecuente y cerrar la ventana.
+     *
      * @param evt hacer click en el botón actualizar.
      */
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        int respuesta = JOptionPane.showConfirmDialog
-        (this, "¿Desea aplicar los cambios?", "Actualizar Cliente", JOptionPane.YES_NO_OPTION);
-        if (respuesta == JOptionPane.YES_OPTION){
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Desea aplicar los cambios?", "Actualizar Cliente", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
             this.clienteListo = actualizarCliente();
             if (clienteListo != null) {
                 JOptionPane.showMessageDialog(null, "Se aplicaron los cambios.");
-            } 
+            }
         } else {
             this.clienteListo = null;
             JOptionPane.showMessageDialog(null, "No fueron aplicados los cambios.");
         }
+
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     /**
      * Getter para el cliente frecuente ya actualizado
+     *
      * @return objeto tipo ClienteFrecuente con los datos actualizados
      */
-    public ClienteFrecuente getClienteActualizado(){
+    public ClienteFrecuente getClienteActualizado() {
         return this.clienteListo;
     }
-    
+
     /**
      * Método para llenar los campos del formulario con los datos del cliente.
      */
-    public void llenarCampos(){
+    public void llenarCampos() {
         this.txtNombre.setText(clienteAEditar.getNombre());
         this.txtApellidoP.setText(clienteAEditar.getApellidoP());
         this.txtApellidoM.setText(clienteAEditar.getApellidoM());
         this.txtTelefono.setText(clienteAEditar.getNumeroTelefono());
         this.txtCorreo.setText(clienteAEditar.getCorreo());
     }
-    
+
     /**
      * Este método toma todos los datos del formulario para actualizar clientes
-     * y los convierte a un DTO para intentar actualizar al cliente correspondiente
-     * en la base de datos.
+     * y los convierte a un DTO para intentar actualizar al cliente
+     * correspondiente en la base de datos.
+     *
      * @return un objeto tipo ClienteFrecuente
      */
-    public ClienteFrecuente actualizarCliente(){
+    public ClienteFrecuente actualizarCliente() {
         String nombre;
         String apellidoP;
         String apellidoM;
         String telefono;
         String correo;
-        
-        if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()){
+
+        if (!txtNombre.getText().trim().isBlank() || !txtNombre.getText().trim().isEmpty()) {
             nombre = txtNombre.getText();
         } else {
             nombre = null;
         }
-        
-        if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()){
+
+        if (!txtApellidoP.getText().trim().isBlank() || !txtApellidoP.getText().trim().isEmpty()) {
             apellidoP = txtApellidoP.getText();
         } else {
             apellidoP = null;
         }
-        
-        if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()){
+
+        if (!txtApellidoM.getText().trim().isBlank() || !txtApellidoM.getText().trim().isEmpty()) {
             apellidoM = txtApellidoM.getText();
         } else {
             apellidoM = null;
         }
-        
-        if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()){
+
+        if (!txtTelefono.getText().trim().isBlank() || !txtTelefono.getText().trim().isEmpty()) {
             telefono = txtTelefono.getText();
         } else {
             telefono = null;
         }
-        
-        if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()){
+
+        if (!txtCorreo.getText().trim().isBlank() || !txtCorreo.getText().trim().isEmpty()) {
             correo = txtCorreo.getText();
         } else {
             correo = null;
         }
-        
-        ClienteFrecuenteActualizadoDTO clienteActualizado = new ClienteFrecuenteActualizadoDTO
-                (this.clienteAEditar.getId(), nombre, apellidoP, apellidoM, telefono, correo);
-        
+
+        ClienteFrecuenteActualizadoDTO clienteActualizado = new ClienteFrecuenteActualizadoDTO(this.clienteAEditar.getId(), nombre, apellidoP, apellidoM, telefono, correo);
+
         try {
             return clientesBO.actualizarCliente(clienteActualizado);
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error al agregar cliente" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

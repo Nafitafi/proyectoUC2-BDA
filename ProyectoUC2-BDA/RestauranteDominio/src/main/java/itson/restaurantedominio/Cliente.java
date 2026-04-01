@@ -5,35 +5,112 @@
 package itson.restaurantedominio;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
+ * Clase entidad: Cliente Representa a un cliente general en el sistema y sirve
+ * como base para otros tipos.
  *
- * @author nafbr
+ * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 @Entity
+@Table(name = "clientes")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Cliente implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente", nullable = false)
+    protected Long idCliente;
 
-    public Long getId() {
-        return id;
+    @Column(name = "nombre", nullable = false)
+    protected String nombre;
+
+    @Column(name = "apellido_paterno", nullable = false)
+    protected String apellidoP;
+
+    @Column(name = "apellido_materno", nullable = false)
+    protected String apellidoM;
+
+    @Column(name = "telefono", nullable = false)
+    protected String numeroTelefono;
+
+    @OneToMany(mappedBy = "cliente")
+    protected List<Comanda> comandas;
+
+    public Cliente() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Cliente(String nombre, String apellidoP, String apellidoM, String numeroTelefono) {
+        this.nombre = nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
+        this.numeroTelefono = numeroTelefono;
     }
 
+    public Long getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidoP() {
+        return apellidoP;
+    }
+
+    public void setApellidoP(String apellidoP) {
+        this.apellidoP = apellidoP;
+    }
+
+    public String getApellidoM() {
+        return apellidoM;
+    }
+
+    public void setApellidoM(String apellidoM) {
+        this.apellidoM = apellidoM;
+    }
+
+    public String getNumeroTelefono() {
+        return numeroTelefono;
+    }
+
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+
+    public List<Comanda> getComandas() {
+        return comandas;
+    }
+
+    public void setComandas(List<Comanda> comandas) {
+        this.comandas = comandas;
+    }
+    
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idCliente != null ? idCliente.hashCode() : 0);
         return hash;
     }
 
@@ -44,7 +121,7 @@ public class Cliente implements Serializable {
             return false;
         }
         Cliente other = (Cliente) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idCliente == null && other.idCliente != null) || (this.idCliente != null && !this.idCliente.equals(other.idCliente))) {
             return false;
         }
         return true;
@@ -52,7 +129,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "itson.restaurantedominio.Cliente[ id=" + id + " ]";
+        return "itson.restaurantedominio.Cliente[ id=" + idCliente + " ]";
     }
-    
+
 }

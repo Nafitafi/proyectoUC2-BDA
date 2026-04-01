@@ -8,6 +8,7 @@ import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedominio.EstadoComanda;
 import itson.restaurantedtos.ClienteFrecuenteActualizadoDTO;
 import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -34,8 +35,14 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
      */
     @Override
     public ClienteFrecuente guardar(ClienteFrecuenteNuevoDTO clienteNuevo) throws PersistenciaException {
-        ClienteFrecuente cliente = new ClienteFrecuente(clienteNuevo.getNombre(), clienteNuevo.getApellidoP(), clienteNuevo.getApellidoM(), clienteNuevo.getNumeroTelefono());
-
+        ClienteFrecuente cliente = new ClienteFrecuente();
+        cliente.setNombre(clienteNuevo.getNombre());
+        cliente.setApellidoP(clienteNuevo.getApellidoP());
+        cliente.setApellidoM(clienteNuevo.getApellidoM());
+        cliente.setNumeroTelefono(clienteNuevo.getNumeroTelefono());
+        cliente.setFechaRegistro(LocalDate.now());
+        cliente.setPuntos(0);
+        
         if (clienteNuevo.getCorreo() != null) {
             cliente.setCorreo(clienteNuevo.getCorreo());
         }
@@ -43,11 +50,10 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
         try {
             EntityManager entityManager = ManejadorConexiones.crearEntityManager();
             entityManager.getTransaction().begin();
-            entityManager.persist(cliente);
+            entityManager.persist(cliente); 
             entityManager.getTransaction().commit();
-
+            entityManager.close(); 
             return cliente;
-
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible guardar al cliente.");

@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -22,25 +23,9 @@ import javax.persistence.Table;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 @Entity
-@Table(name = "clientes")
-public class ClienteFrecuente implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_cliente", nullable = false)
-    private Long idCliente;
-
-    @Column(name = "nombre", nullable = false)
-    private String nombre;
-
-    @Column(name = "apellido_paterno", nullable = false)
-    private String apellidoP;
-
-    @Column(name = "apellido_materno", nullable = false)
-    private String apellidoM;
-
-    @Column(name = "telefono", nullable = false)
-    private String numeroTelefono;
+@Table(name = "clientes_fecuentes")
+@PrimaryKeyJoinColumn(name = "id_cliente")
+public class ClienteFrecuente extends Cliente {
 
     @Column(name = "correo", nullable = true)
     private String correo;
@@ -50,23 +35,20 @@ public class ClienteFrecuente implements Serializable {
 
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fechaRegistro;
-
-    @OneToMany(mappedBy = "cliente")
-    private List<Comanda> comandas;
+    
     
     /**
      * Constructor por defecto
      */
     public ClienteFrecuente() {
+        super();
     }
 
     public ClienteFrecuente(String nombre, String apellidoP, String apellidoM, String numeroTelefono) {
-        this.nombre = nombre;
-        this.apellidoP = apellidoP;
-        this.apellidoM = apellidoM;
-        this.numeroTelefono = numeroTelefono;
+        super(nombre, apellidoP, apellidoM, numeroTelefono);
+        this.correo = correo;
         this.fechaRegistro = LocalDate.now();
-        this.puntos = 0; // Por defecto al registrarse por lo del cliente general
+        this.puntos = 0;//Por defecto
     }
 
     // Getters & Setters
@@ -140,23 +122,4 @@ public class ClienteFrecuente implements Serializable {
         hash += (idCliente != null ? idCliente.hashCode() : 0);
         return hash;
     }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idCliente fields are not set
-        if (!(object instanceof ClienteFrecuente)) {
-            return false;
-        }
-        ClienteFrecuente other = (ClienteFrecuente) object;
-        if ((this.idCliente == null && other.idCliente != null) || (this.idCliente != null && !this.idCliente.equals(other.idCliente))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "itson.restaurantedominio.ClienteFrecuente[ id=" + idCliente + " ]";
-    }
-
 }

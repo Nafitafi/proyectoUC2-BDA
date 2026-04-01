@@ -65,7 +65,7 @@ public class ClientesFrecuentesControl {
                     nombreCompleto,
                     cliente.getNumeroTelefono(),
                     cliente.getPuntos(),
-                    cliente.getTotalGastado(), 
+                    cliente.getTotalGastado(),
                     "Modificar"
                 };
                 modelo.addRow(fila);
@@ -99,6 +99,7 @@ public class ClientesFrecuentesControl {
             if (clienteDTO != null) {
                 ActualizarClientesFORM actualizar = new ActualizarClientesFORM(clienteDTO);
                 accionAlCerrar(actualizar, clientesForm);
+                refrescarTablaAlCerrar(actualizar);
                 actualizar.setVisible(true);
 
                 ClienteFrecuente clienteActualizado = actualizar.getClienteActualizado();
@@ -119,10 +120,10 @@ public class ClientesFrecuentesControl {
      */
     private void actualizarFilaEditada(ClienteFrecuente cliente) {
         DefaultTableModel modelo = (DefaultTableModel) clientesForm.getTablaClientes().getModel();
-        
+
         for (int i = 0; i < modelo.getRowCount(); i++) {
             Long idEnTabla = Long.valueOf(modelo.getValueAt(i, 0).toString());
-            
+
             if (idEnTabla.equals(cliente.getIdCliente())) {
                 String apellidoM = (cliente.getApellidoM() != null) ? " " + cliente.getApellidoM() : "";
                 String nombreCompleto = cliente.getNombre() + " " + cliente.getApellidoP() + apellidoM;
@@ -142,6 +143,7 @@ public class ClientesFrecuentesControl {
     private void abrirRegistroCliente() {
         RegistroClientesFORM registroForm = new RegistroClientesFORM();
         accionAlCerrar(registroForm, clientesForm);
+        refrescarTablaAlCerrar(registroForm);
         registroForm.setVisible(true);
         clientesForm.dispose();
     }
@@ -172,6 +174,19 @@ public class ClientesFrecuentesControl {
             }
         });
     }
-    
-        
+
+    /**
+     * Método para refrescar la tabla al cerrar un formulario secundario.
+     *
+     * @param ventanaSecundaria JFrame del formulario que se abre
+     */
+    private void refrescarTablaAlCerrar(JFrame ventanaSecundaria) {
+        ventanaSecundaria.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // Recarga toda la tabla
+                cargarTabla("");
+            }
+        });
+    }
 }

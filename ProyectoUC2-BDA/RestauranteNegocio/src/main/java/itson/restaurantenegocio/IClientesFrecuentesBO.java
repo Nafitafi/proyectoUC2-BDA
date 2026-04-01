@@ -75,4 +75,13 @@ public interface IClientesFrecuentesBO {
      * @throws NegocioException en caso de que algun dato no sea optimo.
      */
     public abstract int calcularPuntos(Long IdClienteFrecuente) throws NegocioException;
+    
+    /**
+     * Método que consulta los datos de un cliente especifico por ID.
+     * 
+     * @param idCliente Id correspondiente al cliente a buscar
+     * @return DTO del cliente que coincide con la busqueda
+     * @throws NegocioException en caso de haber algun fallo en la consulta
+     */
+    public ClienteFrecuenteDTO obtenerClientePorId(Long idCliente) throws NegocioException;
 }

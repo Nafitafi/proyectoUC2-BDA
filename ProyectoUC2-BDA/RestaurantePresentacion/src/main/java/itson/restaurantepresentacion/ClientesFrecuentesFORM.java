@@ -4,6 +4,7 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedtos.ClienteFrecuenteDTO;
 import java.awt.Component;
 import javax.swing.JTable;
 
@@ -12,31 +13,32 @@ import javax.swing.JTable;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ClientesFrecuentesFORM extends javax.swing.JFrame {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ClientesFrecuentesFORM.class.getName());
+
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ClientesFrecuentesFORM.class.getName());
+    private ClientesFrecuentesControl control;
+    
     /**
      * Creates new form ClientesFrecuentesFORM
      */
     public ClientesFrecuentesFORM() {
         initComponents();
-        jTable1.getColumnModel().getColumn(10).setCellRenderer(new BotonRenderer());
+        jTable1.getColumnModel().getColumn(5).setCellRenderer(new BotonRenderer());
         jTable1.setRowHeight(30);
     }
 
+    public void setControl(ClientesFrecuentesControl control) {
+        this.control = control;
+    }
+    
     public javax.swing.JButton getBtnAñadirCliente() {
-        return btnAñadirCliente;
+        return btnAnadirCliente;
     }
 
     public javax.swing.JTable getTablaClientes() {
         return jTable1;
     }
 
-    public BuscadorClientesPanelFORM getBuscadorClientesPanelFORM1() {
-        return buscadorClientesPanelFORM1;
-    }
-    
-
     class BotonRenderer extends javax.swing.JButton implements javax.swing.table.TableCellRenderer {
-
         public BotonRenderer() {
             setOpaque(true);
             setBackground(new java.awt.Color(254, 178, 26));
@@ -89,15 +91,13 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
             return button;
         }
 
-        
-        
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
                 // Solo se marca que se pulsó el botón en la fila actual
                 // El controlador usará currentRow para hacer la lógica
                 control.actualizar(currentRow);
-               
+
             }
             isPushed = false;
             return label;
@@ -111,6 +111,9 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
 
     }
 
+    private void btnAnadirClienteActionPerformed(java.awt.event.ActionEvent evt) {  
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -134,8 +137,8 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         lblBuscar = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        btnAñadirCliente = new javax.swing.JButton();
-        buscadorClientesPanelFORM1 = new itson.restaurantepresentacion.BuscadorClientesPanelFORM();
+        btnAnadirCliente = new javax.swing.JButton();
+        btnBuscarCliente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Clientes Frecuentes");
@@ -253,11 +256,11 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Nombre(s)", "Apellido Paterno", "Apellido Materno", "Teléfono", "Correo", "Fecha Registro", "Puntos", "Visitas", "Total Gastado ", "Acción"
+                "Id", "Nombre completo", "Teléfono", "Puntos", "Total Gastado ", "Acción"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, true
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -267,11 +270,19 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(jTable1);
 
-        btnAñadirCliente.setBackground(new java.awt.Color(51, 51, 51));
-        btnAñadirCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnAñadirCliente.setForeground(new java.awt.Color(255, 255, 255));
-        btnAñadirCliente.setText("Añadir Cliente");
-        btnAñadirCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAnadirCliente.setBackground(new java.awt.Color(19, 70, 134));
+        btnAnadirCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnAnadirCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnAnadirCliente.setText("Añadir Cliente");
+        btnAnadirCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAnadirCliente.addActionListener(this::btnAnadirClienteActionPerformed);
+
+        btnBuscarCliente.setBackground(new java.awt.Color(254, 178, 26));
+        btnBuscarCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnBuscarCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnBuscarCliente.setText("Buscar cliente");
+        btnBuscarCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnBuscarCliente.addActionListener(this::btnBuscarClienteActionPerformed);
 
         javax.swing.GroupLayout pnlClientesFrecuentesLayout = new javax.swing.GroupLayout(pnlClientesFrecuentes);
         pnlClientesFrecuentes.setLayout(pnlClientesFrecuentesLayout);
@@ -288,11 +299,11 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
                                 .addComponent(pnlBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
-                                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(170, 170, 170)
-                                .addComponent(btnAñadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                                    .addComponent(btnBuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(176, 176, 176)
+                                .addComponent(btnAnadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
                         .addGap(339, 339, 339)
                         .addComponent(lblClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -307,13 +318,12 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(pnlBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlClientesFrecuentesLayout.createSequentialGroup()
-                        .addComponent(lblBuscar)
-                        .addGap(4, 4, 4)
-                        .addComponent(buscadorClientesPanelFORM1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAñadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(94, 94, 94)
+                .addComponent(lblBuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlClientesFrecuentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAnadirCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -342,16 +352,41 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReporteClientesActionPerformed
 
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
+        BuscadorClientesJDialog buscador = new BuscadorClientesJDialog(this, true);
+        buscador.setVisible(true);
+        ClienteFrecuenteDTO cliente = buscador.getClienteSeleccionado();
+        
+        if (cliente != null) {
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+            modelo.setRowCount(0); 
+            String apellidoM = (cliente.getApellidoM() != null) ? " " + cliente.getApellidoM() : "";
+            String nombreCompleto = cliente.getNombre() + " " + cliente.getApellidoP() + apellidoM;
+            modelo.addRow(new Object[]{
+                cliente.getId(),
+                nombreCompleto,
+                cliente.getNumeroTelefono(), 
+                cliente.getPuntos(),
+                "0.0", //Ya que exista el metodo le movemos
+                "Modificar"
+            });
+        } else {
+            if (this.control != null) {
+                this.control.cargarTabla(""); 
+            }
+        }
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAñadirCliente;
+    private javax.swing.JButton btnAnadirCliente;
+    private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnInventario;
     private javax.swing.JButton btnPlatillos;
     private javax.swing.JButton btnReporteClientes;
     private javax.swing.JButton btnReporteComandas;
     private javax.swing.JButton btnReportes;
-    private itson.restaurantepresentacion.BuscadorClientesPanelFORM buscadorClientesPanelFORM1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBuscar;

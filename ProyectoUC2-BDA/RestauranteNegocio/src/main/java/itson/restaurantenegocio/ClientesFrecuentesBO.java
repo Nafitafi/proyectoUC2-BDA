@@ -13,7 +13,6 @@ import itson.restaurantepersistencia.ClientesFrecuentesDAO;
 import itson.restaurantepersistencia.IClientesFrecuentesDAO;
 import itson.restaurantepersistencia.PersistenciaException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -271,5 +270,35 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
         }
 
         return (int) Math.floor(total / 20);
+    }
+    
+    /**
+     * Método que consulta los datos de un cliente especifico por ID.
+     * 
+     * @param idCliente Id correspondiente al cliente a buscar
+     * @return DTO del cliente que coincide con la busqueda
+     * @throws NegocioException en caso de haber algun fallo en la consulta
+     */
+    @Override
+    public ClienteFrecuenteDTO obtenerClientePorId(Long idCliente) throws NegocioException {
+        try {
+            ClienteFrecuente cliente = clienteDAO.buscarPorId(idCliente);
+            if (cliente == null) {
+                return null;
+            }
+            ClienteFrecuenteDTO clienteDTO = new ClienteFrecuenteDTO(
+                    cliente.getIdCliente(), 
+                    cliente.getNombre(), 
+                    cliente.getApellidoP(), 
+                    cliente.getApellidoM(), 
+                    cliente.getNumeroTelefono(), 
+                    cliente.getCorreo()
+            );
+            clienteDTO.setPuntos(cliente.getPuntos());
+            return clienteDTO;
+
+        } catch (PersistenciaException ex) { 
+            throw new NegocioException("Error al consultar el cliente por ID: " + ex.getMessage());
+        }
     }
 }

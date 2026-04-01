@@ -11,12 +11,9 @@ import itson.restaurantenegocio.IClientesFrecuentesBO;
 import itson.restaurantenegocio.NegocioException;
 import itson.restaurantepersistencia.ClientesFrecuentesDAO;
 import itson.restaurantepersistencia.IClientesFrecuentesDAO;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -35,23 +32,11 @@ public class ClientesFrecuentesControl {
     private final IClientesFrecuentesBO clientesBO;
 
     public ClientesFrecuentesControl(ClientesFrecuentesFORM clientesForm) {
-        IClientesFrecuentesDAO clientesDAO = new ClientesFrecuentesDAO();
         this.clientesBO = new ClientesFrecuentesBO();
         this.clientesForm = clientesForm;
-
-        // Listener del botón Añadir Cliente
+        this.clientesForm.setControl(this);
         clientesForm.getBtnAñadirCliente().addActionListener(e -> abrirRegistroCliente());
-
-        // Listener del buscador
-        clientesForm.getBuscadorClientesPanelFORM1().addBuscadorKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                cargarTabla(clientesForm.getBuscadorClientesPanelFORM1().getTextoBusqueda());
-            }
-        });
-
-        // Configurar el editor de la tabla con callback
-        clientesForm.getTablaClientes().getColumnModel().getColumn(10)
+        clientesForm.getTablaClientes().getColumnModel().getColumn(5)
                 .setCellEditor(new ClientesFrecuentesFORM.BotonModificar(
                         new JCheckBox(),
                         clientesForm.getTablaClientes(), this
@@ -65,23 +50,23 @@ public class ClientesFrecuentesControl {
      *
      * @param filtro búsqueda deseada en la lista de clientes.
      */
-    private void cargarTabla(String filtro) {
+    public void cargarTabla(String filtro) {
         try {
             List<ClienteFrecuenteDTO> listaClientes = clientesBO.buscarClientes(filtro);
             DefaultTableModel modelo = (DefaultTableModel) clientesForm.getTablaClientes().getModel();
             modelo.setRowCount(0);
 
             for (ClienteFrecuenteDTO cliente : listaClientes) {
+                String apellidoM = (cliente.getApellidoM() != null) ? " " + cliente.getApellidoM() : "";
+                String nombreCompleto = cliente.getNombre() + " " + cliente.getApellidoP() + apellidoM;
+
                 Object[] fila = {
                     cliente.getId(),
-                    cliente.getNombre(),
-                    cliente.getApellidoP(),
-                    cliente.getApellidoM(),
+                    nombreCompleto,
                     cliente.getNumeroTelefono(),
-                    cliente.getCorreo(),
-                    cliente.getFechaRegistro(),
                     cliente.getPuntos(),
-                    "Acciones"
+                    cliente.getTotalGastado(), 
+                    "Modificar"
                 };
                 modelo.addRow(fila);
             }
@@ -107,26 +92,22 @@ public class ClientesFrecuentesControl {
      * @param row el número de fila del cliente seleccionado
      */
     private void abrirActualizarCliente(int row) {
-        JTable tabla = clientesForm.getTablaClientes();
+        try {
+            JTable tabla = clientesForm.getTablaClientes();
+            Long idSeleccionado = Long.parseLong(tabla.getValueAt(row, 0).toString());
+            ClienteFrecuenteDTO clienteDTO = clientesBO.obtenerClientePorId(idSeleccionado);
+            if (clienteDTO != null) {
+                ActualizarClientesFORM actualizar = new ActualizarClientesFORM(clienteDTO);
+                accionAlCerrar(actualizar, clientesForm);
+                actualizar.setVisible(true);
 
-        Long idClic = Long.parseLong(tabla.getValueAt(row, 0).toString());
-        String nombreClic = tabla.getValueAt(row, 1).toString();
-        String apellidoPClic = tabla.getValueAt(row, 2).toString();
-        String apellidoMClic = tabla.getValueAt(row, 3).toString();
-        String telefonoClic = tabla.getValueAt(row, 4).toString();
-        String correoClic = null;
-        if (tabla.getValueAt(row, 5) != null) {
-            correoClic = tabla.getValueAt(row, 5).toString();
-        }
-        ClienteFrecuenteDTO clienteDTO = new ClienteFrecuenteDTO(idClic, nombreClic, apellidoPClic, apellidoMClic, telefonoClic, correoClic);
-
-        ActualizarClientesFORM actualizar = new ActualizarClientesFORM(clienteDTO);
-        accionAlCerrar(actualizar, clientesForm);
-        actualizar.setVisible(true);
-
-        ClienteFrecuente clienteActualizado = actualizar.getClienteActualizado();
-        if (clienteActualizado != null) {
-            actualizarFilaEditada(clienteActualizado);
+                ClienteFrecuente clienteActualizado = actualizar.getClienteActualizado();
+                if (clienteActualizado != null) {
+                    actualizarFilaEditada(clienteActualizado);
+                }
+            }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(clientesForm, "Error al consultar el cliente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -138,14 +119,17 @@ public class ClientesFrecuentesControl {
      */
     private void actualizarFilaEditada(ClienteFrecuente cliente) {
         DefaultTableModel modelo = (DefaultTableModel) clientesForm.getTablaClientes().getModel();
+        
         for (int i = 0; i < modelo.getRowCount(); i++) {
             Long idEnTabla = Long.valueOf(modelo.getValueAt(i, 0).toString());
+            
             if (idEnTabla.equals(cliente.getIdCliente())) {
-                modelo.setValueAt(cliente.getNombre(), i, 1);
-                modelo.setValueAt(cliente.getApellidoP(), i, 2);
-                modelo.setValueAt(cliente.getApellidoM(), i, 3);
-                modelo.setValueAt(cliente.getNumeroTelefono(), i, 4);
-                modelo.setValueAt(cliente.getCorreo(), i, 5);
+                String apellidoM = (cliente.getApellidoM() != null) ? " " + cliente.getApellidoM() : "";
+                String nombreCompleto = cliente.getNombre() + " " + cliente.getApellidoP() + apellidoM;
+
+                modelo.setValueAt(nombreCompleto, i, 1);
+                modelo.setValueAt(cliente.getNumeroTelefono(), i, 2);
+
                 modelo.fireTableRowsUpdated(i, i);
                 break;
             }
@@ -188,4 +172,6 @@ public class ClientesFrecuentesControl {
             }
         });
     }
+    
+        
 }

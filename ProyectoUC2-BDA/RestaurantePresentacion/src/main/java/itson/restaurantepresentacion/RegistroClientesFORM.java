@@ -58,6 +58,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         lblEjemplo2 = new javax.swing.JLabel();
         lblEjemploCorreo = new javax.swing.JLabel();
         lblEjemploTelefono2 = new javax.swing.JLabel();
+        lblEjemploNota = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
@@ -114,7 +115,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         lblEjemplo1.setText("Ejemplo:");
 
         lblEjemploTelefono1.setForeground(new java.awt.Color(19, 70, 134));
-        lblEjemploTelefono1.setText("6441-12-12-12");
+        lblEjemploTelefono1.setText("+52-6441-12-12-12");
 
         lblEjemplo2.setForeground(new java.awt.Color(19, 70, 134));
         lblEjemplo2.setText("Ejemplo:");
@@ -123,7 +124,11 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         lblEjemploCorreo.setText("micorreo@dominio.com");
 
         lblEjemploTelefono2.setForeground(new java.awt.Color(19, 70, 134));
-        lblEjemploTelefono2.setText("(+52)6442-67-67-67");
+        lblEjemploTelefono2.setText("+52 6442676767");
+
+        lblEjemploNota.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
+        lblEjemploNota.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploNota.setText("La lada y guiones son opcionales");
 
         javax.swing.GroupLayout pnlFormularioLayout = new javax.swing.GroupLayout(pnlFormulario);
         pnlFormulario.setLayout(pnlFormularioLayout);
@@ -137,18 +142,19 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
                             .addComponent(lblEjemplo1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEjemploTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEjemploTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(72, 72, 72)
+                        .addGap(85, 85, 85)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblEjemploCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEjemplo2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblEjemploNota, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                            .addComponent(lblNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,7 +209,9 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
                         .addComponent(lblEjemploTelefono1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblEjemploTelefono2)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblEjemploNota)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         btnRegistrar.setBackground(new java.awt.Color(19, 70, 134));
@@ -251,7 +259,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
         pnlPrincipalLayout.setVerticalGroup(
             pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPrincipalLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(lblTitulo)
                 .addGap(18, 18, 18)
                 .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,6 +375,7 @@ public class RegistroClientesFORM extends javax.swing.JFrame {
     private javax.swing.JLabel lblEjemplo1;
     private javax.swing.JLabel lblEjemplo2;
     private javax.swing.JLabel lblEjemploCorreo;
+    private javax.swing.JLabel lblEjemploNota;
     private javax.swing.JLabel lblEjemploTelefono1;
     private javax.swing.JLabel lblEjemploTelefono2;
     private javax.swing.JLabel lblNombre;

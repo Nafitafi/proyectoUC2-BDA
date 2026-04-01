@@ -74,4 +74,10 @@ public class ClienteFrecuenteActualizadoDTO {
     public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
+
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+    
+    
 }

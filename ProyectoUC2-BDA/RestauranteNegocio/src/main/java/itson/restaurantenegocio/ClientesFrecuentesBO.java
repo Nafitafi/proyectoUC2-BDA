@@ -92,24 +92,26 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
         } 
 
         if (clienteNuevo.getApellidoP() == null) {
-            throw new NegocioException("El apellido paterno es demasiado largo.");
-        } else if (clienteNuevo.getApellidoP().length() > 50) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
+        } else if (clienteNuevo.getApellidoP().length() > 50) {
+            throw new NegocioException("El apellido paterno es demasiado largo.");
         }
 
         if (clienteNuevo.getApellidoM() == null) {
-            throw new NegocioException("El apellido materno es demasiado largo.");
-        } else if (clienteNuevo.getApellidoM().length() > 50) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
+        } else if (clienteNuevo.getApellidoM().length() > 50) {
+            throw new NegocioException("El apellido materno es demasiado largo.");
         }
 
         if (clienteNuevo.getNumeroTelefono() == null) {
-            throw new NegocioException("El número de teléfono es demasiado largo.");
-        } else if (clienteNuevo.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El teléfono es un campo obligatorio.");
-        } else if (!clienteNuevo.getNumeroTelefono().matches("^(\\(\\+\\d{1,3}\\))?\\d{4}-\\d{2}-\\d{2}-\\d{2}$")) {
+        } else if (clienteNuevo.getNumeroTelefono().length() > 20) {
+            throw new NegocioException("El número de teléfono es demasiado largo.");
+        } else if (!clienteNuevo.getNumeroTelefono().matches("^(\\+?\\d{1,3})?[- .]?(\\d{10}|\\d{3}-\\d{3}-\\d{4})$")) {
             throw new NegocioException("Formato de teléfono no válido.");
         }
+        
+        clienteNuevo.setNumeroTelefono(clienteNuevo.getNumeroTelefono().replaceAll("\\D", ""));
         
         if (clienteNuevo.getCorreo() != null) {
             if (clienteNuevo.getCorreo().length() > 100) {
@@ -160,9 +162,11 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
 
         if (clienteActualizado.getNumeroTelefono() != null && clienteActualizado.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
-        } else if (clienteActualizado.getNumeroTelefono() != null && !clienteActualizado.getNumeroTelefono().matches("^(\\(\\+\\d{1,3}\\))?\\d{4}-\\d{2}-\\d{2}-\\d{2}$")){
+        } else if (clienteActualizado.getNumeroTelefono() != null && !clienteActualizado.getNumeroTelefono().matches("^(\\+?\\d{1,3})?[- .]?(\\d{10}|\\d{3}-\\d{3}-\\d{4})$")){
             throw new NegocioException("Formato de teléfono no válido.");
         }
+        
+        clienteActualizado.setNumeroTelefono(clienteActualizado.getNumeroTelefono().replaceAll("\\D", ""));
 
         if (clienteActualizado.getCorreo() != null && clienteActualizado.getCorreo().length() > 100) {
             throw new NegocioException("El correo es demasiado largo.");

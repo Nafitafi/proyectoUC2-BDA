@@ -52,14 +52,22 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             UnidadMedida medida = (UnidadMedida) cmbMedida.getSelectedItem();
             
             if (nombre.trim().isEmpty() || nombre.trim().isBlank()) {
-                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "El nombre no puede estar vacío", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             
             return new IngredienteNuevoDTO(nombre, medida, stock);
             
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "El stock debe ser numérico","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "El stock debe ser numérico",
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -83,14 +91,11 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         lblCantidad = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnDesinventariar = new javax.swing.JButton();
         cmbMedida = new javax.swing.JComboBox<>();
-        btnAgregarImagen = new javax.swing.JButton();
-        pnlVistaPreviaImagen = new javax.swing.JPanel();
         scrollTabla = new javax.swing.JScrollPane();
         tablaIngredientes = new javax.swing.JTable();
 
@@ -139,10 +144,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
 
         txtNombre.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
-        btnBuscar.setForeground(new java.awt.Color(51, 51, 51));
-        btnBuscar.setText("Buscar");
-
         btnAgregar.setBackground(new java.awt.Color(255, 255, 255));
         btnAgregar.setForeground(new java.awt.Color(51, 51, 51));
         btnAgregar.setText("Agregar");
@@ -171,26 +172,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
 
         cmbMedida.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnAgregarImagen.setBackground(new java.awt.Color(255, 255, 255));
-        btnAgregarImagen.setForeground(new java.awt.Color(51, 51, 51));
-        btnAgregarImagen.setText("Agregar imagen");
-        btnAgregarImagen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarImagenActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlVistaPreviaImagenLayout = new javax.swing.GroupLayout(pnlVistaPreviaImagen);
-        pnlVistaPreviaImagen.setLayout(pnlVistaPreviaImagenLayout);
-        pnlVistaPreviaImagenLayout.setHorizontalGroup(
-            pnlVistaPreviaImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        pnlVistaPreviaImagenLayout.setVerticalGroup(
-            pnlVistaPreviaImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout pnlFormularioLayout = new javax.swing.GroupLayout(pnlFormulario);
         pnlFormulario.setLayout(pnlFormularioLayout);
         pnlFormularioLayout.setHorizontalGroup(
@@ -206,8 +187,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlFormularioLayout.createSequentialGroup()
                                 .addComponent(txtNombre)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar))
+                                .addGap(90, 90, 90))
                             .addGroup(pnlFormularioLayout.createSequentialGroup()
                                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,21 +195,16 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                                     .addComponent(lblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCantidad)
                                     .addComponent(cmbMedida, 0, 150, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pnlVistaPreviaImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGap(0, 18, Short.MAX_VALUE)
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(pnlFormularioLayout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnActualizar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnDesinventariar))
-                            .addComponent(btnAgregarImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 24, Short.MAX_VALUE)
+                        .addComponent(btnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnActualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDesinventariar)))
                 .addGap(24, 24, 24))
         );
         pnlFormularioLayout.setVerticalGroup(
@@ -240,22 +215,15 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblNombre)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(30, 30, 30)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addComponent(lblMedida)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(lblCantidad)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pnlVistaPreviaImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnAgregarImagen)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(lblMedida)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(lblCantidad)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -287,10 +255,9 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlEncabezado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,9 +275,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActualizarActionPerformed
-
-    private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
-    }//GEN-LAST:event_btnAgregarImagenActionPerformed
 
     /**
      * Al presioanr el botón para agregar, este llamará al método para convertir la 
@@ -337,8 +301,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnAgregarImagen;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnDesinventariar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnRegresar;
@@ -349,7 +311,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlEncabezado;
     private javax.swing.JPanel pnlFormulario;
-    private javax.swing.JPanel pnlVistaPreviaImagen;
     private javax.swing.JScrollPane scrollTabla;
     private javax.swing.JTable tablaIngredientes;
     private javax.swing.JTextField txtCantidad;

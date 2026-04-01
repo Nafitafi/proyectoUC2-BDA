@@ -55,10 +55,11 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         lblTelefono = new javax.swing.JLabel();
         lblCorreo1 = new javax.swing.JLabel();
         lblEjemplo1 = new javax.swing.JLabel();
-        lblEjemploTelefono1 = new javax.swing.JLabel();
-        lblEjemploTelefono2 = new javax.swing.JLabel();
         lblEjemplo2 = new javax.swing.JLabel();
         lblEjemploCorreo = new javax.swing.JLabel();
+        lblEjemploTelefono1 = new javax.swing.JLabel();
+        lblEjemploTelefono2 = new javax.swing.JLabel();
+        lblEjemploNota = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
@@ -108,17 +109,21 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         lblEjemplo1.setForeground(new java.awt.Color(19, 70, 134));
         lblEjemplo1.setText("Ejemplo:");
 
-        lblEjemploTelefono1.setForeground(new java.awt.Color(19, 70, 134));
-        lblEjemploTelefono1.setText("6441-12-12-12");
-
-        lblEjemploTelefono2.setForeground(new java.awt.Color(19, 70, 134));
-        lblEjemploTelefono2.setText("(+52)6442-67-67-67");
-
         lblEjemplo2.setForeground(new java.awt.Color(19, 70, 134));
         lblEjemplo2.setText("Ejemplo:");
 
         lblEjemploCorreo.setForeground(new java.awt.Color(19, 70, 134));
         lblEjemploCorreo.setText("micorreo@dominio.com");
+
+        lblEjemploTelefono1.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploTelefono1.setText("+52-6441-12-12-12");
+
+        lblEjemploTelefono2.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploTelefono2.setText("+52 6442676767");
+
+        lblEjemploNota.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
+        lblEjemploNota.setForeground(new java.awt.Color(19, 70, 134));
+        lblEjemploNota.setText("La lada y guiones son opcionales");
 
         javax.swing.GroupLayout pnlFormularioActualizarLayout = new javax.swing.GroupLayout(pnlFormularioActualizar);
         pnlFormularioActualizar.setLayout(pnlFormularioActualizarLayout);
@@ -127,25 +132,32 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
             .addGroup(pnlFormularioActualizarLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEjemplo1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEjemploTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEjemploTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                    .addGroup(pnlFormularioActualizarLayout.createSequentialGroup()
+                        .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEjemplo1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlFormularioActualizarLayout.createSequentialGroup()
+                        .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEjemploTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEjemploTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10))
+                    .addComponent(lblEjemploNota, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
                 .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlFormularioActualizarLayout.createSequentialGroup()
                         .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(56, 56, 56)
+                        .addGap(28, 28, 28)
                         .addGroup(pnlFormularioActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEjemplo2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEjemploCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -176,16 +188,18 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
                     .addGroup(pnlFormularioActualizarLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblEjemplo1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblEjemploTelefono1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblEjemploTelefono2))
+                        .addComponent(lblEjemploTelefono2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEjemploNota))
                     .addGroup(pnlFormularioActualizarLayout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(lblEjemplo2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblEjemploCorreo)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         btnActualizar.setBackground(new java.awt.Color(19, 70, 134));
@@ -375,6 +389,7 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
     private javax.swing.JLabel lblEjemplo1;
     private javax.swing.JLabel lblEjemplo2;
     private javax.swing.JLabel lblEjemploCorreo;
+    private javax.swing.JLabel lblEjemploNota;
     private javax.swing.JLabel lblEjemploTelefono1;
     private javax.swing.JLabel lblEjemploTelefono2;
     private javax.swing.JLabel lblNombre;

@@ -5,6 +5,7 @@
 package itson.restaurantenegocio;
 
 import itson.restaurantedominio.Ingrediente;
+import itson.restaurantedtos.IngredienteActualizadoDTO;
 import itson.restaurantedtos.IngredienteNuevoDTO;
 import itson.restaurantepersistencia.IIngredientesDAO;
 import itson.restaurantepersistencia.IngredientesDAO;
@@ -73,27 +74,27 @@ public class IngredientesBO implements IIngredientesBO {
     * o si existe un problema al conectar con la base de datos.
      */
     @Override
-    public Ingrediente modificar(IngredienteNuevoDTO ingredienteNuevo) throws NegocioException {
-        if (ingredienteNuevo.getNombre() != null) {
-            if (ingredienteNuevo.getNombre().length()>100) {
+    public Ingrediente modificar(IngredienteActualizadoDTO ingredienteActualizar) throws NegocioException {
+        if (ingredienteActualizar.getNombre() != null) {
+            if (ingredienteActualizar.getNombre().length()>100) {
                 throw new NegocioException("El nombre no puede tener más de 100 caracteres.");
             }
         } 
         
-        if (ingredienteNuevo.getStock() != null){
-            if (ingredienteNuevo.getStock() < 0) {
+        if (ingredienteActualizar.getStock() != null){
+            if (ingredienteActualizar.getStock() < 0) {
                 throw new NegocioException("El stock no puede ser negativo.");
             }
         }
         
-        if (ingredienteNuevo.getImagen() != null){
-            if (ingredienteNuevo.getImagen().length() > 255) {
+        if (ingredienteActualizar.getImagen() != null){
+            if (ingredienteActualizar.getImagen().length() > 255) {
                 throw new NegocioException("El URL de imagen excede los 255 caracteres.");
             }
         }
         
         try {
-            Ingrediente ingrediente = ingredientesDAO.modificar(ingredienteNuevo);
+            Ingrediente ingrediente = ingredientesDAO.modificar(ingredienteActualizar);
             return ingrediente;
             
         } catch (PersistenciaException ex) {

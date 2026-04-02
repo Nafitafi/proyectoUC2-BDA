@@ -5,7 +5,9 @@
 package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.Ingrediente;
+import itson.restaurantedtos.IngredienteActualizadoDTO;
 import itson.restaurantedtos.IngredienteNuevoDTO;
+import itson.restaurantepersistencia.adapters.IngredienteActualizadoDTOAIngredienteAdapter;
 import itson.restaurantepersistencia.adapters.IngredienteNuevoDTOAIngredienteAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,29 +67,29 @@ public class IngredientesDAO implements IIngredientesDAO{
      * al conectar con la base de datos.
      */
     @Override
-    public Ingrediente modificar(IngredienteNuevoDTO ingredienteNuevo) throws PersistenciaException {
+    public Ingrediente modificar(IngredienteActualizadoDTO ingredienteActualizar) throws PersistenciaException {
         try {
             EntityManager entityManager = ManejadorConexiones.crearEntityManager();
-            Ingrediente ingredienteActualizado = IngredienteNuevoDTOAIngredienteAdapter.adaptar(ingredienteNuevo);
+            Ingrediente ingredienteActualizado = IngredienteActualizadoDTOAIngredienteAdapter.adaptar(ingredienteActualizar);
             Ingrediente ingrediente = entityManager.find(Ingrediente.class, ingredienteActualizado.getIdIngrediente());
             
             if (exists(ingredienteActualizado)){
                 throw new PersistenciaException("El ingrediente ya existe en la base de datos.");
             }
             
-            if (ingredienteNuevo.getNombre() != null) {
+            if (ingredienteActualizar.getNombre() != null) {
                 ingrediente.setNombre(ingredienteActualizado.getNombre());
             }
             
-            if (ingredienteNuevo.getUnidadMedida() != null) {
+            if (ingredienteActualizar.getUnidadMedida() != null) {
                 ingrediente.setUnidadMedida(ingredienteActualizado.getUnidadMedida());
             }
             
-            if (ingredienteNuevo.getStock() != null){
+            if (ingredienteActualizar.getStock() != null){
                 ingrediente.setStock(ingredienteActualizado.getStock());
             }
             
-            if (ingredienteNuevo.getImagen() != null) {
+            if (ingredienteActualizar.getImagen() != null) {
                 ingrediente.setImagen(ingredienteActualizado.getImagen());
             }
             

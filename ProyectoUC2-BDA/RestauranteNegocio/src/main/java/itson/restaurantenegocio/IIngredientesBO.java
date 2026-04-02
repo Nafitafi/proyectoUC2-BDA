@@ -5,6 +5,7 @@
 package itson.restaurantenegocio;
 
 import itson.restaurantedominio.Ingrediente;
+import itson.restaurantedtos.IngredienteActualizadoDTO;
 import itson.restaurantedtos.IngredienteNuevoDTO;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface IIngredientesBO {
      * @throws NegocioException si el ingrediente no cumple con las validaciones requeridas
     * o si existe un problema al conectar con la base de datos.
      */
-    public abstract Ingrediente modificar(IngredienteNuevoDTO ingredienteNuevo) throws NegocioException;
+    public abstract Ingrediente modificar(IngredienteActualizadoDTO ingredienteActualizar) throws NegocioException;
     
     /**
      * Método que busca un ingrediente existente que el usuario desea eliminar

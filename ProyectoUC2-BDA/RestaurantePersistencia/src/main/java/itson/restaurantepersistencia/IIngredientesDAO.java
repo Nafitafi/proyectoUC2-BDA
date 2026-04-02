@@ -5,6 +5,7 @@
 package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.Ingrediente;
+import itson.restaurantedtos.IngredienteActualizadoDTO;
 import itson.restaurantedtos.IngredienteNuevoDTO;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface IIngredientesDAO {
      * @throws PersistenciaException si el ingrediente ya existe o si existe un problema 
     * al conectar con la base de datos.
      */
-    public abstract Ingrediente modificar(IngredienteNuevoDTO ingredienteNuevo) throws PersistenciaException;
+    public abstract Ingrediente modificar(IngredienteActualizadoDTO ingredienteActualizar) throws PersistenciaException;
     
     /**
      * Método que busca un ingrediente existente que el usuario desea eliminar

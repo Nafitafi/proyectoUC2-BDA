@@ -14,11 +14,13 @@ public class SistemaRestaurante {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ClientesFrecuentesFORM ventana = new ClientesFrecuentesFORM();
-        ClientesFrecuentesControl control = new ClientesFrecuentesControl(ventana);
-        ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
+//        ClientesFrecuentesFORM ventana = new ClientesFrecuentesFORM();
+//        ClientesFrecuentesControl control = new ClientesFrecuentesControl(ventana);
+//        ventana.setLocationRelativeTo(null);
+//        ventana.setVisible(true);
 
+            InventarioIngredientes v = new InventarioIngredientes();
+            v.setVisible(true);
     }
 
 }

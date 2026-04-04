@@ -38,8 +38,7 @@ public class IngredienteNuevoDTOAIngredienteAdapter {
                 break;
             default:
                 unidadMedida = UnidadMedida.PIEZAS;
-                break;
-        };
+        }
         
         Ingrediente ingrediente = new Ingrediente(
                 ingredienteNuevo.getNombre(),

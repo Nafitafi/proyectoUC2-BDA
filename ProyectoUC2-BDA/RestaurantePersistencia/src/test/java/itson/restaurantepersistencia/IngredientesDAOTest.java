@@ -58,7 +58,7 @@ public class IngredientesDAOTest {
             Ingrediente resultado = ingredientesDAO.agregar(ingrediente1);
             assertNotNull(resultado);
             assertEquals(resultado.getNombre(), ingrediente1.getNombre());
-            assertEquals(resultado.getUnidadMedida(), ingrediente1.getUnidadMedida());
+            assertEquals(resultado.getUnidadMedida().toString(), ingrediente1.getUnidadMedida().toString());
         });
         
         assertDoesNotThrow(() -> {
@@ -66,7 +66,7 @@ public class IngredientesDAOTest {
             Ingrediente resultado2 = ingredientesDAO.agregar(ingrediente2);
             assertNotNull(resultado2);
             assertEquals(resultado2.getNombre(), ingrediente2.getNombre());
-            assertEquals(resultado2.getUnidadMedida(), ingrediente2.getUnidadMedida());
+            assertEquals(resultado2.getUnidadMedida().toString(), ingrediente2.getUnidadMedida().toString());
         });
         
         //Lanza error si se agrega:
@@ -216,18 +216,29 @@ public class IngredientesDAOTest {
                 16.0
         );
         assertDoesNotThrow(() -> {
+            
         //como no existe el ingrediente, exists devuelve false
         boolean resultado = ingredientesDAO.exists(IngredienteNuevoDTOAIngredienteAdapter.adaptar(ingrediente));
         assertFalse(resultado);
         
         //Se agrega el ingrediente a la base de datos
         Ingrediente i = ingredientesDAO.agregar(ingrediente);
-            
-        //como ya existe, volvemos a llamar al metodo y debería regresar true
-        resultado = ingredientesDAO.exists(i);
-        assertTrue(resultado);
         
+        //ya existe, volvemos a llamar al metodo y debe dar false porque
+        //revisa si existe otro ingrediente aparte de si mismo
+        resultado = ingredientesDAO.exists(i);
+        assertFalse(resultado);
+        
+        //Esta vez, al ya existir un ingrediente idéntico en la base de datos
+        //va a devolver true
+        resultado = ingredientesDAO.exists(IngredienteNuevoDTOAIngredienteAdapter.adaptar(ingrediente));
+        assertTrue(resultado);
         });
+        
+        
+       
+        
+        
         
     }
 }

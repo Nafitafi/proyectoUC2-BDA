@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -37,9 +38,36 @@ public class IngredientesDAO implements IIngredientesDAO{
     */
     @Override
     public Ingrediente agregar(IngredienteNuevoDTO ingredienteNuevo) throws PersistenciaException {
+        if (ingredienteNuevo == null){
+            throw new PersistenciaException("Ingrediente nulo.");
+        }
+        
+        if (ingredienteNuevo.getUnidadMedida() == null){
+            throw new PersistenciaException("La unidad de medida no puede estar vacía.");
+        }
+        
         Ingrediente ingrediente = IngredienteNuevoDTOAIngredienteAdapter.adaptar(ingredienteNuevo);
+        
         if (exists(ingrediente)){
             throw new PersistenciaException("El ingrediente ya existe en la base de datos.");
+        }
+        
+        if (ingredienteNuevo.getNombre() == null) {
+            throw new PersistenciaException("El nombre no puede estar vacío.");
+        } else if (ingredienteNuevo.getNombre().length()>100) {
+            throw new PersistenciaException("El nombre no puede tener más de 100 caracteres.");
+        } 
+       
+        if (ingredienteNuevo.getStock() == null){
+            throw new PersistenciaException("El stock no puede estar vacío.");
+        } else if (ingredienteNuevo.getStock() < 0) {
+            throw new PersistenciaException("El stock no puede ser negativo.");
+        }
+        
+        if (ingredienteNuevo.getImagen() != null){
+            if (ingredienteNuevo.getImagen().length() > 255) {
+                throw new PersistenciaException("El URL de imagen excede los 255 caracteres.");
+            }
         }
         
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
@@ -82,14 +110,22 @@ public class IngredientesDAO implements IIngredientesDAO{
             }
             
             if (ingredienteActualizar.getNombre() != null) {
+                if (ingredienteActualizar.getNombre().length()>100) {
+                    throw new PersistenciaException("El nombre no puede tener más de 100 caracteres.");
+                }
                 ingrediente.setNombre(ingredienteActualizado.getNombre());
             }
             
             if (ingredienteActualizar.getUnidadMedida() != null) {
                 ingrediente.setUnidadMedida(ingredienteActualizado.getUnidadMedida());
+            } else {
+                throw new PersistenciaException("La unidad de medida no puede estar vacía.");
             }
             
             if (ingredienteActualizar.getStock() != null){
+                if (ingredienteActualizar.getStock() < 0) {
+                    throw new PersistenciaException("El stock no puede ser negativo.");
+                }
                 ingrediente.setStock(ingredienteActualizado.getStock());
             }
             
@@ -100,7 +136,7 @@ public class IngredientesDAO implements IIngredientesDAO{
             entityManager.getTransaction().begin();
             entityManager.persist(ingrediente);
             entityManager.getTransaction().commit();
-            
+
             return ingrediente;
             
         } catch (PersistenceException ex) {
@@ -265,17 +301,23 @@ public class IngredientesDAO implements IIngredientesDAO{
     @Override
     public boolean exists(Ingrediente ingrediente) throws PersistenciaException {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
-
         try {
             
             String jpql = "SELECT COUNT(i) FROM Ingrediente i WHERE LOWER(i.nombre) = LOWER(:nom) AND i.unidadMedida = :unid";
-            Long coincidencias = entityManager.createQuery(jpql, Long.class)
-                       .setParameter("nom", ingrediente.getNombre())
-                       .setParameter("unid", ingrediente.getUnidadMedida())
-                       .getSingleResult();
-
-            return coincidencias > 0;
             
+            if (ingrediente.getIdIngrediente() != null) {
+                jpql += " AND i.idIngrediente != :id";
+            }
+            
+            TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class)
+                .setParameter("nom", ingrediente.getNombre())
+                .setParameter("unid", ingrediente.getUnidadMedida());
+
+            if (ingrediente.getIdIngrediente() != null) {
+                query.setParameter("id", ingrediente.getIdIngrediente());
+            }
+            
+            return query.getSingleResult() > 0;
         } catch (PersistenceException ex){
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible consultar los ingredientes.");

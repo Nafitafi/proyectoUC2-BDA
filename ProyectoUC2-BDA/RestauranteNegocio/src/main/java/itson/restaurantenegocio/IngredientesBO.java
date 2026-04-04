@@ -81,6 +81,10 @@ public class IngredientesBO implements IIngredientesBO {
             }
         } 
         
+        if (ingredienteActualizar.getUnidadMedida() == null){
+            throw new NegocioException("La unidad de medida no puede estar vacía.");
+        }
+        
         if (ingredienteActualizar.getStock() != null){
             if (ingredienteActualizar.getStock() < 0) {
                 throw new NegocioException("El stock no puede ser negativo.");
@@ -99,7 +103,7 @@ public class IngredientesBO implements IIngredientesBO {
             
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new NegocioException("No fue posible registrar el ingrediente.");
+            throw new NegocioException("No fue posible modificar el ingrediente.");
         }
     }
 

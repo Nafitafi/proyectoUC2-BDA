@@ -24,12 +24,16 @@ public class IngredienteActualizadoDTOAIngredienteAdapter {
         switch (ingredienteActualizado.getUnidadMedida()){
             case itson.restaurantedtos.UnidadMedida.GRAMOS:
                 unidadMedida = UnidadMedida.GRAMOS;
+                break;
             case itson.restaurantedtos.UnidadMedida.KILOGRAMOS:
                 unidadMedida = UnidadMedida.KILOGRAMOS;
+                 break;
             case itson.restaurantedtos.UnidadMedida.LITROS:
                 unidadMedida = UnidadMedida.LITROS;
+                break;
             case itson.restaurantedtos.UnidadMedida.MILILITROS:
                 unidadMedida = UnidadMedida.MILILITROS;
+                break;
             default:
                 unidadMedida = UnidadMedida.PIEZAS;
         }

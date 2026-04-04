@@ -35,7 +35,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class InventarioIngredientes extends javax.swing.JFrame {
     private IIngredientesBO ingredientesBO = new IngredientesBO();
-    String imagen = null;
+    String imagen;
     private JTextField txtNombreNuevo = new JTextField(100);
     private JTextField txtCantidadNueva = new JTextField();
     private static final Logger LOGGER = Logger.getLogger(InventarioIngredientes.class.getName());
@@ -54,7 +54,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
      * ingredientes registrados.
      */
     public void crearTabla(){
-        String[] columnas = {"Id", "Nombre", "Unidad de Medida", "Stock"};
+        String[] columnas = {"Id", "Nombre", "Unidad de Medida", "Stock", "Imagen"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
           @Override
             public boolean isCellEditable(int row, int column) {
@@ -67,10 +67,14 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             for (Ingrediente ing: ingredientes){
                 Object[] fila = {
                     ing.getIdIngrediente(),
-                    ing.getImagen(),
+                    ing.getNombre(),
                     ing.getUnidadMedida(),
-                    ing.getStock()
+                    ing.getStock(),
+                    ing.getImagen()
                 };
+                if (fila[4] == null){
+                    fila[4] = "Sin imagen";
+                }
                 modelo.addRow(fila);
             }
             
@@ -88,19 +92,60 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                     int filaSeleccionada = tablaIngredientes.getSelectedRow();
                     if (filaSeleccionada != -1) {
                         llenarFormulario(filaSeleccionada);
+                    } else {
+                        limpiar();
                     }
                 }
             }
         });
     }
-    
+
     /**
      * Llena el formulario con la información de la tabla de ingredientes.
      */
     public void llenarFormulario(int fila){
         txtNombre.setText(tablaIngredientes.getValueAt(fila, 1).toString());
-        cmbMedida.setSelectedItem(tablaIngredientes.getValueAt(fila, 2));
+        String medida = tablaIngredientes.getValueAt(fila, 2).toString();
+        try {
+            UnidadMedida enumMedida = UnidadMedida.valueOf(medida);
+            cmbMedida.setSelectedItem(enumMedida);
+        } catch (IllegalArgumentException e) {
+            cmbMedida.setSelectedIndex(0); 
+        }
+        
         txtCantidad.setText(tablaIngredientes.getValueAt(fila, 3).toString());
+        imagen = tablaIngredientes.getValueAt(fila, 4).toString();
+
+        pnlImagen.removeAll();
+        
+        if (!imagen.equalsIgnoreCase("sin imagen")){
+            try {
+                URL url = new URL (imagen);
+                JLabel lblImagen = new JLabel(new ImageIcon(ImageIO.read(url)));
+
+                pnlImagen.add(lblImagen);
+                pnlImagen.revalidate();
+                pnlImagen.repaint();
+           } catch (IOException ex) {
+                LOGGER.severe(ex.getMessage());
+                JOptionPane.showMessageDialog(
+                   null, 
+                   "Error al recuperar la imagen del URL", 
+                   "Error en la imagen",
+                   JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }
+    
+    /**
+     * Limpia lo escrito en el formulario si se deselecciona una fila
+     */
+    public void limpiar(){
+        txtNombre.setText("");
+        cmbMedida.setSelectedIndex(0);
+        txtCantidad.setText("");
+        imagen = "Sin imagen";
     }
     
     /**
@@ -136,7 +181,22 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 imagenIngrediente = this.imagen;
             }
             
-            return new IngredienteNuevoDTO(nombre, medida, stock, imagenIngrediente);
+            IngredienteNuevoDTO ingrediente = new IngredienteNuevoDTO(
+                    nombre, 
+                    medida, 
+                    stock, 
+                    imagenIngrediente);
+            
+            if (ingrediente == null) {
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Error al agregar: Datos vacíos", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            
+            return ingrediente;
             
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(
@@ -158,13 +218,29 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         JPanel modificar = new JPanel();
         modificar.setLayout(new GridLayout(0, 1, 3, 2));
         modificar.add(new JLabel("Ingrese el nuevo nombre: "));
+        txtNombreNuevo.setText(txtNombre.getText());
         modificar.add(txtNombreNuevo);
         modificar.add(new JLabel("Ingrese la nueva unidad de medida: "));
         modificar.add(cmbMedida);
         modificar.add(new JLabel("Ingrese la nueva cantidad: "));
+        txtCantidadNueva.setText(txtCantidad.getText());
         modificar.add(txtCantidadNueva);
         
        return modificar;
+    }
+    
+    /**
+     * Panel que recibe la cantidad a desinventariar
+     * @return un JPanel que muestra un campo para recibir la cantidad
+     * a desinventariar de un ingrediente determinado.
+     */
+    public JPanel ventanaDesinventariar(){
+        JPanel desinventariar = new JPanel();
+        desinventariar.setLayout(new GridLayout(0, 1, 1, 2));
+        desinventariar.add(new JLabel("Ingrese la cantidad a desinventariar: "));
+        desinventariar.add(txtCantidadNueva);
+        
+       return desinventariar;
     }
 
     /**
@@ -270,8 +346,15 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         btnDesinventariar.setBackground(new java.awt.Color(255, 179, 168));
         btnDesinventariar.setForeground(new java.awt.Color(51, 51, 51));
         btnDesinventariar.setText("Desinventariar");
+        btnDesinventariar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesinventariarActionPerformed(evt);
+            }
+        });
 
         cmbMedida.setBackground(new java.awt.Color(255, 255, 255));
+
+        pnlImagen.setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout pnlImagenLayout = new javax.swing.GroupLayout(pnlImagen);
         pnlImagen.setLayout(pnlImagenLayout);
@@ -281,7 +364,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         );
         pnlImagenLayout.setVerticalGroup(
             pnlImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 84, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         btnImagen.setText("Agregar Imagen");
@@ -424,7 +507,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             
             if (opcion == JOptionPane.OK_OPTION){
                 txtNombre.setText(txtNombreNuevo.getText());
-                String seleccion = (String) cmbMedida.getSelectedItem();
                 txtCantidad.setText(txtCantidadNueva.getText());
                 
             try {
@@ -437,14 +519,16 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 );
                 
                 ingredientesBO.modificar(ingredienteActualizar);
-                        
+                crearTabla();
+                
             } catch (NegocioException ex) {
                 LOGGER.severe(ex.getMessage());
                 JOptionPane.showMessageDialog(
                     this, 
-                    "Error al actualizar el ingrediente.",
+                    "Error al actualizar el ingrediente: " + ex.getMessage(),
                     "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE
+                );
             }
             
             } else {
@@ -453,7 +537,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                     "Error al actualizar el ingrediente.",
                     "Operación cancelada",
                     JOptionPane.INFORMATION_MESSAGE
-                    );
+                );
             }
             
         } else {
@@ -465,7 +549,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             );
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
-
+    
     /**
      * Al presioanr el botón para agregar, este llamará al método para convertir la 
      * información del formulario en un dto de ingrediente y luego intentara agregarlo
@@ -474,7 +558,12 @@ public class InventarioIngredientes extends javax.swing.JFrame {
      */
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         try {
-            ingredientesBO.agregar(leerFormulario());
+            IngredienteNuevoDTO ingrediente = leerFormulario();
+            if (ingrediente != null ){
+                ingredientesBO.agregar(ingrediente);
+                crearTabla();
+                limpiar();
+            }
         } catch (NegocioException ex) {
             LOGGER.severe(ex.getMessage());
             JOptionPane.showMessageDialog(
@@ -501,9 +590,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
        
        try {
            URL url = new URL (imagen);
-           Image imagen = ImageIO.read(url);
-           
-           JLabel lblImagen = new JLabel(new ImageIcon(imagen));
+           JLabel lblImagen = new JLabel(new ImageIcon(ImageIO.read(url)));
            pnlImagen.add(lblImagen);
            
        } catch (IOException ex) {
@@ -512,7 +599,8 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                null, 
                "Error al recuperar la imagen del URL", 
                "Error en la imagen",
-               JOptionPane.ERROR_MESSAGE);
+               JOptionPane.ERROR_MESSAGE
+            );
         }
     }//GEN-LAST:event_btnImagenActionPerformed
 
@@ -525,14 +613,39 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         if (fila != -1){
             try {
                 Long id = Long.valueOf(tablaIngredientes.getValueAt(fila, 0).toString());
-                ingredientesBO.eliminar(id);
+                
+                int resultado = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿De verdad desea eliminar este ingrediente?",
+                        "Eliminar ingrediente",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (resultado == JOptionPane.YES_OPTION){
+                    ingredientesBO.eliminar(id);
+                    crearTabla();
+                    JOptionPane.showMessageDialog(
+                            this, 
+                            "Se eliminó el ingrediente",
+                            "Eliminar ingrediente",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else {
+                    JOptionPane.showMessageDialog(
+                            this, 
+                            "No se eliminó el ingrediente",
+                            "Eliminar ingrediente",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
+                
             } catch (NegocioException ex) {
                 LOGGER.severe(ex.getMessage());
                 JOptionPane.showMessageDialog(
                    null, 
                    "Error al eliminar el ingrediente", 
                    "Error",
-                   JOptionPane.ERROR_MESSAGE);
+                   JOptionPane.ERROR_MESSAGE
+                );
             }
         } else {
             JOptionPane.showMessageDialog(
@@ -543,6 +656,62 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             );
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnDesinventariarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesinventariarActionPerformed
+        int fila = tablaIngredientes.getSelectedRow();
+        if (fila != -1){
+            
+            int opcion = JOptionPane.showConfirmDialog(
+                    this, 
+                    ventanaDesinventariar(),
+                    "Desinventariar Stock",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if (opcion == JOptionPane.OK_OPTION){
+                try {
+                    double cantidad = Double.parseDouble(txtCantidadNueva.getText());
+                    Long id = Long.valueOf(tablaIngredientes.getValueAt(fila, 0).toString());
+                    ingredientesBO.desinventariar(
+                            id, 
+                            cantidad
+                    );
+                    crearTabla();
+                    
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(
+                            this, 
+                            "El stock debe ser numérico.",
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                } catch (NegocioException ex) {
+                    LOGGER.severe(ex.getMessage());
+                    JOptionPane.showMessageDialog(
+                            this, 
+                            "Error al acceder a los ingredientes.",
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            } else {
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Error al desinventariar el stock.",
+                    "Operación cancelada",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Selecciona una fila para desinventariar el stock de un ingrediente.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_btnDesinventariarActionPerformed
 
    
 

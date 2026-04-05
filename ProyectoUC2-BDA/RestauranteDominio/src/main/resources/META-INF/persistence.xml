@@ -7,6 +7,8 @@
     <class>itson.restaurantedominio.Ingrediente</class>
     <class>itson.restaurantedominio.Cliente</class>
     <class>itson.restaurantedominio.Receta</class>
+    <class>itson.restaurantedominio.Mesa</class>
+    <class>itson.restaurantedominio.DetalleComanda</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sistema_restaurante?createDatabaseIfNotExist=true"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

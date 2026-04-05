@@ -7,6 +7,7 @@ package itson.restaurantedominio;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +45,11 @@ public class Comanda implements Serializable {
     @JoinColumn(name="id_cliente", nullable =false )
     private ClienteFrecuente cliente;
     
+    @ManyToOne
+    private Mesa mesa;
     
+    @OneToMany(mappedBy = "comanda")
+    private List<DetalleComanda> detalles;
     /**
      * Constructor por defecto
      */

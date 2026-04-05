@@ -56,7 +56,6 @@ public class Ingrediente implements Serializable {
         this.imagen = imagen;
     }
     
-
     public Ingrediente(Long idIngrediente, String nombre, UnidadMedida unidadMedida, Double stock, String imagen) {
         this.idIngrediente = idIngrediente;
         this.nombre = nombre;

@@ -6,7 +6,7 @@
 package itson.restaurantedominio;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +32,7 @@ public class Comanda implements Serializable {
     private String folio;
     
     @Column(name = "fecha_hora", nullable = false)
-    private LocalDate fechaHora;
+    private LocalDateTime fechaHora;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_comanda", nullable = false)
@@ -59,7 +59,7 @@ public class Comanda implements Serializable {
     /**
      * Constructor con todo menos id y comandas
      */
-    public Comanda(String folio, LocalDate fechaHora, EstadoComanda estado, Double totalAcumulado) {
+    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double totalAcumulado) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
@@ -82,11 +82,11 @@ public class Comanda implements Serializable {
         this.folio = folio;
     }
 
-    public LocalDate getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDate fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -112,6 +112,22 @@ public class Comanda implements Serializable {
 
     public void setCliente(ClienteFrecuente cliente) {
         this.cliente = cliente;
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
+    }
+
+    public List<DetalleComanda> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleComanda> detalles) {
+        this.detalles = detalles;
     }
 
     

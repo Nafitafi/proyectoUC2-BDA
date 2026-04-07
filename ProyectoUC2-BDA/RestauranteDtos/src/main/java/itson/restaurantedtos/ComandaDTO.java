@@ -4,7 +4,7 @@
  */
 package itson.restaurantedtos;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -14,14 +14,14 @@ import java.util.List;
 public class ComandaDTO {
 
     private String folio;
-    private LocalDate fechaHora;
-    private String estado;
+    private LocalDateTime fechaHora;
+    private EstadoComanda estado;
     private double total;
     private int numeroMesa;
     private Long idCliente;
     private List<DetalleComandaDTO> detalles;
 
-    public ComandaDTO(String folio, LocalDate fechaHora, String estado, double total, int numeroMesa, Long idCliente, List<DetalleComandaDTO> detalles) {
+    public ComandaDTO(String folio, LocalDateTime fechaHora, EstadoComanda estado, double total, int numeroMesa, Long idCliente, List<DetalleComandaDTO> detalles) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
@@ -35,11 +35,11 @@ public class ComandaDTO {
         return folio;
     }
 
-    public LocalDate getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public String getEstado() {
+    public EstadoComanda getEstado() {
         return estado;
     }
 

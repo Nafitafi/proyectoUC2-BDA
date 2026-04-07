@@ -7,6 +7,7 @@ package itson.restaurantenegocio;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.Mesa;
 import itson.restaurantedtos.ComandaDTO;
+import itson.restaurantepersistencia.PersistenciaException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import java.util.List;
  */
 public interface IComandasBO {
 
+    
+       
     /**
      * Método que permite registrar una nueva comanda en el sistema.
      *

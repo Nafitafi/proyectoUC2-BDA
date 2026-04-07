@@ -24,6 +24,7 @@ public class Mesa implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_mesa")
     private Long id;
 
     @Column(name = "numero_mesa")

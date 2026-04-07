@@ -207,7 +207,7 @@ public class ClientesFrecuentesDAO implements IClientesFrecuentesDAO {
             EntityManager entityManager = ManejadorConexiones.crearEntityManager();
 
             String consultaJPQL = """
-                                    SELECT SUM(c.totalAcumulado) FROM Comanda c
+                                    SELECT SUM(c.total) FROM Comanda c
                                     WHERE c.cliente.idCliente = :idCliente
                                     AND c.estado = :estado
                                   """;

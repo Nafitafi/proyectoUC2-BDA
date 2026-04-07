@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package itson.restaurantedominio;
 
 import java.io.Serializable;
@@ -20,36 +19,38 @@ import javax.persistence.*;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 @Entity
-@Table(name= "comandas")
+@Table(name = "comandas")
 public class Comanda implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_comanda")
     private Long id;
-    
+
     @Column(name = "folio", nullable = false, unique = true)
     private String folio;
-    
+
     @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_comanda", nullable = false)
     private EstadoComanda estado;
-    
-    @Column(name = "total_acumulado", nullable = false)
-    private Double totalAcumulado;
-    
+
+    @Column(name = "total", nullable = false)
+    private Double total;
+
     @ManyToOne
-    @JoinColumn(name="id_cliente", nullable =false )
+    @JoinColumn(name = "id_cliente", nullable = false)
     private ClienteFrecuente cliente;
-    
+
     @ManyToOne
+    @JoinColumn(name = "id_mesa", nullable = false)
     private Mesa mesa;
-    
-    @OneToMany(mappedBy = "comanda")
+
+    @OneToMany(mappedBy = "comanda", cascade = CascadeType.PERSIST)
     private List<DetalleComanda> detalles;
+
     /**
      * Constructor por defecto
      */
@@ -59,17 +60,17 @@ public class Comanda implements Serializable {
     /**
      * Constructor con todo menos id y comandas
      */
-    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double totalAcumulado) {
+    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double total) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
-        this.totalAcumulado = totalAcumulado;
+        this.total = total;
     }
-    
+
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -98,12 +99,12 @@ public class Comanda implements Serializable {
         this.estado = estado;
     }
 
-    public Double getTotalAcumulado() {
-        return totalAcumulado;
+    public Double getTotal() {
+        return total;
     }
 
-    public void setTotalAcumulado(Double totalAcumulado) {
-        this.totalAcumulado = totalAcumulado;
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public ClienteFrecuente getCliente() {
@@ -130,8 +131,6 @@ public class Comanda implements Serializable {
         this.detalles = detalles;
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;

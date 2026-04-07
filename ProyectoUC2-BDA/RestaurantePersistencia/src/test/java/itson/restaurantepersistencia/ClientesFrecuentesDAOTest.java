@@ -4,10 +4,10 @@ package itson.restaurantepersistencia;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
-
 import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.EstadoComanda;
+import itson.restaurantedominio.Mesa;
 import itson.restaurantedtos.ClienteFrecuenteNuevoDTO;
 import itson.restaurantepersistencia.ClientesFrecuentesDAO;
 import itson.restaurantepersistencia.ManejadorConexiones;
@@ -21,10 +21,11 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Clase de pruebas para la capa de persistencia de los clientes frecuentes
+ *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ClientesFrecuentesDAOTest {
-    
+
     public ClientesFrecuentesDAOTest() {
     }
     private ClientesFrecuentesDAO clientesDAO;
@@ -67,27 +68,32 @@ public class ClientesFrecuentesDAOTest {
         EntityManager em = ManejadorConexiones.crearEntityManager();
         em.getTransaction().begin();
 
+        Mesa mesa = new Mesa(1L, 1);
+
         Comanda c1 = new Comanda();
         c1.setFolio("FOLIO-001");
         c1.setCliente(clientePrueba);
         c1.setEstado(EstadoComanda.ENTREGADA);
-        c1.setTotalAcumulado(200.0);
+        c1.setMesa(mesa);
+        c1.setTotal(200.0);
         c1.setFechaHora(LocalDateTime.now());
 
         Comanda c2 = new Comanda();
         c2.setFolio("FOLIO-002");
         c2.setCliente(clientePrueba);
         c2.setEstado(EstadoComanda.ENTREGADA);
-        c2.setTotalAcumulado(100.0);
+        c2.setMesa(mesa);
+        c2.setTotal(100.0);
         c2.setFechaHora(LocalDateTime.now());
 
         Comanda c3 = new Comanda();
         c3.setFolio("FOLIO-003");
         c3.setCliente(clientePrueba);
         c3.setEstado(EstadoComanda.CANCELADA);
-        c3.setTotalAcumulado(0.0);
+        c3.setMesa(mesa);
+        c3.setTotal(0.0);
         c3.setFechaHora(LocalDateTime.now());
-        
+
         em.persist(c1);
         em.persist(c2);
         em.persist(c3);
@@ -100,36 +106,41 @@ public class ClientesFrecuentesDAOTest {
         });
 
     }
-    
+
     @Test
-    void obtenerTotalGastadoClienteFrecuenteFuncionaOk() throws PersistenciaException{
+    void obtenerTotalGastadoClienteFrecuenteFuncionaOk() throws PersistenciaException {
         ClienteFrecuenteNuevoDTO cliente = new ClienteFrecuenteNuevoDTO("Pedro", "Gonzales", "Perez", "89047352", "pepe@mail.com");
         ClienteFrecuente clientePrueba = clientesDAO.guardar(cliente);
 
         EntityManager em = ManejadorConexiones.crearEntityManager();
         em.getTransaction().begin();
 
+        Mesa mesa = new Mesa(1L, 1);
+
         Comanda c1 = new Comanda();
         c1.setFolio("FOLIO-004");
         c1.setCliente(clientePrueba);
         c1.setEstado(EstadoComanda.ENTREGADA);
-        c1.setTotalAcumulado(300.0);
+        c1.setMesa(mesa);
+        c1.setTotal(300.0);
         c1.setFechaHora(LocalDateTime.now());
 
         Comanda c2 = new Comanda();
         c2.setFolio("FOLIO-005");
         c2.setCliente(clientePrueba);
         c2.setEstado(EstadoComanda.ENTREGADA);
-        c2.setTotalAcumulado(100.0);
+        c2.setMesa(mesa);
+        c2.setTotal(100.0);
         c2.setFechaHora(LocalDateTime.now());
 
         Comanda c3 = new Comanda();
         c3.setFolio("FOLIO-006");
         c3.setCliente(clientePrueba);
         c3.setEstado(EstadoComanda.CANCELADA);
-        c3.setTotalAcumulado(0.0);
+        c3.setMesa(mesa);
+        c3.setTotal(0.0);
         c3.setFechaHora(LocalDateTime.now());
-        
+
         em.persist(c1);
         em.persist(c2);
         em.persist(c3);
@@ -141,5 +152,5 @@ public class ClientesFrecuentesDAOTest {
             assertEquals(400.0, totalGastado);
         });
     }
-    
+
 }

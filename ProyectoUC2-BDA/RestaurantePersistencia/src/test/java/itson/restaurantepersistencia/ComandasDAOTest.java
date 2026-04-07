@@ -36,18 +36,18 @@ public class ComandasDAOTest {
 
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                1L,
-                "Hamburguesa",
+                 8L,
+                "Taco de Prueba",
                 1,
                 "Sin cebolla",
-                150.0,
-                150.0
+                30.0,
+                30.0
         ));
         ComandaDTO comanda = new ComandaDTO(
                 "OB-20260405-001",
                 LocalDateTime.now(),
                 itson.restaurantedtos.EstadoComanda.ABIERTA,
-                150.0,
+                30.0,
                 1,
                 null,
                 detalles
@@ -57,7 +57,7 @@ public class ComandasDAOTest {
             Comanda comandaGuardada = comandasDAO.guardar(comanda);
             assertNotNull(comandaGuardada);
             assertEquals("OB-20260405-001", comandaGuardada.getFolio());
-            assertEquals(150.0, comandaGuardada.getTotalAcumulado());
+            assertEquals(150.0, comandaGuardada.getTotal());
             assertEquals(1, comandaGuardada.getMesa().getNumero());
         });
 
@@ -72,19 +72,19 @@ public class ComandasDAOTest {
         // Primero guardamos una comanda
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                1L,
-                "Taco de asada",
+                8L,
+                "Taco de Prueba",
                 1,
                 "Sin tomate",
-                25.0,
-                25.0
+                30.0,
+                30.0
         ));
 
         ComandaDTO comanda = new ComandaDTO(
                 "OB-20260405-002",
                 LocalDateTime.now(),
                 itson.restaurantedtos.EstadoComanda.ABIERTA,
-                25.0,
+                30.0,
                 1,
                 null,
                 detalles
@@ -109,18 +109,18 @@ public class ComandasDAOTest {
 
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                1L,
-                "Taco de asada",
+                 8L,
+                "Taco de Prueba",
                 2,
                 "",
-                25.0,
-                50.0
+                30.0,
+                60.0
         ));
         ComandaDTO dto = new ComandaDTO(
                 "OB-20260405-003",
                 LocalDateTime.now(),
                 itson.restaurantedtos.EstadoComanda.ABIERTA,
-                50.0,
+                60.0,
                 2,
                 null,
                 detalles
@@ -148,18 +148,18 @@ public class ComandasDAOTest {
 
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                1L,
-                "Taco de asada",
+                 8L,
+                "Taco de Prueba",
                 1,
                 "Sin tomate",
-                25.0,
-                25.0
+                30.0,
+                30.0
         ));
         ComandaDTO comanda1 = new ComandaDTO(
                 "OB-20260405-004",
                 LocalDateTime.now(),
                 itson.restaurantedtos.EstadoComanda.ABIERTA,
-                25.0,
+                30.0,
                 3,
                 null,
                 detalles

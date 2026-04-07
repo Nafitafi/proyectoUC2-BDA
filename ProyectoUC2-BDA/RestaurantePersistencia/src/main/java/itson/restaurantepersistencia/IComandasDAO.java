@@ -98,7 +98,7 @@ public interface IComandasDAO {
      * @throws PersistenciaException si hay un problema al consultar los datos
      * de la base de datos.
      */
-    public abstract List<Comanda> obtenerComandasParaReporte(LocalDateTime inicio, LocalDateTime fin) throws PersistenciaException;
+    public abstract List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws PersistenciaException;
 
     /**
      * Método que permite obtener el total acumulado de ventas en un rango de

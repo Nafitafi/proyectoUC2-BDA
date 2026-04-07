@@ -10,32 +10,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Clase entidad: DetallesComanda Representa los productos que correspondan a 
+ * Clase entidad: DetallesComanda Representa los productos que correspondan a
  * una comanda en la base de datos
  *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 @Entity
+@Table(name = "detalles_comandas")
 public class DetalleComanda implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_detalle_comanda")
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    @Column(name = "cantidad")
+    @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
-    @Column(name = "comentario")
+    @Column(name = "comentario",nullable = true)
     private String comentario;
 
     @ManyToOne
+    @JoinColumn(name = "id_comanda", nullable = false)
     private Comanda comanda;
 
     public DetalleComanda() {

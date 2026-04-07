@@ -2,19 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.ClienteFrecuente;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.DetalleComanda;
+import itson.restaurantedominio.EstadoComanda;
 import itson.restaurantedominio.Mesa;
+import itson.restaurantedominio.Producto;
 import itson.restaurantedtos.ComandaDTO;
 import itson.restaurantedtos.DetalleComandaDTO;
 import itson.restaurantepersistencia.adapters.EstadoComandaDTOAEstadoComandaAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,7 +25,8 @@ import javax.persistence.PersistenceException;
  * Clase que implementa la interfaz IComandasDAO.
  *
  * Esta clase se encarga de gestionar la persistencia de las comandas en la base
- * de datos, permitiendo su registro y consulta según los requerimientos del sistema.
+ * de datos, permitiendo su registro y consulta según los requerimientos del
+ * sistema.
  *
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
@@ -54,7 +55,7 @@ public class ComandasDAO implements IComandasDAO {
             comanda.setFechaHora(LocalDateTime.now());
             comanda.setEstado(EstadoComandaDTOAEstadoComandaAdapter.adaptar(comandaDTO.getEstado()));
             comanda.setFolio(comandaDTO.getFolio());
-            comanda.setTotalAcumulado(comandaDTO.getTotal());
+            comanda.setTotal(comandaDTO.getTotal());
 
             Mesa mesa = entityManager.createQuery(
                     "SELECT m FROM Mesa m WHERE m.numero = :numero", Mesa.class)
@@ -100,10 +101,12 @@ public class ComandasDAO implements IComandasDAO {
     }
 
     /**
-     * Método que permite obtener una comanda a partir de su identificador único.
+     * Método que permite obtener una comanda a partir de su identificador
+     * único.
      *
      * @param idComanda ID correspondiente a la comanda que se desea buscar.
-     * @return Objeto Comanda encontrado en la base de datos, o null si no existe.
+     * @return Objeto Comanda encontrado en la base de datos, o null si no
+     * existe.
      * @throws PersistenciaException si hay un problema al consultar los datos
      * de la base de datos.
      */
@@ -119,11 +122,12 @@ public class ComandasDAO implements IComandasDAO {
     }
 
     /**
-     * Método que permite verificar si existe una comanda activa (estado ABIERTA)
-     * asociada a una mesa específica.
+     * Método que permite verificar si existe una comanda activa (estado
+     * ABIERTA) asociada a una mesa específica.
      *
      * @param numeroMesa Número de la mesa que se desea verificar.
-     * @return true si la mesa tiene una comanda activa; false en caso contrario.
+     * @return true si la mesa tiene una comanda activa; false en caso
+     * contrario.
      * @throws PersistenciaException si hay un problema al consultar los datos
      * de la base de datos.
      */
@@ -168,11 +172,13 @@ public class ComandasDAO implements IComandasDAO {
                 SELECT m FROM Mesa m
                 WHERE m.numero NOT IN (
                     SELECT c.mesa.numero FROM Comanda c
-                    WHERE c.estado = 'ABIERTA'
+                    WHERE c.estado = :estado
                 )
             """;
 
-            return em.createQuery(consultaJPQL, Mesa.class).getResultList();
+            return em.createQuery(consultaJPQL, Mesa.class)
+                    .setParameter("estado", EstadoComanda.ABIERTA)
+                    .getResultList();
 
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
@@ -181,8 +187,9 @@ public class ComandasDAO implements IComandasDAO {
     }
 
     /**
-     * Método que permite contar la cantidad de comandas registradas en una fecha
-     * específica. Este método es utilizado para generar el consecutivo del folio.
+     * Método que permite contar la cantidad de comandas registradas en una
+     * fecha específica. Este método es utilizado para generar el consecutivo
+     * del folio.
      *
      * @param fecha Fecha de la cual se desea obtener el conteo de comandas.
      * @return número entero de comandas registradas en la fecha indicada.
@@ -195,7 +202,7 @@ public class ComandasDAO implements IComandasDAO {
             EntityManager em = ManejadorConexiones.crearEntityManager();
 
             LocalDateTime inicio = fecha.atStartOfDay();
-            LocalDateTime fin = fecha.plusDays(1).atStartOfDay();
+            LocalDateTime fin = fecha.atTime(23, 59, 59);
 
             String consultaJPQL = """
                 SELECT COUNT(c) FROM Comanda c
@@ -258,19 +265,23 @@ public class ComandasDAO implements IComandasDAO {
      * de la base de datos.
      */
     @Override
-    public Double obtenerTotalVentasPorRango(LocalDateTime inicio, LocalDateTime fin) throws PersistenciaException {
+    public Double obtenerTotalVentasPorRango(LocalDate inicio, LocalDate fin) throws PersistenciaException {
         try {
             EntityManager em = ManejadorConexiones.crearEntityManager();
 
+            LocalDateTime inicioDateTime = inicio.atStartOfDay();
+            LocalDateTime finDateTime = fin.atTime(23, 59, 59);
             String consultaJPQL = """
-                SELECT SUM(c.total) FROM Comanda c
-                WHERE c.fechaHora BETWEEN :inicio AND :fin
-                AND c.estado = 'ENTREGADA'
-            """;
+               
+                    SELECT SUM(c.total) FROM Comanda c
+                    WHERE c.fechaHora BETWEEN :inicio AND :fin
+                    AND c.estado = :estado
+                """;
 
             Double total = em.createQuery(consultaJPQL, Double.class)
-                    .setParameter("inicio", inicio)
-                    .setParameter("fin", fin)
+                    .setParameter("inicio", inicioDateTime)
+                    .setParameter("fin", finDateTime)
+                    .setParameter("estado", EstadoComanda.ENTREGADA)
                     .getSingleResult();
 
             return total != null ? total : 0.0;
@@ -281,7 +292,7 @@ public class ComandasDAO implements IComandasDAO {
         }
     }
 
-     /**
+    /**
      * Método que permite obtener las comandas necesarias para la generación de
      * reportes, incluyendo información de mesa y cliente.
      *
@@ -296,4 +307,5 @@ public class ComandasDAO implements IComandasDAO {
     public List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }

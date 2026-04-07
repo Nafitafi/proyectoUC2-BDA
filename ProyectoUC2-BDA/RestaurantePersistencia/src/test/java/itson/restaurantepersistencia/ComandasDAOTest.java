@@ -180,8 +180,8 @@ public class ComandasDAOTest {
     @Test
     public void testObtenerTotalVentasPorRango() throws PersistenciaException {
 
-        LocalDateTime inicio = LocalDateTime.now().minusDays(1);
-        LocalDateTime fin = LocalDateTime.now().plusDays(1);
+        LocalDate inicio = LocalDate.now().minusDays(1);
+        LocalDate fin = LocalDate.now().plusDays(1);
 
         assertDoesNotThrow(() -> {
             Double total = comandasDAO.obtenerTotalVentasPorRango(inicio, fin);

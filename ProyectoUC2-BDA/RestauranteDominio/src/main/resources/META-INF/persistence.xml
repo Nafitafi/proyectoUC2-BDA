@@ -11,7 +11,6 @@
     <class>itson.restaurantedominio.DetalleComanda</class>
     <class>itson.restaurantedominio.Producto</class>
     
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
     <class>itson.restaurantedominio.DetallesReceta</class><properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sistema_restaurante?createDatabaseIfNotExist=true"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

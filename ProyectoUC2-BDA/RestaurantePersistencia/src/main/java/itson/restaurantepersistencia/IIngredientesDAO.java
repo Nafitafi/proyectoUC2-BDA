@@ -88,4 +88,14 @@ public interface IIngredientesDAO {
      * de datos.
      */
     public abstract boolean exists(Ingrediente ingrediente) throws PersistenciaException;
+    
+    
+    /**
+     * Método que revisa si un ingrediente está siendo utilizado en algun producto.
+     * @param id el id del ingrediente a verificar
+     * @return true si el ingrediente existe en un producto, false en caso contrario.
+     * @throws PersistenciaException si existe un problema al conectar con la base
+     * de datos.
+     */
+    public abstract boolean existsEnProducto(Long id) throws PersistenciaException;
 }

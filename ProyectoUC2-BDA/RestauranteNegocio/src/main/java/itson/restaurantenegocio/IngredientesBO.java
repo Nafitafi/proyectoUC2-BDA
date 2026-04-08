@@ -11,6 +11,7 @@ import itson.restaurantepersistencia.IIngredientesDAO;
 import itson.restaurantepersistencia.IngredientesDAO;
 import itson.restaurantepersistencia.PersistenciaException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -119,6 +120,9 @@ public class IngredientesBO implements IIngredientesBO {
     @Override
     public Ingrediente eliminar(Long id) throws NegocioException {
         try {
+            if (existsEnProducto(id)){
+                throw new NegocioException("No es posible eliminar un ingrediente que es parte de una receta.");
+            }
             return ingredientesDAO.eliminar(id);
             
         } catch (PersistenciaException ex) {
@@ -206,6 +210,22 @@ public class IngredientesBO implements IIngredientesBO {
             return ingredientesDAO.exists(ingrediente);
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
+            throw new NegocioException("No fue posible consultar los ingredientes.");
+        }
+    }
+
+    /**
+     * Método que revisa si un ingrediente está siendo utilizado en algun producto.
+     * @param id el id del ingrediente a verificar
+     * @return true si el ingrediente existe en un producto, false en caso contrario.
+     * @throws NegocioException si existe un problema al conectar con la base
+     * de datos.
+     */
+    @Override
+    public boolean existsEnProducto(Long id) throws NegocioException {
+        try {
+            return ingredientesDAO.existsEnProducto(id);
+        } catch (PersistenciaException ex) {
             throw new NegocioException("No fue posible consultar los ingredientes.");
         }
     }

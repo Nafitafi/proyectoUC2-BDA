@@ -82,7 +82,12 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             
         } catch (NegocioException ex) {
             LOGGER.severe(ex.getMessage());
-            //todo
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "Error al acceder a los ingredientes: " + ex.getMessage(),
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
         
         tablaIngredientes.setModel(modelo);
@@ -557,7 +562,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(
                     this, 
-                    "Error al actualizar el ingrediente.",
+                    "Error al actualizar el ingrediente: Operación cancelada",
                     "Operación cancelada",
                     JOptionPane.INFORMATION_MESSAGE
                 );
@@ -665,7 +670,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 LOGGER.severe(ex.getMessage());
                 JOptionPane.showMessageDialog(
                    null, 
-                   "Error al eliminar el ingrediente", 
+                   "Error al eliminar el ingrediente: " + ex.getMessage(), 
                    "Error",
                    JOptionPane.ERROR_MESSAGE
                 );
@@ -719,7 +724,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                     LOGGER.severe(ex.getMessage());
                     JOptionPane.showMessageDialog(
                             this, 
-                            "Error al acceder a los ingredientes.",
+                            "Error al acceder a los ingredientes: " + ex.getMessage(),
                             "Error", 
                             JOptionPane.ERROR_MESSAGE
                     );

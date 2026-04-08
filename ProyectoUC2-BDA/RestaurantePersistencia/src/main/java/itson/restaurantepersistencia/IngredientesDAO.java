@@ -162,6 +162,10 @@ public class IngredientesDAO implements IIngredientesDAO{
         try {
             Ingrediente ingrediente = entityManager.find(Ingrediente.class, id);
             
+            if(existsEnProducto(id)){
+                throw new PersistenciaException("No es posible eliminar un ingrediente que es parte de una receta.");
+            }
+            
             if (ingrediente == null){
                 throw new PersistenciaException("No se encontró el ingrediente solicitado.");
             }
@@ -314,6 +318,34 @@ public class IngredientesDAO implements IIngredientesDAO{
             }
             
             return query.getSingleResult() > 0;
+        } catch (PersistenceException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar los ingredientes.");
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    /**
+     * Método que revisa si un ingrediente está siendo utilizado en algun producto.
+     * @param id el id del ingrediente a verificar
+     * @return true si el ingrediente existe en un producto, false en caso contrario.
+     * @throws PersistenciaException si existe un problema al conectar con la base
+     * de datos.
+     */
+    @Override
+    public boolean existsEnProducto(Long id) throws PersistenciaException {
+        EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+        try {
+            
+            String jpql = "SELECT COUNT(d) FROM DetallesReceta d WHERE d.ingrediente.idIngrediente = :idIngrediente";
+            
+            TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class)
+                .setParameter("idIngrediente", id);
+
+            
+            return query.getSingleResult() > 0;
+            
         } catch (PersistenceException ex){
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible consultar los ingredientes.");

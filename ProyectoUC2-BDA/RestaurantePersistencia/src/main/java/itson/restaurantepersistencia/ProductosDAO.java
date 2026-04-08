@@ -10,9 +10,9 @@ import itson.restaurantedominio.DetallesReceta;
 import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.EstadoProducto;
 import itson.restaurantedtos.NuevoProductoDTO;
-import itson.restaurantedtos.ProductoActualizadoDTO;
+import itson.restaurantedtos.ProductoDTO;
 import itson.restaurantedtos.TipoProducto;
-import itson.restaurantepersistencia.adapters.ProductoActualizadoDTOAProductoAdapter;
+import itson.restaurantepersistencia.adapters.ProductoDTOAProductoAdapter;
 import itson.restaurantepersistencia.adapters.ProductoNuevoDTOAProductoAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class ProductosDAO implements IProductosDAO {
     }
 
     @Override
-    public Producto actualizar(ProductoActualizadoDTO productoActualizar) throws PersistenciaException {
+    public Producto actualizar(ProductoDTO productoActualizar) throws PersistenciaException {
         if (productoActualizar == null || productoActualizar.getId() == null) {
             throw new PersistenciaException("Datos insuficientes para actualizar el producto.");
         }
@@ -91,7 +91,7 @@ public class ProductosDAO implements IProductosDAO {
                 throw new PersistenciaException("No se encontró el producto a actualizar.");
             }
 
-            Producto productoNuevosDatos = ProductoActualizadoDTOAProductoAdapter.adaptar(productoActualizar);
+            Producto productoNuevosDatos = ProductoDTOAProductoAdapter.adaptar(productoActualizar);
             if (productoNuevosDatos.getNombre() != null) {
                 if (productoNuevosDatos.getNombre().length() > 100) {
                     throw new PersistenciaException("El nombre no puede tener más de 100 caracteres.");
@@ -161,18 +161,18 @@ public class ProductosDAO implements IProductosDAO {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
         try {
             Producto producto = entityManager.find(Producto.class, idProducto);
-            
+
             if (producto == null || producto.getEstado() != itson.restaurantedominio.EstadoProducto.ACTIVO) {
                 return false;
             }
-            
+
             for (DetallesReceta pi : producto.getDetallesReceta()) {
                 if (pi.getIngrediente().getStock() < pi.getCantidadRequerida()) {
-                    return false; 
+                    return false;
                 }
             }
             return true;
-            
+
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible verificar la disponibilidad del producto.");
@@ -180,35 +180,17 @@ public class ProductosDAO implements IProductosDAO {
     }
 
     @Override
-    public List<Producto> buscarProductosActivosFiltro(String nombreParcial, TipoProducto categoria) throws PersistenciaException {
+    public List<Producto> buscarPorNombreActivos(String nombre) throws PersistenciaException {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
         try {
-            StringBuilder jpql = new StringBuilder("SELECT p FROM Producto p WHERE p.estado = :estado");
-            
-            if (nombreParcial != null && !nombreParcial.trim().isEmpty()) {
-                jpql.append(" AND LOWER(p.nombre) LIKE LOWER(:nombre)");
-            }
-            if (categoria != null) {
-                jpql.append(" AND p.tipo = :categoria");
-            }
-            
-            TypedQuery<Producto> query = entityManager.createQuery(jpql.toString(), Producto.class);
-            query.setParameter("estado", itson.restaurantedominio.EstadoProducto.ACTIVO);
-            
-            if (nombreParcial != null && !nombreParcial.trim().isEmpty()) {
-                query.setParameter("nombre", "%" + nombreParcial.trim() + "%");
-            }
-            
-            if (categoria != null) {
-                itson.restaurantedominio.TipoProducto categoriaDominio = 
-                    itson.restaurantedominio.TipoProducto.valueOf(categoria.name());
-                query.setParameter("categoria", categoriaDominio);
-            }
-            
+            String jpql = "SELECT p FROM Producto p WHERE p.estado = :estado AND LOWER(p.nombre) LIKE LOWER(:nombre)";
+            TypedQuery<Producto> query = entityManager.createQuery(jpql, Producto.class);
+            query.setParameter("estado", itson.restaurantedominio.EstadoProducto.ACTIVO); 
+            query.setParameter("nombre", "%" + nombre.trim() + "%");
             return query.getResultList();
-        }  catch (PersistenceException ex) {
+        } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("No fue posible consultar los productos.");
+            throw new PersistenciaException("No fue posible verificar la disponibilidad del producto.");
         }
     }
 
@@ -223,7 +205,7 @@ public class ProductosDAO implements IProductosDAO {
             }
 
             TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class).setParameter("nom", producto.getNombre()).setParameter("estado", itson.restaurantedominio.EstadoProducto.ACTIVO);
-            
+
             if (producto.getIdProducto() != null) {
                 query.setParameter("id", producto.getIdProducto());
             }
@@ -235,4 +217,58 @@ public class ProductosDAO implements IProductosDAO {
         }
     }
 
+    @Override
+    public void actualizarEstado(Long id, EstadoProducto nuevoEstado) throws PersistenciaException {
+        EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Producto producto = entityManager.find(Producto.class, id);
+            if (producto != null) {
+                itson.restaurantedominio.EstadoProducto estadoConvertido = itson.restaurantedominio.EstadoProducto.valueOf(nuevoEstado.name());
+                producto.setEstado(estadoConvertido);
+                entityManager.merge(producto);
+            }
+            entityManager.getTransaction().commit();
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible actualizar el estado del producto.");
+        }
+    }
+
+    @Override
+    public List<Producto> consultarTodosProductos() throws PersistenciaException {
+        EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+        try {
+            String jpql = "SELECT p FROM Producto p";
+            TypedQuery<Producto> query = entityManager.createQuery(jpql, Producto.class);
+            return query.getResultList();
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fué posible consultar los productos.");
+        }
+    }
+
+    @Override
+    public List<Producto> buscarPorTipo(TipoProducto tipo) throws PersistenciaException {
+        EntityManager entityManager = ManejadorConexiones.crearEntityManager();
+        try {
+            StringBuilder jpql = new StringBuilder("SELECT p FROM Producto p");
+
+            if (tipo != null) {
+                jpql.append(" WHERE p.tipo = :tipo");
+            }
+
+            TypedQuery<Producto> query = entityManager.createQuery(jpql.toString(), Producto.class);
+
+            if (tipo != null) {
+                itson.restaurantedominio.TipoProducto tipoDominio = itson.restaurantedominio.TipoProducto.valueOf(tipo.name());
+                query.setParameter("tipo", tipoDominio);
+            }
+
+            return query.getResultList();
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fué posible consultar los productos.");
+        }
+    }
 }

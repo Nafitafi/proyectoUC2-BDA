@@ -25,7 +25,8 @@ public class ProductoNuevoDTOAProductoAdapter {
 
         producto.setDescripcion(productoNuevo.getDescripcion());
         producto.setPrecio(productoNuevo.getPrecio());
-
+        producto.setImagen(productoNuevo.getImagen());
+        
         if (productoNuevo.getTipo() != null) {
             itson.restaurantedominio.TipoProducto tipoDominio
                     = itson.restaurantedominio.TipoProducto.valueOf(productoNuevo.getTipo().name());

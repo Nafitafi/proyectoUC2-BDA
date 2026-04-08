@@ -18,8 +18,6 @@ import java.util.List;
  */
 public interface IComandasBO {
 
-    
-       
     /**
      * Método que permite registrar una nueva comanda en el sistema.
      *
@@ -30,7 +28,7 @@ public interface IComandasBO {
      */
     public abstract Comanda guardar(ComandaDTO comandaDTO) throws NegocioException;
 
-     /**
+    /**
      * Método que verifica el calculo del total de una comanda.
      *
      *
@@ -38,9 +36,8 @@ public interface IComandasBO {
      * @return total calculado de la comanda
      * @throws NegocioException si no se cumplen las reglas de negocio.
      */
-    public double calcularTotal(List<DetalleComandaDTO> detalles) throws NegocioException ;
-    
-    
+    public double calcularTotal(List<DetalleComandaDTO> detalles) throws NegocioException;
+
     /**
      * Método que permite obtener una comanda a partir de su identificador.
      *
@@ -78,4 +75,15 @@ public interface IComandasBO {
      * @throws NegocioException si ocurre un error en la lógica de negocio.
      */
     public abstract Double obtenerTotalVentasPorRango(LocalDate inicio, LocalDate fin) throws NegocioException;
+
+    /**
+     * Genera el reporte de comandas en un rango de fechas.
+     *
+     * @param inicio fecha inicial
+     * @param fin fecha final
+     * @return lista de comandas con datos completos
+     * @throws NegocioException si ocurre un error en la consulta
+     */
+    public abstract List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws NegocioException;
+
 }

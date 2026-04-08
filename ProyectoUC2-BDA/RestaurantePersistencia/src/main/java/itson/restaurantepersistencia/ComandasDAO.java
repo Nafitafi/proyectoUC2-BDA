@@ -58,7 +58,6 @@ public class ComandasDAO implements IComandasDAO {
                     throw new PersistenciaException("Producto no encontrado con ID: " + d.getIdProducto());
                 }
 
-                
                 total += producto.getPrecio() * d.getCantidad();
             }
 
@@ -117,7 +116,7 @@ public class ComandasDAO implements IComandasDAO {
 
                 double precioUnitario = producto.getPrecio();
                 double subtotal = precioUnitario * d.getCantidad();
-                
+
                 DetalleComanda detalle = new DetalleComanda();
                 detalle.setProducto(producto);
                 detalle.setCantidad(d.getCantidad());
@@ -342,19 +341,38 @@ public class ComandasDAO implements IComandasDAO {
     }
 
     /**
-     * Método que permite obtener las comandas necesarias para la generación de
-     * reportes, incluyendo información de mesa y cliente.
+     * Obtiene las comandas necesarias para la generación de reportes,
+     * incluyendo información de mesa y cliente.
      *
-     * @param inicio Fecha y hora de inicio del rango.
-     * @param fin Fecha y hora de fin del rango.
-     * @return Lista de objetos tipo Comanda con la información necesaria para
-     * reportes.
-     * @throws PersistenciaException si hay un problema al consultar los datos
-     * de la base de datos.
+     * @param inicio fecha de inicio del rango
+     * @param fin fecha de fin del rango
+     * @return lista de comandas con datos completos para reporte
+     * @throws PersistenciaException si ocurre un error en la consulta
      */
     @Override
     public List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            EntityManager em = ManejadorConexiones.crearEntityManager();
+
+            LocalDateTime inicioDateTime = inicio.atStartOfDay();
+            LocalDateTime finDateTime = fin.atTime(23, 59, 59);
+
+            String consultaJPQL = """
+            SELECT c FROM Comanda c
+            JOIN FETCH c.mesa
+            LEFT JOIN FETCH c.cliente
+            WHERE c.fechaHora BETWEEN :inicio AND :fin
+        """;
+
+            return em.createQuery(consultaJPQL, Comanda.class)
+                    .setParameter("inicio", inicioDateTime)
+                    .setParameter("fin", finDateTime)
+                    .getResultList();
+
+        } catch (PersistenceException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No se pudieron obtener las comandas para el reporte.");
+        }
     }
 
 }

@@ -19,7 +19,9 @@ import itson.restaurantenegocio.ClientesFrecuentesBO;
 import itson.restaurantenegocio.ComandasBO;
 import itson.restaurantenegocio.IClientesFrecuentesBO;
 import itson.restaurantenegocio.IComandasBO;
+import itson.restaurantenegocio.IProductosBO;
 import itson.restaurantenegocio.NegocioException;
+import itson.restaurantenegocio.ProductosBO;
 import itson.restaurantepersistencia.ClientesFrecuentesDAO;
 import itson.restaurantepersistencia.ComandasDAO;
 import itson.restaurantepersistencia.IClientesFrecuentesDAO;
@@ -34,6 +36,8 @@ public class ComandaControl {
     private final ComandasFORM comandaForm;
     private final IClientesFrecuentesBO clientesBO;
     private final IComandasBO comandasBO;
+    private final IProductosBO productosBO;
+    
     private static final Logger LOGGER = Logger.getLogger(ComandaControl.class.getName());
 
     /**
@@ -48,6 +52,7 @@ public class ComandaControl {
 
         this.clientesBO = new ClientesFrecuentesBO();
         this.comandasBO = new ComandasBO(comandasDAO);
+        this.productosBO = new ProductosBO();
 
         this.comandaForm = comandaForm;
 
@@ -146,7 +151,7 @@ public class ComandaControl {
      * @param confirmacionForm formulario de confirmación
      * @param comanda comanda registrada
      */
-    private void cargarDatosConfirmacion(ComandaEnviadaFORM confirmacionForm, Comanda comanda) {
+    private void cargarDatosConfirmacion(ComandaEnviadaFORM confirmacionForm, Comanda comanda) throws NegocioException {
         confirmacionForm.getLblFolio().setText(comanda.getFolio());
         confirmacionForm.getLblMesa().setText(String.valueOf(comanda.getMesa().getNumero()));
 

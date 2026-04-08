@@ -125,7 +125,6 @@ public class ComandasBO implements IComandasBO {
                     hoy,
                     EstadoComanda.ABIERTA,
                     calcularTotal(comandaDTO.getDetalles())
-                    
             );
 
             return comandasDAO.guardar(nuevaComanda);
@@ -217,4 +216,22 @@ public class ComandasBO implements IComandasBO {
             throw new NegocioException("Error al calcular ventas.", ex);
         }
     }
+
+    /**
+     * Genera el reporte de comandas en un rango de fechas.
+     *
+     * @param inicio fecha inicial
+     * @param fin fecha final
+     * @return lista de comandas con datos completos
+     * @throws NegocioException si ocurre un error en la consulta
+     */
+    @Override
+    public List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws NegocioException {
+        try {
+            return comandasDAO.obtenerComandasParaReporte(inicio, fin);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("Error al generar reporte de comandas", ex);
+        }
+    }
+
 }

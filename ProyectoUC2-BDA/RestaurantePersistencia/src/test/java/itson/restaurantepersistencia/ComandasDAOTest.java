@@ -7,9 +7,10 @@ package itson.restaurantepersistencia;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedtos.ComandaDTO;
 import itson.restaurantedtos.DetalleComandaDTO;
+import itson.restaurantedtos.EstadoComanda;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,26 +35,24 @@ public class ComandasDAOTest {
     @Test
     public void testGuardarComanda() throws PersistenciaException {
 
-        List<DetalleComandaDTO> detalles = new LinkedList<>();
-        detalles.add(new DetalleComandaDTO(
-                8L,
-                1,
-                "Sin tomate"
-        ));
+        List<DetalleComandaDTO> detalles = Arrays.asList(
+                new DetalleComandaDTO(201L, 3, "Sin cebolla"),
+                new DetalleComandaDTO(305L, 2, "Con hielo"));
+
         ComandaDTO comanda = new ComandaDTO(
-                "OB-20260405-001",
-                LocalDateTime.now(),
-                itson.restaurantedtos.EstadoComanda.ABIERTA,
-                30.0,
-                1,
-                null,
-                detalles
+                "OB-20260407-001",
+                5L,
+                101L,
+                detalles,
+                LocalDateTime.of(2026, 4, 7, 20, 15),
+                EstadoComanda.ABIERTA,
+                130.0
         );
 
         assertDoesNotThrow(() -> {
             Comanda comandaGuardada = comandasDAO.guardar(comanda);
             assertNotNull(comandaGuardada);
-            assertEquals("OB-20260405-001", comandaGuardada.getFolio());
+            assertEquals("OB-20260407-001", comandaGuardada.getFolio());
             assertEquals(150.0, comandaGuardada.getTotal());
             assertEquals(1, comandaGuardada.getMesa().getNumero());
         });
@@ -66,22 +65,18 @@ public class ComandasDAOTest {
     @Test
     public void testBuscarPorId() throws PersistenciaException {
 
-        // Primero guardamos una comanda
-        List<DetalleComandaDTO> detalles = new LinkedList<>();
-        detalles.add(new DetalleComandaDTO(
-                8L,
-                1,
-                "Sin tomate"
-        ));
+         List<DetalleComandaDTO> detalles = Arrays.asList(
+                new DetalleComandaDTO(201L, 3, "Sin cebolla"),
+                new DetalleComandaDTO(305L, 2, "Con hielo"));
 
         ComandaDTO comanda = new ComandaDTO(
-                "OB-20260405-002",
-                LocalDateTime.now(),
-                itson.restaurantedtos.EstadoComanda.ABIERTA,
-                30.0,
-                1,
-                null,
-                detalles
+                "OB-20260407-001",
+                5L,
+                101L,
+                detalles,
+                LocalDateTime.of(2026, 4, 7, 20, 15),
+                EstadoComanda.ABIERTA,
+                130.0
         );
 
         assertDoesNotThrow(() -> {
@@ -101,26 +96,23 @@ public class ComandasDAOTest {
     @Test
     public void testExisteComandaActivaPorMesa() throws PersistenciaException {
 
-        List<DetalleComandaDTO> detalles = new LinkedList<>();
-        detalles.add(new DetalleComandaDTO(
-                8L,
-                2,
-                "Sin tomate"
-        ));
-        ComandaDTO dto = new ComandaDTO(
-                "OB-20260405-003",
-                LocalDateTime.now(),
-                itson.restaurantedtos.EstadoComanda.ABIERTA,
-                60.0,
-                2,
-                null,
-                detalles
+         List<DetalleComandaDTO> detalles = Arrays.asList(
+                new DetalleComandaDTO(201L, 3, "Sin cebolla"),
+                new DetalleComandaDTO(305L, 2, "Con hielo"));
+
+        ComandaDTO comanda = new ComandaDTO(
+                "OB-20260407-001",
+                5L,
+                101L,
+                detalles,
+                LocalDateTime.of(2026, 4, 7, 20, 15),
+                EstadoComanda.ABIERTA,
+                130.0
         );
-
         assertDoesNotThrow(() -> {
-            comandasDAO.guardar(dto);
+            comandasDAO.guardar(comanda);
 
-            boolean existe = comandasDAO.existeComandaActivaPorMesa(2);
+            boolean existe = comandasDAO.existeComandaActivaPorMesa(5L);
 
             assertTrue(existe);
         });
@@ -137,24 +129,21 @@ public class ComandasDAOTest {
 
         int conteoAntes = comandasDAO.contarComandasPorFecha(hoy);
 
-        List<DetalleComandaDTO> detalles = new LinkedList<>();
-        detalles.add(new DetalleComandaDTO(
-                8L,
-                1,
-                "Sin tomate"
-        ));
-        ComandaDTO comanda1 = new ComandaDTO(
-                "OB-20260405-004",
-                LocalDateTime.now(),
-                itson.restaurantedtos.EstadoComanda.ABIERTA,
-                30.0,
-                3,
-                null,
-                detalles
-        );
+         List<DetalleComandaDTO> detalles = Arrays.asList(
+                new DetalleComandaDTO(201L, 3, "Sin cebolla"),
+                new DetalleComandaDTO(305L, 2, "Con hielo"));
 
+        ComandaDTO comanda = new ComandaDTO(
+                "OB-20260407-001",
+                5L,
+                101L,
+                detalles,
+                LocalDateTime.now(),
+                EstadoComanda.ABIERTA,
+                130.0
+        );
         assertDoesNotThrow(() -> {
-            comandasDAO.guardar(comanda1);
+            comandasDAO.guardar(comanda);
 
             int conteoDespues = comandasDAO.contarComandasPorFecha(hoy);
 

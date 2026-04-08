@@ -8,7 +8,6 @@ import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.Mesa;
 import itson.restaurantedtos.ComandaDTO;
 import itson.restaurantedtos.DetalleComandaDTO;
-import itson.restaurantepersistencia.PersistenciaException;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -14,41 +14,46 @@ import java.util.List;
 public class ComandaDTO {
 
     private String folio;
-    private LocalDateTime fechaHora;
-    private EstadoComanda estado;
-    private double total;
-    private int numeroMesa;
+    private Long idMesa;
     private Long idCliente;
     private List<DetalleComandaDTO> detalles;
 
-    public ComandaDTO(String folio, LocalDateTime fechaHora, EstadoComanda estado, double total, int numeroMesa, Long idCliente, List<DetalleComandaDTO> detalles) {
-        this.folio = folio;
-        this.fechaHora = fechaHora;
-        this.estado = estado;
-        this.total = total;
-        this.numeroMesa = numeroMesa;
+    private LocalDateTime fechahora;
+    private EstadoComanda estadoComanda;
+    private Double total;
+
+    public ComandaDTO() {
+    }
+
+    public ComandaDTO(Long idMesa, Long idCliente, List<DetalleComandaDTO> detalles) {
+        this.idMesa = idMesa;
         this.idCliente = idCliente;
         this.detalles = detalles;
+    }
+
+    public ComandaDTO(String folio, Long idMesa, Long idCliente, List<DetalleComandaDTO> detalles) {
+        this.folio = folio;
+        this.idMesa = idMesa;
+        this.idCliente = idCliente;
+        this.detalles = detalles;
+    }
+
+    public ComandaDTO(String folio, Long idMesa, Long idCliente, List<DetalleComandaDTO> detalles, LocalDateTime fechahora, EstadoComanda estadoComanda, Double total) {
+        this.folio = folio;
+        this.idMesa = idMesa;
+        this.idCliente = idCliente;
+        this.detalles = detalles;
+        this.fechahora = fechahora;
+        this.estadoComanda = estadoComanda;
+        this.total = total;
     }
 
     public String getFolio() {
         return folio;
     }
 
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
-    }
-
-    public EstadoComanda getEstado() {
-        return estado;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public int getNumeroMesa() {
-        return numeroMesa;
+    public Long getIdMesa() {
+        return idMesa;
     }
 
     public Long getIdCliente() {
@@ -59,7 +64,16 @@ public class ComandaDTO {
         return detalles;
     }
 
-    
-    
+    public LocalDateTime getFechahora() {
+        return fechahora;
+    }
+
+    public EstadoComanda getEstadoComanda() {
+        return estadoComanda;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
 
 }

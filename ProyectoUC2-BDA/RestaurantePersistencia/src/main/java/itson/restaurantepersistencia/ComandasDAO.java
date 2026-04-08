@@ -35,6 +35,41 @@ public class ComandasDAO implements IComandasDAO {
     private static final Logger LOGGER = Logger.getLogger(ComandasDAO.class.getName());
 
     /**
+     * Método que calcula el total de una comanda en base a los precios de los
+     * productos.
+     *
+     * @param detalles lista de los detalles de una comanda.
+     * @return total acumulado de la comanda.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    @Override
+    public Double calcularTotal(List<DetalleComandaDTO> detalles) throws PersistenciaException {
+        try {
+            EntityManager em = ManejadorConexiones.crearEntityManager();
+
+            Double total = 0.0;
+
+            for (DetalleComandaDTO d : detalles) {
+
+                Producto producto = em.find(Producto.class, d.getIdProducto());
+
+                if (producto == null) {
+                    throw new PersistenciaException("Producto no encontrado con ID: " + d.getIdProducto());
+                }
+
+                
+                total += producto.getPrecio() * d.getCantidad();
+            }
+
+            return total;
+
+        } catch (PersistenceException ex) {
+            throw new PersistenciaException("Error al calcular el total.", ex);
+        }
+    }
+
+    /**
      * Método que permite almacenar en la base de datos la información de una
      * comanda, incluyendo mesa, cliente (si aplica), fecha, estado, total y
      * detalles de los productos solicitados.
@@ -52,40 +87,53 @@ public class ComandasDAO implements IComandasDAO {
             entityManager.getTransaction().begin();
 
             Comanda comanda = new Comanda();
-            comanda.setFechaHora(LocalDateTime.now());
-            comanda.setEstado(EstadoComandaDTOAEstadoComandaAdapter.adaptar(comandaDTO.getEstado()));
-            comanda.setFolio(comandaDTO.getFolio());
-            comanda.setTotal(comandaDTO.getTotal());
 
-            Mesa mesa = entityManager.createQuery(
-                    "SELECT m FROM Mesa m WHERE m.numero = :numero", Mesa.class)
-                    .setParameter("numero", comandaDTO.getNumeroMesa())
-                    .getSingleResult();
+            comanda.setFechaHora(comandaDTO.getFechahora());
+            comanda.setEstado(EstadoComandaDTOAEstadoComandaAdapter.adaptar(comandaDTO.getEstadoComanda()));
+            comanda.setFolio(comandaDTO.getFolio());
+
+            Mesa mesa = entityManager.find(Mesa.class, comandaDTO.getIdMesa());
 
             comanda.setMesa(mesa);
 
-            if (comandaDTO.getIdCliente() != null) {
-                ClienteFrecuente cliente = entityManager.find(ClienteFrecuente.class, comandaDTO.getIdCliente());
-                comanda.setCliente(cliente);
+            ClienteFrecuente cliente = entityManager.find(ClienteFrecuente.class, comandaDTO.getIdCliente());
+
+            if (cliente == null) {
+                throw new PersistenciaException("Cliente no encontrado");
             }
 
+            comanda.setCliente(cliente);
+
             List<DetalleComanda> detalles = new LinkedList<>();
+            double total = 0;
 
             for (DetalleComandaDTO d : comandaDTO.getDetalles()) {
 
-                DetalleComanda detalle = new DetalleComanda();
-
                 Producto producto = entityManager.find(Producto.class, d.getIdProducto());
 
+                if (producto == null) {
+                    throw new PersistenciaException("Producto no encontrado: " + d.getIdProducto());
+                }
+
+                double precioUnitario = producto.getPrecio();
+                double subtotal = precioUnitario * d.getCantidad();
+                
+                DetalleComanda detalle = new DetalleComanda();
                 detalle.setProducto(producto);
                 detalle.setCantidad(d.getCantidad());
                 detalle.setComentario(d.getComentario());
+                detalle.setPrecio(precioUnitario);
+                detalle.setSubtotal(subtotal);
                 detalle.setComanda(comanda);
+
+                total += subtotal;
 
                 detalles.add(detalle);
             }
 
             comanda.setDetalles(detalles);
+
+            comanda.setTotal(total);
 
             entityManager.persist(comanda);
 
@@ -125,25 +173,26 @@ public class ComandasDAO implements IComandasDAO {
      * Método que permite verificar si existe una comanda activa (estado
      * ABIERTA) asociada a una mesa específica.
      *
-     * @param numeroMesa Número de la mesa que se desea verificar.
+     * @param idMesa id de la mesa que se desea verificar.
      * @return true si la mesa tiene una comanda activa; false en caso
      * contrario.
      * @throws PersistenciaException si hay un problema al consultar los datos
      * de la base de datos.
      */
     @Override
-    public boolean existeComandaActivaPorMesa(int numeroMesa) throws PersistenciaException {
+    public boolean existeComandaActivaPorMesa(Long idMesa) throws PersistenciaException {
         try {
             EntityManager em = ManejadorConexiones.crearEntityManager();
 
             String consultaJPQL = """
                 SELECT COUNT(c) FROM Comanda c
-                WHERE c.mesa.numero = :numeroMesa
-                AND c.estado = 'ABIERTA'
+                WHERE c.mesa.id = :idMesa
+                AND c.estado = :estado
             """;
 
             Long count = em.createQuery(consultaJPQL, Long.class)
-                    .setParameter("numeroMesa", numeroMesa)
+                    .setParameter("idMesa", idMesa)
+                    .setParameter("estado", EstadoComanda.ABIERTA)
                     .getSingleResult();
 
             return count > 0;
@@ -169,13 +218,13 @@ public class ComandasDAO implements IComandasDAO {
             EntityManager em = ManejadorConexiones.crearEntityManager();
 
             String consultaJPQL = """
-                SELECT m FROM Mesa m
-                WHERE m.numero NOT IN (
-                    SELECT c.mesa.numero FROM Comanda c
-                    WHERE c.estado = :estado
-                )
-            """;
-
+                    SELECT m FROM Mesa m
+                    WHERE NOT EXISTS (
+                         SELECT c FROM Comanda c
+                            WHERE c.mesa = m
+                            AND c.estado = :estado
+                      )   
+                    """;
             return em.createQuery(consultaJPQL, Mesa.class)
                     .setParameter("estado", EstadoComanda.ABIERTA)
                     .getResultList();

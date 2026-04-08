@@ -7,6 +7,7 @@ package itson.restaurantenegocio;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.Mesa;
 import itson.restaurantedtos.ComandaDTO;
+import itson.restaurantedtos.DetalleComandaDTO;
 import itson.restaurantepersistencia.PersistenciaException;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +31,17 @@ public interface IComandasBO {
      */
     public abstract Comanda guardar(ComandaDTO comandaDTO) throws NegocioException;
 
+     /**
+     * Método que verifica el calculo del total de una comanda.
+     *
+     *
+     * @param detalles lista de detalles de una comanda.
+     * @return total calculado de la comanda
+     * @throws NegocioException si no se cumplen las reglas de negocio.
+     */
+    public double calcularTotal(List<DetalleComandaDTO> detalles) throws NegocioException ;
+    
+    
     /**
      * Método que permite obtener una comanda a partir de su identificador.
      *

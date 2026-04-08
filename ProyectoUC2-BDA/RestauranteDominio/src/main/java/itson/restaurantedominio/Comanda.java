@@ -58,13 +58,23 @@ public class Comanda implements Serializable {
     }
 
     /**
-     * Constructor con todo menos id y comandas
+     * Constructor con todo menos id
+     * @param folio
+     * @param fechaHora
+     * @param estado
+     * @param total
+     * @param cliente
+     * @param mesa
+     * @param detalles
      */
-    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double total) {
+    public Comanda(String folio, LocalDateTime fechaHora, EstadoComanda estado, Double total, ClienteFrecuente cliente, Mesa mesa, List<DetalleComanda> detalles) {
         this.folio = folio;
         this.fechaHora = fechaHora;
         this.estado = estado;
         this.total = total;
+        this.cliente = cliente;
+        this.mesa = mesa;
+        this.detalles = detalles;
     }
 
     public Long getId() {

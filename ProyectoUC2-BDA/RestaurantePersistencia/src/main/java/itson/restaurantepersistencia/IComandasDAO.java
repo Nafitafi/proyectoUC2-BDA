@@ -7,8 +7,8 @@ package itson.restaurantepersistencia;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.Mesa;
 import itson.restaurantedtos.ComandaDTO;
+import itson.restaurantedtos.DetalleComandaDTO;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,6 +34,17 @@ public interface IComandasDAO {
     public abstract Comanda guardar(ComandaDTO comandaDTO) throws PersistenciaException;
 
     /**
+     * Método que calcula el total de una comanda en base a los precios de 
+     * los productos.
+     *
+     * @param detalles lista de los detalles de una comanda.
+     * @return total acumulado de la comanda.
+     * @throws PersistenciaException si hay un problema al consultar los datos
+     * de la base de datos.
+     */
+    public abstract Double calcularTotal(List<DetalleComandaDTO> detalles) throws PersistenciaException;
+    
+    /**
      * Método que permite obtener una comanda a partir de id.
      *
      * @param idComanda Id de la comanda que se desea buscar.
@@ -47,12 +58,12 @@ public interface IComandasDAO {
      * Método que permite verificar si existe una comanda activa (estado
      * ABIERTA) asociada a una mesa específica.
      *
-     * @param numeroMesa Número de la mesa que se desea verificar.
+     * @param idMesa id de la mesa que se desea verificar.
      * @return true si la mesa tiene una comanda activa, false si no.
      * @throws PersistenciaException si hay un problema al consultar los datos
      * de la base de datos.
      */
-    public abstract boolean existeComandaActivaPorMesa(int numeroMesa) throws PersistenciaException;
+    public abstract boolean existeComandaActivaPorMesa(Long idMesa) throws PersistenciaException;
 
     /**
      * Método que permite obtener una lista con las mesas disponibles.

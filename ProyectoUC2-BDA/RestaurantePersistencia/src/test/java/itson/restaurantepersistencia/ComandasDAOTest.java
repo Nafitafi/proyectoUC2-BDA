@@ -36,12 +36,9 @@ public class ComandasDAOTest {
 
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                 8L,
-                "Taco de Prueba",
+                8L,
                 1,
-                "Sin cebolla",
-                30.0,
-                30.0
+                "Sin tomate"
         ));
         ComandaDTO comanda = new ComandaDTO(
                 "OB-20260405-001",
@@ -73,11 +70,8 @@ public class ComandasDAOTest {
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
                 8L,
-                "Taco de Prueba",
                 1,
-                "Sin tomate",
-                30.0,
-                30.0
+                "Sin tomate"
         ));
 
         ComandaDTO comanda = new ComandaDTO(
@@ -109,12 +103,9 @@ public class ComandasDAOTest {
 
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                 8L,
-                "Taco de Prueba",
+                8L,
                 2,
-                "",
-                30.0,
-                60.0
+                "Sin tomate"
         ));
         ComandaDTO dto = new ComandaDTO(
                 "OB-20260405-003",
@@ -148,12 +139,9 @@ public class ComandasDAOTest {
 
         List<DetalleComandaDTO> detalles = new LinkedList<>();
         detalles.add(new DetalleComandaDTO(
-                 8L,
-                "Taco de Prueba",
+                8L,
                 1,
-                "Sin tomate",
-                30.0,
-                30.0
+                "Sin tomate"
         ));
         ComandaDTO comanda1 = new ComandaDTO(
                 "OB-20260405-004",

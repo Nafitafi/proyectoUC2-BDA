@@ -36,29 +36,39 @@ public class DetalleComanda implements Serializable {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
-    @Column(name = "comentario",nullable = true)
+    @Column(name = "comentario", nullable = true)
     private String comentario;
 
     @ManyToOne
     @JoinColumn(name = "id_comanda", nullable = false)
     private Comanda comanda;
 
+    @Column(name = "precio", nullable = false)
+    private Double precio;
+
+    @Column(name = "subtotal", nullable = false)
+    private double subtotal;
+
     public DetalleComanda() {
     }
 
-    public DetalleComanda(Producto producto, int cantidad, String comentario, Comanda comanda) {
-        this.producto = producto;
-        this.cantidad = cantidad;
-        this.comentario = comentario;
-        this.comanda = comanda;
-    }
-
-    public DetalleComanda(Long id, Producto producto, int cantidad, String comentario, Comanda comanda) {
+    public DetalleComanda(Long id, Producto producto, int cantidad, String comentario, Comanda comanda, Double precio, double subtotal) {
         this.id = id;
         this.producto = producto;
         this.cantidad = cantidad;
         this.comentario = comentario;
         this.comanda = comanda;
+        this.precio = precio;
+        this.subtotal = subtotal;
+    }
+
+    public DetalleComanda(Producto producto, int cantidad, String comentario, Comanda comanda, Double precio, double subtotal) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.comentario = comentario;
+        this.comanda = comanda;
+        this.precio = precio;
+        this.subtotal = subtotal;
     }
 
     public Long getId() {
@@ -101,6 +111,24 @@ public class DetalleComanda implements Serializable {
         this.comanda = comanda;
     }
 
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

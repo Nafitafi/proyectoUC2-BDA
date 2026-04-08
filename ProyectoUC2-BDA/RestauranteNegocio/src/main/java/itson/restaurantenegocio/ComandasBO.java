@@ -8,6 +8,7 @@ import itson.restaurantedominio.Comanda;
 import itson.restaurantedominio.Mesa;
 import itson.restaurantedtos.ComandaDTO;
 import itson.restaurantedtos.DetalleComandaDTO;
+import itson.restaurantedtos.EstadoComanda;
 import itson.restaurantepersistencia.IComandasDAO;
 import itson.restaurantepersistencia.PersistenciaException;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class ComandasBO implements IComandasBO {
     /**
      * Metodo que genera un folio para una comanda.
      *
-     * El formato del folio es: OB-YYYYMMDD-XXX,  XXX es un número consecutivo.
+     * El formato del folio es: OB-YYYYMMDD-XXX, XXX es un número consecutivo.
      *
      * @return folio generado.
      * @throws PersistenciaException si ocurre un error al consultar el
@@ -50,8 +51,33 @@ public class ComandasBO implements IComandasBO {
         String fecha = hoy.toString().replace("-", "");
 
         String folio = "OB-" + fecha + "-" + String.format("%03d", consecutivo);
-        
+
         return folio;
+    }
+
+    @Override
+    public double calcularTotal(List<DetalleComandaDTO> detalles) throws NegocioException {
+        try {
+
+            if (detalles == null || detalles.isEmpty()) {
+                throw new NegocioException("No se puede calcular el total sin productos.");
+            }
+
+            for (DetalleComandaDTO detalle : detalles) {
+                if (detalle.getCantidad() <= 0) {
+                    throw new NegocioException("Cantidad inválida en un producto.");
+                }
+
+                if (detalle.getIdProducto() == null) {
+                    throw new NegocioException("Producto inválido en detalle.");
+                }
+            }
+
+            return comandasDAO.calcularTotal(detalles);
+
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("Error al calcular el total.", ex);
+        }
     }
 
     /**
@@ -70,12 +96,8 @@ public class ComandasBO implements IComandasBO {
                 throw new NegocioException("La comanda debe tener al menos un producto.");
             }
 
-            if (comandasDAO.existeComandaActivaPorMesa(comandaDTO.getNumeroMesa())) {
+            if (comandasDAO.existeComandaActivaPorMesa(comandaDTO.getIdMesa())) {
                 throw new NegocioException("La mesa ya tiene una comanda activa.");
-            }
-
-            if (comandaDTO.getTotal() <= 0) {
-                throw new NegocioException("El total de una comanda no puede ser 0.");
             }
 
             //validar productos uno por uno
@@ -97,12 +119,13 @@ public class ComandasBO implements IComandasBO {
 
             ComandaDTO nuevaComanda = new ComandaDTO(
                     folio,
-                    hoy,
-                    comandaDTO.getEstado(),
-                    comandaDTO.getTotal(),
-                    comandaDTO.getNumeroMesa(),
+                    comandaDTO.getIdMesa(),
                     comandaDTO.getIdCliente(),
-                    comandaDTO.getDetalles()
+                    comandaDTO.getDetalles(),
+                    hoy,
+                    EstadoComanda.ABIERTA,
+                    calcularTotal(comandaDTO.getDetalles())
+                    
             );
 
             return comandasDAO.guardar(nuevaComanda);

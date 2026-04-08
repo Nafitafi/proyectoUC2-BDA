@@ -29,7 +29,7 @@ public interface IIngredientesDAO {
     /**
      * Método que busca un ingrediente existente que el usuario desea modificar 
      * y lo actualiza en la base de datos.
-     * @param ingredienteNuevo DTO con la información a actualizar del ingrediente.
+     * @param ingredienteActualizar DTO con la información a actualizar del ingrediente.
      * @return un objeto tipo Ingrediente que contiene los cambios reflejados 
      * en la base de datos.
      * @throws PersistenciaException si el ingrediente ya existe o si existe un problema 
@@ -52,13 +52,14 @@ public interface IIngredientesDAO {
      * Método que actualiza el stock de un ingrediente, busca su id y luego le resta
      * una cantidad determinada.
      * @param id id del ingrediente a actualizar.
-     * @param cantidad cantidad que desea restarsele al stock actual.
+     * @param cantidad cantidad que desea restarsele o sumarle al stock actual.
+     * @param operacion true para sumar la cantidad, false para restarla
      * @return un objeto tipo Ingrediente con el stock actualizado tal como se
      * reflejó en la base de datos.
      * @throws PersistenciaException si existe un problema al conectar con la base
      * de datos.
      */
-    public abstract Ingrediente desinventariar(Long id, Double cantidad) throws PersistenciaException;
+    public abstract Ingrediente gestionarInventario(Long id, Double cantidad, boolean operacion) throws PersistenciaException;
     
     /**
      * Método que consulta y regresa una lista con todos los ingredientes registrados

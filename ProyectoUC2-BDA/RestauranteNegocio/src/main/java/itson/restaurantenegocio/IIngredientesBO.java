@@ -29,7 +29,7 @@ public interface IIngredientesBO {
     /**
      * Método que busca un ingrediente existente que el usuario desea modificar 
      * y valida para después actualizarlo en la base de datos.
-     * @param ingredienteNuevo DTO con la información a actualizar del ingrediente.
+     * @param ingredienteActualizar DTO con la información a actualizar del ingrediente.
      * @return un objeto tipo Ingrediente que contiene los cambios reflejados 
      * en la base de datos.
      * @throws NegocioException si el ingrediente no cumple con las validaciones requeridas
@@ -58,7 +58,7 @@ public interface IIngredientesBO {
      * @throws NegocioException si el stock es insuficiente o si existe un problema 
      * al conectar con la base de datos.
      */
-    public abstract Ingrediente desinventariar(Long id, Double cantidad) throws NegocioException;
+    public abstract Ingrediente gestionarInventario(Long id, Double cantidad, boolean operacion) throws NegocioException;
     
     /**
      * Método que consulta y regresa una lista con todos los ingredientes registrados

@@ -146,7 +146,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "itson.restaurantedominio.Producto[ id=" + idProducto + " ]";
+        return nombre;
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi Figueroa
  */
 public class ProductoDTO {
     private Long id;

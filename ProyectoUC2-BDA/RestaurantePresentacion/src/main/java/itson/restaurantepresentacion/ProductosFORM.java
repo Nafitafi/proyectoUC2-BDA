@@ -4,17 +4,25 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedtos.EstadoProducto;
+import itson.restaurantedtos.ProductoDTO;
+import itson.restaurantenegocio.NegocioException;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 /**
  *
@@ -29,9 +37,73 @@ public class ProductosFORM extends javax.swing.JFrame {
      * Creates new form ProductosFORM
      */
     public ProductosFORM() {
+        control = new ProductosControl();
         initComponents();
+        configurarTabla();
+        cargarTablaProductos();
     }
+    /**
+     * Configura el renderizador y editor para las columnas especiales
+     */
+    private void configurarTabla() {
+        tblProductos.getColumnModel().getColumn(6).setCellRenderer(new RenderizadorAcciones());
+        tblProductos.getColumnModel().getColumn(6).setCellEditor((TableCellEditor) new EditorAcciones(new JCheckBox()));
+        tblProductos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof ImageIcon) {
+                    setIcon((ImageIcon) value);
+                    setText(""); 
+                } else {
+                    setIcon(null);
+                    setText((value != null) ? value.toString() : "Sin Imagen");
+                }
+            }
+        });
+        tblProductos.setRowHeight(50);
+    }
+    /**
+     * Llena la tabla con los datos de la BD de forma óptima
+     */
+    public void cargarTablaProductos() {
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+        if (tblProductos.isEditing()) {
+            tblProductos.getCellEditor().stopCellEditing();
+        }
+        
+        modelo.setRowCount(0); // Limpiar la tabla antes de cargar
 
+        try {
+            List<ProductoDTO> listaProductos = control.consultarTodosProductos();
+
+            for (ProductoDTO p : listaProductos) {
+                Object celdaImagen = "Sin Imagen"; 
+                if (p.getImagen() != null && p.getImagen().length > 0) {
+                    try {
+                        ImageIcon iconoOriginal = new ImageIcon(p.getImagen());
+                        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                        celdaImagen = new ImageIcon(imagenEscalada);
+                    } catch (Exception e) {
+                        logger.warning("No se pudo renderizar la imagen del producto ID: " + p.getId());
+                    }
+                }
+
+                // Armar la fila
+                Object[] fila = new Object[7];
+                fila[0] = p.getId();
+                fila[1] = celdaImagen; 
+                fila[2] = p.getNombre() != null ? p.getNombre() : "N/A";
+                fila[3] = p.getTipo() != null ? p.getTipo().name() : "N/A";
+                fila[4] = p.getPrecio() != null ? String.format("$%.2f", p.getPrecio()) : "$0.00";
+                fila[5] = p.getEstado() != null ? p.getEstado().name() : "N/A";
+                fila[6] = ""; 
+
+                modelo.addRow(fila);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,7 +207,7 @@ public class ProductosFORM extends javax.swing.JFrame {
                                 .addComponent(lblBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cbxFiltroTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                                 .addComponent(btnAgregarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(28, 28, 28))))
         );
@@ -153,7 +225,7 @@ public class ProductosFORM extends javax.swing.JFrame {
                     .addComponent(btnAgregarProducto))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 35, Short.MAX_VALUE))
+                .addGap(0, 59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,7 +249,97 @@ public class ProductosFORM extends javax.swing.JFrame {
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
+    /**
+     * Dibuja los botones en la celda de "Acciones"
+     */
+    private class RenderizadorAcciones extends DefaultTableCellRenderer {
 
+        private JPanel pnlAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        private JButton btnModificar = new JButton("Modificar");
+        private JButton btnEstado = new JButton();
+
+        public RenderizadorAcciones() {
+            pnlAcciones.add(btnModificar);
+            pnlAcciones.add(btnEstado);
+            pnlAcciones.setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            // Ajustar el color de fondo para que coincida con la tabla
+            if (isSelected) {
+                pnlAcciones.setBackground(table.getSelectionBackground());
+            } else {
+                pnlAcciones.setBackground(table.getBackground());
+            }
+            String estado = (String) table.getModel().getValueAt(row, 5);
+            if ("ACTIVO".equals(estado)) {
+                btnEstado.setText("Desactivar");
+            } else {
+                btnEstado.setText("Activar");
+            }
+
+            return pnlAcciones;
+        }
+    }
+
+    /**
+     * Da la funcionalidad de clic a los botones en la celda de "Acciones"
+     */
+    private class EditorAcciones extends DefaultCellEditor {
+
+        private JPanel pnlAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        private JButton btnModificar = new JButton("Modificar");
+        private JButton btnEstado = new JButton();
+
+        private Long idProductoActual;
+        private String estadoActual;
+
+        public EditorAcciones(JCheckBox checkBox) {
+            super(checkBox);
+            pnlAcciones.add(btnModificar);
+            pnlAcciones.add(btnEstado);
+            pnlAcciones.setOpaque(true);
+
+            btnModificar.addActionListener(e -> {
+                fireEditingStopped(); 
+                JOptionPane.showMessageDialog(pnlAcciones, "WIP" + idProductoActual);
+            });
+            btnEstado.addActionListener(e -> {
+                try {
+                    EstadoProducto nuevoEstado = "ACTIVO".equals(estadoActual) ? EstadoProducto.INACTIVO : EstadoProducto.ACTIVO;
+                    control.actualizarEstado(idProductoActual, nuevoEstado);
+                    cargarTablaProductos();
+
+                    JOptionPane.showMessageDialog(pnlAcciones, "Estado actualizado con éxito.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(pnlAcciones, "Error al cambiar estado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            idProductoActual = (Long) table.getModel().getValueAt(row, 0);
+            estadoActual = (String) table.getModel().getValueAt(row, 5);
+
+            if ("ACTIVO".equals(estadoActual)) {
+                btnEstado.setText("Desactivar");
+            } else {
+                btnEstado.setText("Activar");
+            }
+
+            pnlAcciones.setBackground(table.getSelectionBackground());
+            return pnlAcciones;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "";
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarProducto;

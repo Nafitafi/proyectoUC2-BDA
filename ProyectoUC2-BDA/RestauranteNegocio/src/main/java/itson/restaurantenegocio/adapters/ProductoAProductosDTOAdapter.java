@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi Figueroa
  */
 public class ProductoAProductosDTOAdapter {
     /**

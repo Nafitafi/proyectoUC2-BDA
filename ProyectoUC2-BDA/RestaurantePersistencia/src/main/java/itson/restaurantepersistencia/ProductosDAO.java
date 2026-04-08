@@ -152,7 +152,7 @@ public class ProductosDAO implements IProductosDAO {
             return producto;
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("No fue posible consultar el producto.");
+            throw new PersistenciaException("No fue posible consultar el producto de id: "+idProducto);
         }
     }
 
@@ -190,7 +190,7 @@ public class ProductosDAO implements IProductosDAO {
             return query.getResultList();
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("No fue posible verificar la disponibilidad del producto.");
+            throw new PersistenciaException("No fue posible consultar a los productos.");
         }
     }
 

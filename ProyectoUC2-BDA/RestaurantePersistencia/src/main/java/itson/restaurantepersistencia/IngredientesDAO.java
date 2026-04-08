@@ -170,10 +170,6 @@ public class IngredientesDAO implements IIngredientesDAO{
                 throw new PersistenciaException("No se encontró el ingrediente solicitado.");
             }
             
-            if (!exists(ingrediente)){
-                throw new PersistenciaException("El ingrediente no existe en la base de datos.");
-            }
-            
             entityManager.getTransaction().begin();
             entityManager.remove(ingrediente);
             entityManager.getTransaction().commit();

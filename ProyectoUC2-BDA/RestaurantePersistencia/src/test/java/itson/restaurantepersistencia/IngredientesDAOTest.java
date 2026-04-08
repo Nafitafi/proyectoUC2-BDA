@@ -5,11 +5,17 @@
 package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.Ingrediente;
+import itson.restaurantedominio.Producto;
+import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.IngredienteActualizadoDTO;
 import itson.restaurantedtos.IngredienteNuevoDTO;
+import itson.restaurantedtos.NuevoProductoDTO;
+import itson.restaurantedtos.TipoProducto;
 import itson.restaurantedtos.UnidadMedida;
 import itson.restaurantepersistencia.adapters.IngredienteNuevoDTOAIngredienteAdapter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -24,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class IngredientesDAOTest {
     private IIngredientesDAO ingredientesDAO;
+    private ProductosDAO productosDAO = new ProductosDAO();
+    
     public IngredientesDAOTest() {
     }
     
@@ -158,25 +166,26 @@ public class IngredientesDAOTest {
     }
     
     /**
-     * Test que verifica el funcionamiento del método desinventariar(Long id, Double cantidad) de la clase IngredientesDAO.
+     * Test que verifica el funcionamiento del método gestionarInventario(Long id, Double cantidad, boolean operacion) 
+     * de la clase IngredientesDAO.
      */
     @Test
     public void desinventariarTest(){
         Exception e;
         
-        //no va a dejar desinventariar si:
+        //no va a dejar gestionar el stock si:
         e = assertThrows(PersistenciaException.class, () -> {
             //el id no existe
-            ingredientesDAO.desinventariar(10L, 100.0);
+            ingredientesDAO.gestionarInventario(100L, 100.0,true);
             
             //cantidad nula
-            ingredientesDAO.desinventariar(7L, 0.0);
+            ingredientesDAO.gestionarInventario(1L, 0.0,true);
             
             //cantidad negativa
-            ingredientesDAO.desinventariar(7L, -10.0);
+            ingredientesDAO.gestionarInventario(1L, -10.0, true);
             
             //cantidad mayor al stock
-            ingredientesDAO.desinventariar(7L, 200.00);
+            ingredientesDAO.gestionarInventario(1L, 200.00, true);
             
         });
     }
@@ -236,10 +245,55 @@ public class IngredientesDAOTest {
         });
         
         
-       
+    }
+    
+    @Test
+    public void existsEnProducto(){
+        Exception e;
+        //Creamos un ingrediente
+        IngredienteNuevoDTO ingrediente1 = new IngredienteNuevoDTO(
+                "Gato sabroso",
+                UnidadMedida.PIEZAS,
+                12.0,
+                "https://superlavioleta.com/cdn/shop/products/lechuga.jpg?v=1775052689"
+        );
+        
+        assertDoesNotThrow(() -> {
+            
+            //Agregamos el ingrediente a la bd
+            Ingrediente ing1 = ingredientesDAO.agregar(ingrediente1);
+            Long id = ing1.getIdIngrediente();
+            
+            //En este caso no va a lanzar ningún error si se elimina
+            ingredientesDAO.eliminar(id);
+            
+        });
         
         
-        
+        e = assertThrows(PersistenciaException.class, () -> {
+            //Agregamos el ingrediente a la bd de nuevo 
+            Ingrediente ing2 = ingredientesDAO.agregar(ingrediente1);
+            
+            //Creamos una receta con el ingrediente
+            List<DetallesRecetaDTO> receta = new ArrayList<>();
+            receta.add(new DetallesRecetaDTO(ing2.getIdIngrediente(), 1.0));
+
+            //Creamos un producto para agregarle la receta creada anteriormente
+            String nombreUnico = "Tacos de Gato " + System.currentTimeMillis();
+            NuevoProductoDTO p1 = new NuevoProductoDTO();
+            p1.setNombre(nombreUnico);
+            p1.setPrecio(100.0);
+            p1.setTipo(TipoProducto.PLATILLO);
+            p1.setDetallesReceta(receta);
+            
+            productosDAO.guardar(p1);
+            
+            Long id = ing2.getIdIngrediente();
+           
+            //Ahora, como el ingrediente forma parte de una receta, va a lanzar uan excepción
+            ingredientesDAO.eliminar(id);
+        });
+            
     }
 }
 

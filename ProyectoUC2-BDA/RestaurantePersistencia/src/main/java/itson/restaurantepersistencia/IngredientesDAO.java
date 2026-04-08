@@ -194,24 +194,30 @@ public class IngredientesDAO implements IIngredientesDAO{
      * de datos.
      */
     @Override
-    public Ingrediente desinventariar(Long id, Double cantidad) throws PersistenciaException {
+    public Ingrediente gestionarInventario(Long id, Double cantidad, boolean operacion) throws PersistenciaException {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
         try {
             if (cantidad == null || cantidad <= 0){
-                throw new PersistenciaException("No fue posible desinventariar; cantidad nula o negativa");
+                    throw new PersistenciaException("No es posible gestionar el stock con una cantidad nula o negativa");
             }
             
             Ingrediente ingrediente = entityManager.find(Ingrediente.class, id);
             
             if (ingrediente == null){
-                throw new PersistenciaException("No se encontró el ingrediente solicitado.");
-            }
+                    throw new PersistenciaException("No se encontró el ingrediente solicitado.");
+                }
             
-            if (ingrediente.getStock() < cantidad){
-                throw new PersistenciaException("No fue posible desinventariar; "
-                        + "el stock actual es menor al requerido.");
-            } 
-            ingrediente.setStock(ingrediente.getStock()-cantidad);
+            if (operacion){
+                ingrediente.setStock(ingrediente.getStock()+cantidad);
+                
+            } else {
+
+                if (ingrediente.getStock() < cantidad){
+                    throw new PersistenciaException("No fue posible desinventariar; "
+                            + "el stock actual es menor al requerido.");
+                } 
+                ingrediente.setStock(ingrediente.getStock()-cantidad);
+            }
             
             entityManager.getTransaction().begin();
             entityManager.persist(ingrediente);

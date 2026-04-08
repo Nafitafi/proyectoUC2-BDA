@@ -138,15 +138,15 @@ public class IngredientesBO implements IIngredientesBO {
      * al conectar con la base de datos.
      */
     @Override
-    public Ingrediente desinventariar(Long id, Double cantidad) throws NegocioException {
+    public Ingrediente gestionarInventario(Long id, Double cantidad, boolean operacion) throws NegocioException {
         if (cantidad<0) {
-            throw new NegocioException("No es posible desinventariar una cantidad negativa.");
-        } else if (cantidad == 0) {
-            throw new NegocioException("No es posible desinventariar una cantidad de 0.");
-        }
+                throw new NegocioException("No es posible gestionar el stock con una cantidad negativa.");
+            } else if (cantidad == 0) {
+                throw new NegocioException("No es posible estionar el stock con una cantidad de 0.");
+            }
         
         try {
-            return ingredientesDAO.desinventariar(id, cantidad);
+            return ingredientesDAO.gestionarInventario(id, cantidad, operacion);
             
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());

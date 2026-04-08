@@ -5,15 +5,15 @@
 package itson.restaurantepersistencia.adapters;
 
 import itson.restaurantedominio.Producto;
-import itson.restaurantedtos.ProductoActualizadoDTO;
+import itson.restaurantedtos.ProductoDTO;
 
 /**
  *
  * @author nafbr
  */
-public class ProductoActualizadoDTOAProductoAdapter {
+public class ProductoDTOAProductoAdapter {
 
-    public static Producto adaptar(ProductoActualizadoDTO productoActualizar) {
+    public static Producto adaptar(ProductoDTO productoActualizar) {
         if (productoActualizar == null) {
             return null;
         }
@@ -27,7 +27,8 @@ public class ProductoActualizadoDTOAProductoAdapter {
 
         producto.setDescripcion(productoActualizar.getDescripcion());
         producto.setPrecio(productoActualizar.getPrecio());
-
+        producto.setImagen(productoActualizar.getImagen());
+        
         if (productoActualizar.getTipo() != null) {
             itson.restaurantedominio.TipoProducto tipoDominio
                     = itson.restaurantedominio.TipoProducto.valueOf(productoActualizar.getTipo().name());

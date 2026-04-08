@@ -7,7 +7,7 @@ package itson.restaurantepresentacion;
 import itson.restaurantedominio.Ingrediente;
 import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.IngredienteActualizadoDTO;
-import itson.restaurantedtos.ProductoActualizadoDTO;
+import itson.restaurantedtos.ProductoDTO;
 import itson.restaurantedtos.UnidadMedida;
 import itson.restaurantenegocio.IIngredientesBO;
 import itson.restaurantenegocio.IngredientesBO;
@@ -36,7 +36,7 @@ import javax.swing.table.TableRowSorter;
 public class BuscadorInventarioJDialog extends javax.swing.JDialog {
     IIngredientesBO ingredientesBO;
     DefaultTableModel modelo;
-    ProductoActualizadoDTO producto;
+    ProductoDTO producto;
     TableRowSorter<DefaultTableModel> buscador;
     boolean suficiente = false;
     private static final Logger LOGGER = Logger.getLogger(BuscadorInventarioJDialog.class.getName());
@@ -50,7 +50,7 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
      * @param producto objeto de ProductoDTO que va a validar si sus ingredientes están en
      * existencia. null en caso de que se desee utilizar el buscador por su cuenta.
      */
-    public BuscadorInventarioJDialog(java.awt.Frame parent, boolean modal, ProductoActualizadoDTO producto) {
+    public BuscadorInventarioJDialog(java.awt.Frame parent, boolean modal, ProductoDTO producto) {
         super(parent, modal);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

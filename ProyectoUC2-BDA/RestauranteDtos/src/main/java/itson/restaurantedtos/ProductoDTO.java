@@ -8,18 +8,19 @@ import java.util.List;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi Figueroa
  */
-public class ProductoActualizadoDTO {
+public class ProductoDTO {
     private Long id;
     private String nombre;
     private String descripcion;
     private Double precio;
     private TipoProducto tipo;
     private EstadoProducto estado;
+    private byte[] imagen;
     private List<DetallesRecetaDTO> detallesReceta;
 
-    public ProductoActualizadoDTO() {
+    public ProductoDTO() {
     }
 
     public Long getId() {
@@ -72,6 +73,14 @@ public class ProductoActualizadoDTO {
 
     public List<DetallesRecetaDTO> getDetallesReceta() {
         return detallesReceta;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
 
     public void setDetallesReceta(List<DetallesRecetaDTO> detallesReceta) {

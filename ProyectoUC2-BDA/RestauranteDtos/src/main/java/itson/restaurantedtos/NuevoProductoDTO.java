@@ -16,6 +16,7 @@ public class NuevoProductoDTO {
     private Double precio;
     private TipoProducto tipo;
     private List<DetallesRecetaDTO> detallesReceta;
+    private byte[] imagen;
 
     public NuevoProductoDTO() {
     }
@@ -62,6 +63,14 @@ public class NuevoProductoDTO {
 
     public List<DetallesRecetaDTO> getDetallesReceta() {
         return detallesReceta;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
 
     public void setDetallesReceta(List<DetallesRecetaDTO> detallesReceta) {

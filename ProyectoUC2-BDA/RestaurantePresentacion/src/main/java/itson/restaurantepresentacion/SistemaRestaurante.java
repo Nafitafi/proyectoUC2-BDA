@@ -19,10 +19,13 @@ public class SistemaRestaurante {
 //        ventana.setLocationRelativeTo(null);
 //        ventana.setVisible(true);
 
-    InventarioIngredientes v = new InventarioIngredientes();
-            v.setVisible(true);
-    }
-    
-    
+//    InventarioIngredientes v = new InventarioIngredientes();
+//            v.setVisible(true);
+//    }
+        ProductosFORM ventana = new ProductosFORM();
+        ProductosControl control = new ProductosControl();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
 
+    }
 }

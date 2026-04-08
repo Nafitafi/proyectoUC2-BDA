@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -47,6 +48,10 @@ public class Producto implements Serializable {
     @Column(name = "estado", nullable = false)
     private EstadoProducto estado;
 
+    @Lob //Large Object porque manejo un arreglo de Bytes
+    @Column(name = "imagen", nullable = true)
+    private byte[] imagen;
+    
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<DetallesReceta> detallesReceta;
 
@@ -117,6 +122,18 @@ public class Producto implements Serializable {
     }
 
     public List<DetallesReceta> getDetallesReceta() {
+        return detallesReceta;
+    }
+    
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    public List<DetallesReceta> getIngredientesRequeridos() {
         return detallesReceta;
     }
 

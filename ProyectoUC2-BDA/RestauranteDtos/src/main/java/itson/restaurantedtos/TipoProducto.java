@@ -6,7 +6,7 @@ package itson.restaurantedtos;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi FIgueroa
  */
 public enum TipoProducto {
     PLATILLO, BEBIDA, POSTRE, EXTRA

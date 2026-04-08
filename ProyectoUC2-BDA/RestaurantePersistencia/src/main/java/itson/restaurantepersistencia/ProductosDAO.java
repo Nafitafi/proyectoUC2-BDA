@@ -6,7 +6,7 @@ package itson.restaurantepersistencia;
 
 import itson.restaurantedominio.Ingrediente;
 import itson.restaurantedominio.Producto;
-import itson.restaurantedominio.ProductoIngredientes;
+import itson.restaurantedominio.DetallesReceta;
 import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.EstadoProducto;
 import itson.restaurantedtos.NuevoProductoDTO;
@@ -57,15 +57,15 @@ public class ProductosDAO implements IProductosDAO {
             if (existe(producto)) {
                 throw new PersistenciaException("Ya existe un producto activo con ese nombre.");
             }
-            List<ProductoIngredientes> receta = new ArrayList<>();
+            List<DetallesReceta> receta = new ArrayList<>();
             for (DetallesRecetaDTO detalle : productoNuevo.getDetallesReceta()) {
                 if (detalle.getCantidad() == null || detalle.getCantidad() <= 0) {
                     throw new PersistenciaException("La cantidad de los ingredientes debe ser mayor a cero.");
                 }
                 Ingrediente ingredienteRef = entityManager.getReference(Ingrediente.class, detalle.getIdIngrediente());
-                receta.add(new ProductoIngredientes(producto, ingredienteRef, detalle.getCantidad()));
+                receta.add(new DetallesReceta(producto, ingredienteRef, detalle.getCantidad()));
             }
-            producto.setIngredientesRequeridos(receta);
+            producto.setDetallesReceta(receta);
             entityManager.getTransaction().begin();
             entityManager.persist(producto);
             entityManager.getTransaction().commit();
@@ -119,13 +119,13 @@ public class ProductosDAO implements IProductosDAO {
             }
 
             if (productoActualizar.getDetallesReceta() != null && !productoActualizar.getDetallesReceta().isEmpty()) {
-                productoExistente.getIngredientesRequeridos().clear();
+                productoExistente.getDetallesReceta().clear();
                 for (DetallesRecetaDTO detalle : productoActualizar.getDetallesReceta()) {
                     if (detalle.getCantidad() == null || detalle.getCantidad() <= 0) {
                         throw new PersistenciaException("La cantidad de los ingredientes debe ser mayor a cero.");
                     }
                     Ingrediente ingredienteRef = entityManager.getReference(Ingrediente.class, detalle.getIdIngrediente());
-                    productoExistente.getIngredientesRequeridos().add(new ProductoIngredientes(productoExistente, ingredienteRef, detalle.getCantidad()));
+                    productoExistente.getDetallesReceta().add(new DetallesReceta(productoExistente, ingredienteRef, detalle.getCantidad()));
                 }
             }
 
@@ -166,7 +166,7 @@ public class ProductosDAO implements IProductosDAO {
                 return false;
             }
             
-            for (ProductoIngredientes pi : producto.getIngredientesRequeridos()) {
+            for (DetallesReceta pi : producto.getDetallesReceta()) {
                 if (pi.getIngrediente().getStock() < pi.getCantidadRequerida()) {
                     return false; 
                 }

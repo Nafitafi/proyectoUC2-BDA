@@ -12,11 +12,9 @@ import itson.restaurantenegocio.IIngredientesBO;
 import itson.restaurantenegocio.IngredientesBO;
 import itson.restaurantenegocio.NegocioException;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -254,6 +252,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
 
         pnlEncabezado = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         pnlFormulario = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
@@ -281,6 +280,13 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
 
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlEncabezadoLayout = new javax.swing.GroupLayout(pnlEncabezado);
         pnlEncabezado.setLayout(pnlEncabezadoLayout);
         pnlEncabezadoLayout.setHorizontalGroup(
@@ -288,13 +294,17 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             .addGroup(pnlEncabezadoLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(btnRegresar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBuscar)
+                .addGap(42, 42, 42))
         );
         pnlEncabezadoLayout.setVerticalGroup(
             pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEncabezadoLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(btnRegresar)
+                .addGroup(pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegresar)
+                    .addComponent(btnBuscar))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -713,11 +723,17 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDesinventariarActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        BuscadorInventarioJDialog buscador = new BuscadorInventarioJDialog(this, true, null);
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnDesinventariar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnImagen;

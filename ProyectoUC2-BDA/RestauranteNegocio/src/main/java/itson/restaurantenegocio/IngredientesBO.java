@@ -67,7 +67,7 @@ public class IngredientesBO implements IIngredientesBO {
     /**
      * Método que busca un ingrediente existente que el usuario desea modificar 
      * y valida para después actualizarlo en la base de datos.
-     * @param ingredienteNuevo DTO con la información a actualizar del ingrediente.
+     * @param ingredienteActualizar DTO con la información a actualizar del ingrediente.
      * @return un objeto tipo Ingrediente que contiene los cambios reflejados 
      * en la base de datos.
      * @throws NegocioException si el ingrediente no cumple con las validaciones requeridas
@@ -172,22 +172,16 @@ public class IngredientesBO implements IIngredientesBO {
     }
 
     /**
-     * Método que recibe un DTO de ingrediente y busca de acuerdo a los datos que 
-     * no son nulos.
-     * @param ingrediente DTO con información completa o parcial que el usuario desea
-     * consultar.
-     * @return una lista con las coincidencias de ingredientes de la búsqueda del usuario.
-     * @throws NegocioException si existe un problema al conectar con la base
+     * Método que busca un ingrediente por su id.
+     * @param id id del ingrediente a buscar.
+     * @return el ingrediente con el id del parámetro.
+     * @throws NegocioException si el id no existe o si existe un problema al conectar con la base
      * de datos.
      */
     @Override
-    public List<Ingrediente> buscar(IngredienteNuevoDTO ingrediente) throws NegocioException {
-        if (ingrediente == null){
-            recuperarIngredientes();
-        }
-        
+    public Ingrediente buscar(Long id) throws NegocioException {
         try {
-            return ingredientesDAO.buscar(ingrediente);
+            return ingredientesDAO.buscar(id);
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NegocioException("No fue posible consultar los ingredientes.");

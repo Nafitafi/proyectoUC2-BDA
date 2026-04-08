@@ -48,7 +48,7 @@ public class Producto implements Serializable {
     private EstadoProducto estado;
 
     @OneToMany(mappedBy = "producto", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<ProductoIngredientes> ingredientesRequeridos;
+    private List<DetallesReceta> detallesReceta;
 
     public Producto() {
     }
@@ -116,12 +116,12 @@ public class Producto implements Serializable {
         this.estado = estado;
     }
 
-    public List<ProductoIngredientes> getIngredientesRequeridos() {
-        return ingredientesRequeridos;
+    public List<DetallesReceta> getDetallesReceta() {
+        return detallesReceta;
     }
 
-    public void setIngredientesRequeridos(List<ProductoIngredientes> ingredientesRequeridos) {
-        this.ingredientesRequeridos = ingredientesRequeridos;
+    public void setDetallesReceta(List<DetallesReceta> detallesReceta) {
+        this.detallesReceta = detallesReceta;
     }
 
     @Override

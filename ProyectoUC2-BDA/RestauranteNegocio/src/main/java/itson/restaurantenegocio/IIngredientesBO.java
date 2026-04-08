@@ -70,15 +70,13 @@ public interface IIngredientesBO {
     public abstract List<Ingrediente> recuperarIngredientes() throws NegocioException;
     
     /**
-     * Método que recibe un DTO de ingrediente y busca de acuerdo a los datos que 
-     * no son nulos.
-     * @param ingrediente DTO con información completa o parcial que el usuario desea
-     * consultar.
-     * @return una lista con las coincidencias de ingredientes de la búsqueda del usuario.
-     * @throws NegocioException si existe un problema al conectar con la base
+     * Método que busca un ingrediente por su id.
+     * @param id id del ingrediente a buscar.
+     * @return el ingrediente con el id del parámetro.
+     * @throws NegocioException si el id no existe o si existe un problema al conectar con la base
      * de datos.
      */
-    public abstract List<Ingrediente> buscar(IngredienteNuevoDTO ingrediente) throws NegocioException;
+    public abstract Ingrediente buscar(Long id) throws NegocioException;
     
     /**
      * Método que toma un objeto ingrediente y lo compara con los ingredientes registrados en

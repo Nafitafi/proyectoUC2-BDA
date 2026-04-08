@@ -254,34 +254,24 @@ public class IngredientesDAO implements IIngredientesDAO{
     }
 
     /**
-     * Método que recibe un DTO de ingrediente y busca de acuerdo a los datos que 
-     * no son nulos.
-     * @param ingrediente DTO con información completa o parcial que el usuario desea
-     * consultar.
-     * @return una lista con las coincidencias de ingredientes de la búsqueda del usuario.
-     * @throws PersistenciaException si existe un problema al conectar con la base
+     * Método que busca un ingrediente por su id.
+     * @param id id del ingrediente a buscar.
+     * @return el ingrediente con el id del parámetro.
+     * @throws PersistenciaException si el id no existe o si existe un problema al conectar con la base
      * de datos.
      */
     @Override
-    public List<Ingrediente> buscar(IngredienteNuevoDTO ingrediente) throws PersistenciaException {
+    public Ingrediente buscar(Long id) throws PersistenciaException {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
         try {
             
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Ingrediente> consulta = builder.createQuery(Ingrediente.class);
-            Root<Ingrediente> ingredientes = consulta.from(Ingrediente.class);
-            
-            consulta.where(
-                builder.or(
-                    builder.equal(ingredientes.get("nombre"), ingrediente.getNombre()),
-                    builder.equal(ingredientes.get("unidad_medida"), ingrediente.getUnidadMedida()),
-                    builder.equal(ingredientes.get("stock_actual"), ingrediente.getStock()),
-                    builder.equal(ingredientes.get("imagen"), ingrediente.getImagen())
-                )
-            );
-            
-            return entityManager.createQuery(consulta).getResultList();
-            
+            Ingrediente ingrediente = entityManager.find(Ingrediente.class, id);
+
+            if (ingrediente != null){
+                return ingrediente;
+            } else {
+                throw new PersistenciaException("No se encontró un ingrediente con el id proporcionado.");
+            }
         } catch (PersistenceException ex){
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible consultar los ingredientes.");

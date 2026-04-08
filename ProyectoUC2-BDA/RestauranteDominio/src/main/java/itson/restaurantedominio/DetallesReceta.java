@@ -19,13 +19,13 @@ import javax.persistence.Table;
  * @author Nahomi Figueroa
  */
 @Entity
-@Table(name = "productos_ingredientes")
-public class ProductoIngredientes implements Serializable {
+@Table(name = "detalles_receta")
+public class DetallesReceta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto_ingrediente")
-    private Long idProductoIngrediente;
+    @Column(name = "id_detalles_receta")
+    private Long idDetalleReceta;
 
     @ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
@@ -38,29 +38,29 @@ public class ProductoIngredientes implements Serializable {
     @Column(name = "cantidad_requerida", nullable = false)
     private Double cantidadRequerida;
 
-    public ProductoIngredientes() {
+    public DetallesReceta() {
     }
     
-    public ProductoIngredientes(Producto producto, Ingrediente ingrediente, Double cantidadRequerida) {
+    public DetallesReceta(Producto producto, Ingrediente ingrediente, Double cantidadRequerida) {
         this.producto = producto;
         this.ingrediente = ingrediente;
         this.cantidadRequerida = cantidadRequerida;
     }
     
     public Long getId() {
-        return idProductoIngrediente;
+        return idDetalleReceta;
     }
 
     public void setId(Long id) {
-        this.idProductoIngrediente = id;
+        this.idDetalleReceta = id;
     }
 
-    public Long getIdProductoIngrediente() {
-        return idProductoIngrediente;
+    public Long getIdDetalleReceta() {
+        return idDetalleReceta;
     }
 
-    public void setIdProductoIngrediente(Long idProductoIngrediente) {
-        this.idProductoIngrediente = idProductoIngrediente;
+    public void setIdDetalleReceta(Long idDetalleReceta) {
+        this.idDetalleReceta = idDetalleReceta;
     }
 
     public Producto getProducto() {
@@ -90,18 +90,18 @@ public class ProductoIngredientes implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idProductoIngrediente != null ? idProductoIngrediente.hashCode() : 0);
+        hash += (idDetalleReceta != null ? idDetalleReceta.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductoIngredientes)) {
+        if (!(object instanceof DetallesReceta)) {
             return false;
         }
-        ProductoIngredientes other = (ProductoIngredientes) object;
-        if ((this.idProductoIngrediente == null && other.idProductoIngrediente != null) || (this.idProductoIngrediente != null && !this.idProductoIngrediente.equals(other.idProductoIngrediente))) {
+        DetallesReceta other = (DetallesReceta) object;
+        if ((this.idDetalleReceta == null && other.idDetalleReceta != null) || (this.idDetalleReceta != null && !this.idDetalleReceta.equals(other.idDetalleReceta))) {
             return false;
         }
         return true;
@@ -109,7 +109,7 @@ public class ProductoIngredientes implements Serializable {
 
     @Override
     public String toString() {
-        return "itson.restaurantedominio.ProductoIngredientes[ id=" + idProductoIngrediente + " ]";
+        return "itson.restaurantedominio.ProductoIngredientes[ id=" + idDetalleReceta + " ]";
     }
     
 }

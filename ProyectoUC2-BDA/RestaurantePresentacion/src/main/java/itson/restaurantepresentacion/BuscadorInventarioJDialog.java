@@ -284,7 +284,8 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
                 int modeloFila = tablaIngredientes.convertRowIndexToModel(fila);
                 Long idIngrediente = Long.valueOf(tablaIngredientes.getValueAt(modeloFila, 0).toString());
                 String nombre = tablaIngredientes.getValueAt(modeloFila, 1).toString();
-                UnidadMedida unidad = (UnidadMedida) tablaIngredientes.getValueAt(modeloFila, 2);
+                String unidadStr = tablaIngredientes.getValueAt(modeloFila, 2).toString();
+                UnidadMedida unidad = UnidadMedida.valueOf(unidadStr);
                 double stock = Double.valueOf(tablaIngredientes.getValueAt(modeloFila, 3).toString());
                 
                 IngredienteActualizadoDTO ingredienteNuevo = new IngredienteActualizadoDTO(
@@ -442,6 +443,8 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
                         "Error de Selección", 
                         JOptionPane.ERROR_MESSAGE
                 );
+            }else{
+                this.dispose();
             }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed

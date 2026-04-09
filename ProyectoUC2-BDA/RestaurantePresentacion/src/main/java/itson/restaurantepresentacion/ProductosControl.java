@@ -90,4 +90,28 @@ public class ProductosControl {
             throw new Exception(ex.getMessage(), ex);
         }
     }
+
+    /**
+     * Busca los productos activos que coincidan con el nombre proporcionado.
+     * * @param nombre El texto a buscar en el nombre del producto.
+     * @return Lista de ProductoDTO que coinciden con la búsqueda.
+     * @throws NegocioException Si ocurre un error en la capa de negocio.
+     */
+    public List<ProductoDTO> buscarPorNombreActivos(String nombre) throws NegocioException {
+        // productosBO debe estar instanciado en el constructor de tu controlador
+        return productosBO.buscarPorNombreActivos(nombre);
+    }
+
+    
+    public void abrirRegistroProducto(ProductosFORM vista) {
+        RegistroProductoFORM registroForm = new RegistroProductoFORM();
+        registroForm.setLocationRelativeTo(null); 
+        registroForm.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                vista.cargarTablaProductos(); 
+            }
+        });
+        registroForm.setVisible(true);
+    }
 }

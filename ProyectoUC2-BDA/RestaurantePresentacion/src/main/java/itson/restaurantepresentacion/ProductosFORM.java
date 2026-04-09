@@ -6,6 +6,7 @@ package itson.restaurantepresentacion;
 
 import itson.restaurantedtos.EstadoProducto;
 import itson.restaurantedtos.ProductoDTO;
+import itson.restaurantedtos.TipoProducto;
 import itson.restaurantenegocio.NegocioException;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -39,6 +40,7 @@ public class ProductosFORM extends javax.swing.JFrame {
     public ProductosFORM() {
         control = new ProductosControl();
         initComponents();
+        cbxFiltroTipo.addActionListener(e -> cargarTablaProductos());
         configurarTabla();
         cargarTablaProductos();
     }
@@ -48,6 +50,10 @@ public class ProductosFORM extends javax.swing.JFrame {
     private void configurarTabla() {
         tblProductos.getColumnModel().getColumn(6).setCellRenderer(new RenderizadorAcciones());
         tblProductos.getColumnModel().getColumn(6).setCellEditor((TableCellEditor) new EditorAcciones(new JCheckBox()));
+        tblProductos.getColumnModel().getColumn(6).setPreferredWidth(200);
+        tblProductos.getColumnModel().getColumn(6).setMinWidth(200);
+        tblProductos.getColumnModel().getColumn(0).setPreferredWidth(40);
+        tblProductos.getColumnModel().getColumn(0).setMaxWidth(40);
         tblProductos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
@@ -74,7 +80,15 @@ public class ProductosFORM extends javax.swing.JFrame {
         modelo.setRowCount(0); // Limpiar la tabla antes de cargar
 
         try {
-            List<ProductoDTO> listaProductos = control.consultarTodosProductos();
+            String filtroSeleccionado = (String) cbxFiltroTipo.getSelectedItem();
+            List<ProductoDTO> listaProductos;
+
+            if (filtroSeleccionado == null || filtroSeleccionado.equals("Todos")) {
+                listaProductos = control.consultarTodosProductos();
+            } else {
+                TipoProducto tipo = TipoProducto.valueOf(filtroSeleccionado);
+                listaProductos = control.buscarPorTipo(tipo);
+            }
 
             for (ProductoDTO p : listaProductos) {
                 Object celdaImagen = "Sin Imagen"; 
@@ -132,24 +146,25 @@ public class ProductosFORM extends javax.swing.JFrame {
 
         pnlBanner.setBackground(new java.awt.Color(254, 178, 26));
 
+        btnRegresar.setBackground(new java.awt.Color(237, 63, 39));
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
-        btnRegresar.addActionListener(this::btnRegresarActionPerformed);
 
         javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBannerLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(21, 21, 21)
                 .addComponent(btnRegresar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+            .addGroup(pnlBannerLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addComponent(btnRegresar)
-                .addGap(15, 15, 15))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         lblProductos.setBackground(new java.awt.Color(19, 70, 134));
@@ -157,16 +172,21 @@ public class ProductosFORM extends javax.swing.JFrame {
         lblProductos.setForeground(new java.awt.Color(19, 70, 134));
         lblProductos.setText("Productos");
 
+        btnBuscarProducto.setBackground(new java.awt.Color(19, 70, 134));
+        btnBuscarProducto.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarProducto.setText("Buscar producto por nombre");
         btnBuscarProducto.addActionListener(this::btnBuscarProductoActionPerformed);
 
-        cbxFiltroTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxFiltroTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "PLATILLO", "BEBIDA", "POSTRE", "EXTRA", " " }));
 
         lblBuscar.setFont(new java.awt.Font("Segoe UI Emoji", 2, 12)); // NOI18N
         lblBuscar.setForeground(new java.awt.Color(19, 70, 134));
-        lblBuscar.setText("Filtrar por tipo de platillo");
+        lblBuscar.setText("Filtrar por tipo:");
 
+        btnAgregarProducto.setBackground(new java.awt.Color(19, 70, 134));
+        btnAgregarProducto.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarProducto.setText("Agregar producto nuevo");
+        btnAgregarProducto.addActionListener(this::btnAgregarProductoActionPerformed);
 
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -203,11 +223,11 @@ public class ProductosFORM extends javax.swing.JFrame {
                             .addComponent(jScrollPane1)
                             .addGroup(pnlPrincipalLayout.createSequentialGroup()
                                 .addComponent(btnBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(85, 85, 85)
+                                .addComponent(lblBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cbxFiltroTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                                 .addComponent(btnAgregarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(28, 28, 28))))
         );
@@ -243,22 +263,67 @@ public class ProductosFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
-        // TODO add your handling code here:
+        BuscadorProductosJDialog buscador = new BuscadorProductosJDialog(this, true);
+        buscador.setVisible(true);
+        ProductoDTO producto = buscador.getProductoSeleccionado();
+        
+        if (producto != null) {
+            DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+            modelo.setRowCount(0); 
+            Object celdaImagen = "Sin Imagen"; 
+            if (producto.getImagen() != null && producto.getImagen().length > 0) {
+                try {
+                    ImageIcon iconoOriginal = new ImageIcon(producto.getImagen());
+                    Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                    celdaImagen = new ImageIcon(imagenEscalada);
+                } catch (Exception e) {
+                    logger.warning("No se pudo renderizar la imagen del producto ID: " + producto.getId());
+                }
+            }
+            modelo.addRow(new Object[]{
+                producto.getId(),
+                celdaImagen,
+                producto.getNombre() != null ? producto.getNombre() : "N/A",
+                producto.getTipo() != null ? producto.getTipo().name() : "N/A",
+                producto.getPrecio() != null ? String.format("$%.2f", producto.getPrecio()) : "$0.00",
+                producto.getEstado() != null ? producto.getEstado().name() : "N/A",
+                ""
+            });
+        } else {
+            cargarTablaProductos();
+        }
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnRegresarActionPerformed
+    private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
+        control.abrirRegistroProducto(this);
+    }//GEN-LAST:event_btnAgregarProductoActionPerformed
+
     /**
-     * Dibuja los botones en la celda de "Acciones"
+     * Método auxiliar para darle un diseño plano y moderno a los botones.
+     */
+    private void estilizarBoton(JButton boton, java.awt.Color colorFondo) {
+        boton.setBackground(colorFondo);
+        boton.setForeground(java.awt.Color.WHITE);
+        boton.setFocusPainted(false); 
+        boton.setBorderPainted(false); 
+        boton.setOpaque(true);
+        boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); // Cursor de manita jeje
+        boton.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+    }
+
+    /**
+     * Dibuja los botones en la celda de "Acciones".
      */
     private class RenderizadorAcciones extends DefaultTableCellRenderer {
 
-        private JPanel pnlAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        private JPanel pnlAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5)); 
         private JButton btnModificar = new JButton("Modificar");
         private JButton btnEstado = new JButton();
 
         public RenderizadorAcciones() {
+            estilizarBoton(btnModificar, new java.awt.Color(19, 70, 134)); 
+            estilizarBoton(btnEstado, java.awt.Color.GRAY); 
+
             pnlAcciones.add(btnModificar);
             pnlAcciones.add(btnEstado);
             pnlAcciones.setOpaque(true);
@@ -268,17 +333,19 @@ public class ProductosFORM extends javax.swing.JFrame {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            // Ajustar el color de fondo para que coincida con la tabla
             if (isSelected) {
                 pnlAcciones.setBackground(table.getSelectionBackground());
             } else {
                 pnlAcciones.setBackground(table.getBackground());
             }
+
             String estado = (String) table.getModel().getValueAt(row, 5);
             if ("ACTIVO".equals(estado)) {
                 btnEstado.setText("Desactivar");
+                btnEstado.setBackground(new java.awt.Color(237, 63, 39)); 
             } else {
                 btnEstado.setText("Activar");
+                btnEstado.setBackground(new java.awt.Color(46, 204, 113)); 
             }
 
             return pnlAcciones;
@@ -286,11 +353,11 @@ public class ProductosFORM extends javax.swing.JFrame {
     }
 
     /**
-     * Da la funcionalidad de clic a los botones en la celda de "Acciones"
+     * Da la funcionalidad de clic a los botones en la celda de "Acciones" y mantiene el estilo
      */
     private class EditorAcciones extends DefaultCellEditor {
 
-        private JPanel pnlAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        private JPanel pnlAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         private JButton btnModificar = new JButton("Modificar");
         private JButton btnEstado = new JButton();
 
@@ -299,20 +366,25 @@ public class ProductosFORM extends javax.swing.JFrame {
 
         public EditorAcciones(JCheckBox checkBox) {
             super(checkBox);
+            
+            estilizarBoton(btnModificar, new java.awt.Color(19, 70, 134));
+            estilizarBoton(btnEstado, java.awt.Color.GRAY);
+
             pnlAcciones.add(btnModificar);
             pnlAcciones.add(btnEstado);
             pnlAcciones.setOpaque(true);
 
             btnModificar.addActionListener(e -> {
                 fireEditingStopped(); 
-                JOptionPane.showMessageDialog(pnlAcciones, "WIP" + idProductoActual);
+                JOptionPane.showMessageDialog(pnlAcciones, "WIP " + idProductoActual);
             });
+            
             btnEstado.addActionListener(e -> {
+                fireEditingStopped();
                 try {
                     EstadoProducto nuevoEstado = "ACTIVO".equals(estadoActual) ? EstadoProducto.INACTIVO : EstadoProducto.ACTIVO;
                     control.actualizarEstado(idProductoActual, nuevoEstado);
                     cargarTablaProductos();
-
                     JOptionPane.showMessageDialog(pnlAcciones, "Estado actualizado con éxito.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(pnlAcciones, "Error al cambiar estado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -327,8 +399,10 @@ public class ProductosFORM extends javax.swing.JFrame {
 
             if ("ACTIVO".equals(estadoActual)) {
                 btnEstado.setText("Desactivar");
+                btnEstado.setBackground(new java.awt.Color(237, 63, 39)); 
             } else {
                 btnEstado.setText("Activar");
+                btnEstado.setBackground(new java.awt.Color(46, 204, 113)); 
             }
 
             pnlAcciones.setBackground(table.getSelectionBackground());

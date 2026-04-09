@@ -4,9 +4,7 @@
  */
 package itson.restaurantepresentacion;
 
-import itson.restaurantedtos.ClienteFrecuenteDTO;
-import itson.restaurantenegocio.ClientesFrecuentesBO;
-import itson.restaurantenegocio.NegocioException;
+import itson.restaurantedtos.ProductoDTO;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
@@ -16,83 +14,94 @@ import javax.swing.JScrollPane;
  *
  * @author nafbr
  */
-public class BuscadorClientesJDialog extends javax.swing.JDialog {
+public class BuscadorProductosJDialog extends javax.swing.JDialog {
 
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(BuscadorClientesJDialog.class.getName());
-    private ClientesFrecuentesBO clientesBO;
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(BuscadorProductosJDialog.class.getName());
+    private ProductosControl control;
     private DefaultListModel<String> modeloLista;
     private JPopupMenu popmCoincidencias;
     private javax.swing.JList<String> listCoincidencias;
-    private List<ClienteFrecuenteDTO> encontrados;
-    private ClienteFrecuenteDTO clienteSeleccionado = null;
+    private List<ProductoDTO> encontrados;
+    private ProductoDTO productoSeleccionado = null;
 
     /**
-     * Creates new form BuscadorClientesJDialog
+     * Creates new form BuscadorProductosJDialog
      */
-    public BuscadorClientesJDialog(java.awt.Frame parent, boolean modal) {
+    public BuscadorProductosJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
-        clientesBO = new ClientesFrecuentesBO();
+
+        control = new ProductosControl();
         popmCoincidencias = new JPopupMenu();
         modeloLista = new DefaultListModel<>();
         listCoincidencias = new javax.swing.JList<>(modeloLista);
+        listCoincidencias.setFixedCellHeight(30);
+        listCoincidencias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         JScrollPane scrllpLista = new JScrollPane(listCoincidencias);
+        scrllpLista.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         popmCoincidencias.add(scrllpLista);
-        txtClienteBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtProductoBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                String textoBusqueda = txtClienteBuscar.getText().trim();
+                String textoBusqueda = txtProductoBuscar.getText().trim();
                 int keyCode = evt.getKeyCode();
+
                 if (keyCode == java.awt.event.KeyEvent.VK_UP || keyCode == java.awt.event.KeyEvent.VK_DOWN) {
                     return;
                 }
+
                 if (textoBusqueda.length() >= 3) {
                     try {
                         modeloLista.clear();
-                        encontrados = clientesBO.buscarClientes(textoBusqueda);
+
+                        encontrados = control.buscarPorNombreActivos(textoBusqueda);
 
                         if (encontrados.isEmpty()) {
-                            modeloLista.addElement("¡No se encuentra registrado el cliente!");
+                            modeloLista.addElement("¡No se encuentra registrado el producto!");
                         } else {
-                            for (ClienteFrecuenteDTO c : encontrados) {
-                                modeloLista.addElement(c.getNombre() + " " + c.getApellidoP());
+                            for (ProductoDTO p : encontrados) {
+                                modeloLista.addElement(p.getNombre() + " - $" + String.format("%.2f", p.getPrecio()));
                             }
                         }
-
                         int altura = listCoincidencias.getPreferredSize().height + 10;
-                        int alturaFinal = Math.min(100, altura);
+                        int alturaFinal = Math.min(250, Math.max(50, altura)); 
 
-                        popmCoincidencias.setPopupSize(txtClienteBuscar.getWidth(), alturaFinal);
-                        popmCoincidencias.show(txtClienteBuscar, 0, txtClienteBuscar.getHeight());
-                        txtClienteBuscar.requestFocus();
-                    } catch (NegocioException ex) {
-                        System.out.println("Error en la búsqueda: " + ex.getMessage());
+                        int ancho = Math.max(txtProductoBuscar.getWidth(), 250);
+
+                        popmCoincidencias.setPopupSize(ancho, alturaFinal);
+                        popmCoincidencias.show(txtProductoBuscar, 0, txtProductoBuscar.getHeight());
+                        txtProductoBuscar.requestFocus();
+                    } catch (Exception ex) {
+                        LOGGER.warning("Error en la búsqueda de productos: " + ex.getMessage());
                     }
                 } else {
                     popmCoincidencias.setVisible(false);
                 }
             }
         });
-        
+
         listCoincidencias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int index = listCoincidencias.locationToIndex(evt.getPoint());
                 if (index >= 0 && encontrados != null && !encontrados.isEmpty()) {
-                    clienteSeleccionado = encontrados.get(index);
-                    dispose(); 
+                    if (encontrados.size() > index) {
+                        productoSeleccionado = encontrados.get(index);
+                        dispose();
+                    }
                 }
             }
-        });       
+        });
     }
-    
+
     /**
-     * Método que regresa el cliente seleccionado de la lista que se desplegó.
-     * 
-     * @return 
+     * Método que regresa el producto seleccionado de la lista que se desplegó.
+     *
+     * * @return ProductoDTO seleccionado o null si se canceló.
      */
-    public ClienteFrecuenteDTO getClienteSeleccionado() {
-        return clienteSeleccionado;
+    public ProductoDTO getProductoSeleccionado() {
+        return productoSeleccionado;
     }
 
     /**
@@ -108,17 +117,17 @@ public class BuscadorClientesJDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         panel1 = new java.awt.Panel();
         lblLupaImg = new javax.swing.JLabel();
-        txtClienteBuscar = new javax.swing.JTextField();
+        txtProductoBuscar = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Buscador de clientes");
+        setTitle("Buscador de productos");
 
         jPanel1.setBackground(new java.awt.Color(19, 70, 134));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Buscar cliente:");
+        jLabel1.setText("Buscar un producto:");
 
         panel1.setBackground(new java.awt.Color(188, 196, 201));
         panel1.setLayout(new java.awt.BorderLayout());
@@ -126,9 +135,9 @@ public class BuscadorClientesJDialog extends javax.swing.JDialog {
         lblLupaImg.setText("jLabel1");
         panel1.add(lblLupaImg, java.awt.BorderLayout.WEST);
 
-        txtClienteBuscar.setBackground(new java.awt.Color(188, 196, 201));
-        txtClienteBuscar.addActionListener(this::txtClienteBuscarActionPerformed);
-        panel1.add(txtClienteBuscar, java.awt.BorderLayout.CENTER);
+        txtProductoBuscar.setBackground(new java.awt.Color(188, 196, 201));
+        txtProductoBuscar.addActionListener(this::txtProductoBuscarActionPerformed);
+        panel1.add(txtProductoBuscar, java.awt.BorderLayout.CENTER);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(this::btnCancelarActionPerformed);
@@ -142,8 +151,8 @@ public class BuscadorClientesJDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(129, 129, 129)
                         .addComponent(btnCancelar)))
@@ -175,17 +184,18 @@ public class BuscadorClientesJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtClienteBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteBuscarActionPerformed
-        if (txtClienteBuscar.getText().trim().isEmpty()) {
-            clienteSeleccionado = null; // Nos aseguramos de que sea null
+    private void txtProductoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductoBuscarActionPerformed
+        if (txtProductoBuscar.getText().trim().isEmpty()) {
+            txtProductoBuscar = null; // Nos aseguramos de que sea null
             this.dispose(); // Cerramos la ventana
         }
-    }//GEN-LAST:event_txtClienteBuscarActionPerformed
+    }//GEN-LAST:event_txtProductoBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        clienteSeleccionado = null;
+        productoSeleccionado = null;
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -193,6 +203,6 @@ public class BuscadorClientesJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLupaImg;
     private java.awt.Panel panel1;
-    private javax.swing.JTextField txtClienteBuscar;
+    private javax.swing.JTextField txtProductoBuscar;
     // End of variables declaration//GEN-END:variables
 }

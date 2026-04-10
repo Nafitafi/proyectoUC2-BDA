@@ -34,7 +34,8 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         btnProductos = new javax.swing.JButton();
         btnIngredientes = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
-        btnReportes = new javax.swing.JButton();
+        btnReportesClientes = new javax.swing.JButton();
+        btnReportesComandas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,15 +87,27 @@ public class MenuAdminFORM extends javax.swing.JFrame {
             }
         });
 
-        btnReportes.setBackground(new java.awt.Color(19, 70, 134));
-        btnReportes.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        btnReportes.setForeground(new java.awt.Color(255, 255, 255));
-        btnReportes.setText("Reportes");
-        btnReportes.setToolTipText("");
-        btnReportes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(62, 120, 193), 3, true));
-        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+        btnReportesClientes.setBackground(new java.awt.Color(19, 70, 134));
+        btnReportesClientes.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnReportesClientes.setForeground(new java.awt.Color(255, 255, 255));
+        btnReportesClientes.setText("Reportes Clientes");
+        btnReportesClientes.setToolTipText("");
+        btnReportesClientes.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(62, 120, 193), 3, true));
+        btnReportesClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportesActionPerformed(evt);
+                btnReportesClientesActionPerformed(evt);
+            }
+        });
+
+        btnReportesComandas.setBackground(new java.awt.Color(19, 70, 134));
+        btnReportesComandas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnReportesComandas.setForeground(new java.awt.Color(255, 255, 255));
+        btnReportesComandas.setText("Reportes Comandas");
+        btnReportesComandas.setToolTipText("");
+        btnReportesComandas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(62, 120, 193), 3, true));
+        btnReportesComandas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesComandasActionPerformed(evt);
             }
         });
 
@@ -106,16 +119,14 @@ public class MenuAdminFORM extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReportesClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReportesComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                .addContainerGap(205, Short.MAX_VALUE)
-                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,9 +139,11 @@ public class MenuAdminFORM extends javax.swing.JFrame {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addGap(45, 45, 45)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReportesClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReportesComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -165,9 +178,13 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClientesActionPerformed
 
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+    private void btnReportesClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesClientesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnReportesActionPerformed
+    }//GEN-LAST:event_btnReportesClientesActionPerformed
+
+    private void btnReportesComandasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesComandasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportesComandasActionPerformed
 
     public JButton getBtnClientes() {
         return btnClientes;
@@ -185,9 +202,15 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         return btnProductos;
     }
 
-    public JButton getBtnReportes() {
-        return btnReportes;
+    public JButton getBtnReportesClientes() {
+        return btnReportesClientes;
     }
+
+    public JButton getBtnReportesComandas() {
+        return btnReportesComandas;
+    }
+
+   
 
     public JPanel getPanel() {
         return panel;
@@ -199,7 +222,8 @@ public class MenuAdminFORM extends javax.swing.JFrame {
     private javax.swing.JButton btnComandas;
     private javax.swing.JButton btnIngredientes;
     private javax.swing.JButton btnProductos;
-    private javax.swing.JButton btnReportes;
+    private javax.swing.JButton btnReportesClientes;
+    private javax.swing.JButton btnReportesComandas;
     private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

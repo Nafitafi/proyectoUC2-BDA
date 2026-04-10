@@ -7,7 +7,7 @@ package itson.restaurantedtos;
 import java.util.List;
 
 /**
- *
+ * Clase DTO que representa un producto que ya persiste en la base de datos
  * @author Nahomi Figueroa
  */
 public class ProductoDTO {

@@ -19,7 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- *
+ * Clase entidad: Producto Representa a los productos en la 
+ * base de datos.
  * @author Nahomi Figueroa
  */
 @Entity

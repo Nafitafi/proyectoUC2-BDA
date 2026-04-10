@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -376,7 +377,14 @@ public class ProductosFORM extends javax.swing.JFrame {
 
             btnModificar.addActionListener(e -> {
                 fireEditingStopped(); 
-                JOptionPane.showMessageDialog(pnlAcciones, "WIP " + idProductoActual);
+                JFrame ventana = control.abrirActualizarProducto(idProductoActual);
+                ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                        cargarTablaProductos(); 
+                    }
+                });
+                ventana.setVisible(true);
             });
             
             btnEstado.addActionListener(e -> {

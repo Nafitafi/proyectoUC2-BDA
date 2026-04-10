@@ -7,8 +7,9 @@ package itson.restaurantedtos;
 import java.util.List;
 
 /**
- *
- * @author nafbr
+ * Clase DTO para el registro de un nuevo producto.
+ * 
+ * @author Nahomi Figueroa
  */
 public class NuevoProductoDTO {
     private String nombre;

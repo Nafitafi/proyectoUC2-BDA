@@ -5,8 +5,8 @@
 package itson.restaurantedominio;
 
 /**
- *
- * @author nafbr
+ * Clase ENUM: Representa el estado de un producto.
+ * @author Nahomi Figueroa
  */
 public enum EstadoProducto {
     ACTIVO, INACTIVO

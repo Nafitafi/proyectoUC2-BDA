@@ -86,18 +86,16 @@ public class ProductosDAO implements IProductosDAO {
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
 
         try {
+            entityManager.getTransaction().begin();
             Producto productoExistente = entityManager.find(Producto.class, productoActualizar.getId());
             if (productoExistente == null) {
                 throw new PersistenciaException("No se encontró el producto a actualizar.");
             }
-
             Producto productoNuevosDatos = ProductoDTOAProductoAdapter.adaptar(productoActualizar);
+            
             if (productoNuevosDatos.getNombre() != null) {
                 if (productoNuevosDatos.getNombre().length() > 100) {
                     throw new PersistenciaException("El nombre no puede tener más de 100 caracteres.");
-                }
-                if (existe(productoNuevosDatos)) {
-                    throw new PersistenciaException("Ya existe otro producto activo con ese nombre.");
                 }
                 productoExistente.setNombre(productoNuevosDatos.getNombre());
             }
@@ -117,10 +115,13 @@ public class ProductosDAO implements IProductosDAO {
             if (productoNuevosDatos.getEstado() != null) {
                 productoExistente.setEstado(productoNuevosDatos.getEstado());
             }
+            if (productoNuevosDatos.getImagen() != null) {
+                productoExistente.setImagen(productoNuevosDatos.getImagen());
+            }
 
             if (productoActualizar.getDetallesReceta() != null && !productoActualizar.getDetallesReceta().isEmpty()) {
                 productoExistente.getDetallesReceta().clear();
-                for (DetallesRecetaDTO detalle : productoActualizar.getDetallesReceta()) {
+                for (itson.restaurantedtos.DetallesRecetaDTO detalle : productoActualizar.getDetallesReceta()) {
                     if (detalle.getCantidad() == null || detalle.getCantidad() <= 0) {
                         throw new PersistenciaException("La cantidad de los ingredientes debe ser mayor a cero.");
                     }
@@ -129,15 +130,13 @@ public class ProductosDAO implements IProductosDAO {
                 }
             }
 
-            entityManager.getTransaction().begin();
-            entityManager.merge(productoExistente);
             entityManager.getTransaction().commit();
 
             return productoExistente;
 
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("No fue posible actualizar el producto.");
+            throw new PersistenciaException("No fue posible actualizar el producto");
         }
     }
 

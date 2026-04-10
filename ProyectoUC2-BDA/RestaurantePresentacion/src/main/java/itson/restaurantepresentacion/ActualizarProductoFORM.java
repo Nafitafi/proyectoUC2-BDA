@@ -4,55 +4,111 @@
  */
 package itson.restaurantepresentacion;
 
+import itson.restaurantedominio.Ingrediente;
 import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.IngredienteActualizadoDTO;
-import itson.restaurantedtos.NuevoProductoDTO;
+import itson.restaurantedtos.ProductoDTO;
+import itson.restaurantenegocio.IIngredientesBO;
 import itson.restaurantenegocio.IProductosBO;
-import itson.restaurantenegocio.NegocioException;
+import itson.restaurantenegocio.IngredientesBO;
 import itson.restaurantenegocio.ProductosBO;
 import java.awt.Image;
-import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author nafbr
  */
-public class RegistroProductoFORM extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(RegistroProductoFORM.class.getName());
+public class ActualizarProductoFORM extends javax.swing.JFrame {
+
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ActualizarProductoFORM.class.getName());
     private byte[] imagenBytes = null;
     private IngredienteActualizadoDTO ingredienteSeleccionado = null;
-    private javax.swing.table.DefaultTableModel modeloTabla;
-    
+    private DefaultTableModel modeloTabla;
+    private Long idProductoActual;
+
     /**
-     * Creates new form RegistroProductoFORM
+     * Creates new form ActualizarProductoFORM
      */
-    public RegistroProductoFORM() {
+    public ActualizarProductoFORM(Long idProducto) {
+        this.idProductoActual = idProducto;
         initComponents();
-        this.setLocationRelativeTo(null); 
+        this.setLocationRelativeTo(null);
         modeloTabla = (javax.swing.table.DefaultTableModel) jTable1.getModel();
         lblIngredienteencontrado.setText("Ningún ingrediente seleccionado");
         txtCantidad.setText("");
+
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int fila = jTable1.rowAtPoint(evt.getPoint());
                 int columna = jTable1.columnAtPoint(evt.getPoint());
                 if (fila >= 0 && columna == 4) {
-                    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(null, 
+                    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(null,
                             "¿Quitar este ingrediente?", "Confirmar", javax.swing.JOptionPane.YES_NO_OPTION);
-                    
+
                     if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
                         modeloTabla.removeRow(fila);
                     }
                 }
             }
         });
+        cargarDatosProducto();
+    }
+
+    /**
+     * Método para cargar los datos del producto a editar en los campos del
+     * formulario.
+     */
+    private void cargarDatosProducto() {
+        try {
+            IProductosBO productosBO = new ProductosBO();
+            IIngredientesBO ingredientesBO = new IngredientesBO();
+
+            ProductoDTO producto = productosBO.obtenerProductoPorId(idProductoActual);
+
+            txtNombre.setText(producto.getNombre());
+            txtaDescripcion.setText(producto.getDescripcion());
+            txtPrecioVenta.setText(String.valueOf(producto.getPrecio()));
+            cbxTipo.setSelectedItem(producto.getTipo().toString());
+            cbxEstado.setSelectedItem(producto.getEstado());
+            imagenBytes = producto.getImagen();
+
+            if (imagenBytes != null) {
+                ImageIcon icono = new javax.swing.ImageIcon(imagenBytes);
+                Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), java.awt.Image.SCALE_SMOOTH);
+                lblImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+                lblImagen.setText("");
+            }
+            modeloTabla.setRowCount(0);
+
+            List<DetallesRecetaDTO> detalles = producto.getDetallesReceta();
+
+            if (detalles != null) {
+                for (DetallesRecetaDTO detalle : detalles) {
+                    Ingrediente ingredienteCompleto = ingredientesBO.buscar(detalle.getIdIngrediente());
+
+                    if (ingredienteCompleto != null) {
+                        modeloTabla.addRow(new Object[]{
+                            detalle.getIdIngrediente(),
+                            ingredienteCompleto.getNombre(),
+                            detalle.getCantidad(),
+                            ingredienteCompleto.getUnidadMedida(),
+                            "Borrar"
+                        });
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos del producto: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -68,7 +124,7 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         pnlBanner = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JButton();
         lblDatosGenerales = new javax.swing.JLabel();
-        lblAgregarProductos = new javax.swing.JLabel();
+        lblModificarProductos = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
@@ -90,10 +146,9 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         btnAgregarIngrediente = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        btnGuardarProducto = new javax.swing.JButton();
+        btnActualizarProducto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Registrar nuevo producto");
 
         pnlPrincipal.setBackground(new java.awt.Color(253, 244, 227));
 
@@ -110,7 +165,7 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
             .addGroup(pnlBannerLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(btnRegresar)
-                .addContainerGap(803, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,10 +180,10 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         lblDatosGenerales.setForeground(new java.awt.Color(19, 70, 134));
         lblDatosGenerales.setText("Datos generales:");
 
-        lblAgregarProductos.setBackground(new java.awt.Color(19, 70, 134));
-        lblAgregarProductos.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        lblAgregarProductos.setForeground(new java.awt.Color(19, 70, 134));
-        lblAgregarProductos.setText("Agregar producto nuevo");
+        lblModificarProductos.setBackground(new java.awt.Color(19, 70, 134));
+        lblModificarProductos.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        lblModificarProductos.setForeground(new java.awt.Color(19, 70, 134));
+        lblModificarProductos.setText("Modificar producto");
 
         lblNombre.setBackground(new java.awt.Color(19, 70, 134));
         lblNombre.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
@@ -217,10 +272,10 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable1);
 
-        btnGuardarProducto.setBackground(new java.awt.Color(19, 70, 134));
-        btnGuardarProducto.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardarProducto.setText("Guardar producto");
-        btnGuardarProducto.addActionListener(this::btnGuardarProductoActionPerformed);
+        btnActualizarProducto.setBackground(new java.awt.Color(19, 70, 134));
+        btnActualizarProducto.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizarProducto.setText("Actualizar producto");
+        btnActualizarProducto.addActionListener(this::btnActualizarProductoActionPerformed);
 
         javax.swing.GroupLayout pnlPrincipalLayout = new javax.swing.GroupLayout(pnlPrincipal);
         pnlPrincipal.setLayout(pnlPrincipalLayout);
@@ -272,12 +327,12 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
                                         .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(pnlPrincipalLayout.createSequentialGroup()
                         .addGap(340, 340, 340)
-                        .addComponent(btnGuardarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnActualizarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(47, Short.MAX_VALUE))
             .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlPrincipalLayout.createSequentialGroup()
                     .addGap(32, 32, 32)
-                    .addComponent(lblAgregarProductos)
+                    .addComponent(lblModificarProductos)
                     .addContainerGap(488, Short.MAX_VALUE)))
         );
         pnlPrincipalLayout.setVerticalGroup(
@@ -323,12 +378,12 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnGuardarProducto)
+                .addComponent(btnActualizarProducto)
                 .addGap(0, 12, Short.MAX_VALUE))
             .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlPrincipalLayout.createSequentialGroup()
                     .addGap(84, 84, 84)
-                    .addComponent(lblAgregarProductos)
+                    .addComponent(lblModificarProductos)
                     .addContainerGap(548, Short.MAX_VALUE)))
         );
 
@@ -348,6 +403,14 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtPrecioVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioVentaActionPerformed
+
     private void btnSeleccionarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarImagenActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png");
@@ -357,15 +420,15 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         if (fileChooser.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
             try {
                 java.io.File archivo = fileChooser.getSelectedFile();
-                imagenBytes = Files.readAllBytes(archivo.toPath());
-                
-                ImageIcon icono = new ImageIcon(imagenBytes);
-                Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), java.awt.Image.SCALE_SMOOTH);
-                
+                imagenBytes = java.nio.file.Files.readAllBytes(archivo.toPath());
+
+                javax.swing.ImageIcon icono = new javax.swing.ImageIcon(imagenBytes);
+                java.awt.Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), java.awt.Image.SCALE_SMOOTH);
+
                 lblImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
-                lblImagen.setText(""); 
+                lblImagen.setText("");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", JOptionPane.ERROR_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSeleccionarImagenActionPerformed
@@ -374,7 +437,7 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         BuscadorInventarioJDialog buscador = new BuscadorInventarioJDialog(this, true, null);
         ingredienteSeleccionado = buscador.getIngredienteSeleccionado();
         if (ingredienteSeleccionado != null) {
-            lblIngredienteencontrado.setText(ingredienteSeleccionado.getNombre() + " (" + ingredienteSeleccionado.getUnidadMedida()+ ")");
+            lblIngredienteencontrado.setText(ingredienteSeleccionado.getNombre() + " (" + ingredienteSeleccionado.getUnidadMedida() + ")");
         }
     }//GEN-LAST:event_btnBuscarIngredienteActionPerformed
 
@@ -388,50 +451,44 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ingresa la cantidad requerida.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         try {
-            float cantidad = Float.parseFloat(cantidadStr);
-            if (cantidad <= 0) throw new NumberFormatException();
-         
+            Double cantidad = Double.valueOf(cantidadStr);
+            if (cantidad <= 0) {
+                throw new NumberFormatException();
+            }
+
             for (int i = 0; i < modeloTabla.getRowCount(); i++) {
                 Long idExistente = (Long) modeloTabla.getValueAt(i, 0);
                 if (idExistente.equals(ingredienteSeleccionado.getIdIngrediente())) {
-                    JOptionPane.showMessageDialog(this, "Ese ingrediente ya está en la receta.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Ese ingrediente ya está en la receta.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             }
-            
+
             modeloTabla.addRow(new Object[]{
-                ingredienteSeleccionado.getIdIngrediente(), 
-                ingredienteSeleccionado.getNombre(), 
-                cantidad, 
-                ingredienteSeleccionado.getUnidadMedida(), 
+                ingredienteSeleccionado.getIdIngrediente(),
+                ingredienteSeleccionado.getNombre(),
+                cantidad,
+                ingredienteSeleccionado.getUnidadMedida(),
                 "Borrar"
             });
-            
+
             ingredienteSeleccionado = null;
             lblIngredienteencontrado.setText("Ningún ingrediente seleccionado");
             txtCantidad.setText("");
-            
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido mayor a 0.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido mayor a 0.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarIngredienteActionPerformed
 
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreActionPerformed
-
-    private void txtPrecioVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioVentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioVentaActionPerformed
-
-    private void btnGuardarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarProductoActionPerformed
+    private void btnActualizarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarProductoActionPerformed
         String nombre = txtNombre.getText().trim();
         String descripcion = txtaDescripcion.getText().trim();
         String precioStr = txtPrecioVenta.getText().trim();
-        
-        if(nombre.isEmpty() || precioStr.isEmpty() || modeloTabla.getRowCount() == 0) {
+
+        if (nombre.isEmpty() || precioStr.isEmpty() || modeloTabla.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "Nombre, Precio y al menos un ingrediente son obligatorios.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -444,50 +501,49 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
             }
 
             String tipoStr = cbxTipo.getSelectedItem().toString().toUpperCase();
+            String estadoStr = cbxEstado.getSelectedItem().toString().trim().toUpperCase();
             itson.restaurantedtos.TipoProducto tipoProducto = itson.restaurantedtos.TipoProducto.valueOf(tipoStr);
+            ProductoDTO productoActualizado = new ProductoDTO();
+            itson.restaurantedtos.EstadoProducto estadoEnum = itson.restaurantedtos.EstadoProducto.valueOf(estadoStr);
+            productoActualizado.setEstado(estadoEnum);
+            productoActualizado.setNombre(nombre);
+            productoActualizado.setDescripcion(descripcion);
+            productoActualizado.setPrecio(precio);
+            productoActualizado.setTipo(tipoProducto);
+            productoActualizado.setImagen(imagenBytes);
+            productoActualizado.setId(this.idProductoActual);
+            List<DetallesRecetaDTO> listaReceta = new ArrayList<>();
 
-            NuevoProductoDTO productoNuevo = new NuevoProductoDTO();
-            productoNuevo.setNombre(nombre);
-            productoNuevo.setDescripcion(descripcion);
-            productoNuevo.setPrecio(precio);
-            productoNuevo.setTipo(tipoProducto);
-            productoNuevo.setImagen(imagenBytes); 
-            
-            List<DetallesRecetaDTO> listaReceta = new java.util.ArrayList<>();
-            
             for (int i = 0; i < modeloTabla.getRowCount(); i++) {
                 Long idIngrediente = (Long) modeloTabla.getValueAt(i, 0);
-                Float cantidad = (Float) modeloTabla.getValueAt(i, 2); 
-                
+                Double cantidad = Double.valueOf(modeloTabla.getValueAt(i, 2).toString());
+
                 DetallesRecetaDTO detalle = new DetallesRecetaDTO();
                 detalle.setIdIngrediente(idIngrediente);
-                detalle.setCantidad(cantidad.doubleValue()); 
+                detalle.setCantidad(cantidad.doubleValue());
                 listaReceta.add(detalle);
             }
-            
-            productoNuevo.setDetallesReceta(listaReceta);
-            IProductosBO productosBO = new ProductosBO();
-            productosBO.agregarProducto(productoNuevo);
 
-            JOptionPane.showMessageDialog(this, "¡Producto guardado exitosamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            this.dispose(); 
+            productoActualizado.setDetallesReceta(listaReceta);
+            IProductosBO productosBO = new ProductosBO();
+            productosBO.modificarProducto(productoActualizado);
+            JOptionPane.showMessageDialog(this, "¡Producto actualizado exitosamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, "Seleccione un Tipo de Producto válido.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Aviso de Negocio", javax.swing.JOptionPane.WARNING_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnGuardarProductoActionPerformed
+    }//GEN-LAST:event_btnActualizarProductoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarProducto;
     private javax.swing.JButton btnAgregarIngrediente;
     private javax.swing.JButton btnBuscarIngrediente;
-    private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSeleccionarImagen;
     private javax.swing.JComboBox<String> cbxEstado;
@@ -495,13 +551,13 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblAgregarProductos;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblDatosGenerales;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblIngredienteencontrado;
+    private javax.swing.JLabel lblModificarProductos;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPrecioVenta;
     private javax.swing.JLabel lblReceta;

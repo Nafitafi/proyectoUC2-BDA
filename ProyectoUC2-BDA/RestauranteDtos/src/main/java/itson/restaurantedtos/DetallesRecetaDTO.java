@@ -5,8 +5,8 @@
 package itson.restaurantedtos;
 
 /**
- *
- * @author nafbr
+ * Clase DTO para el transporte de datos de una receta.
+ * @author Nahomi Figueroa.
  */
 public class DetallesRecetaDTO {
     private Long idIngrediente;

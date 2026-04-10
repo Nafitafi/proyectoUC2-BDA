@@ -15,7 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- *
+ * Clase entidad: Detalles receta.
+ * 
+ * Se encarga de la relación entre productos e ingredientes.
+ * 
  * @author Nahomi Figueroa
  */
 @Entity

@@ -11,7 +11,9 @@ import itson.restaurantedtos.TipoProducto;
 import itson.restaurantenegocio.IProductosBO;
 import itson.restaurantenegocio.NegocioException;
 import itson.restaurantenegocio.ProductosBO;
+import java.awt.Frame;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -93,6 +95,7 @@ public class ProductosControl {
 
     /**
      * Busca los productos activos que coincidan con el nombre proporcionado.
+     *
      * * @param nombre El texto a buscar en el nombre del producto.
      * @return Lista de ProductoDTO que coinciden con la búsqueda.
      * @throws NegocioException Si ocurre un error en la capa de negocio.
@@ -102,16 +105,30 @@ public class ProductosControl {
         return productosBO.buscarPorNombreActivos(nombre);
     }
 
-    
     public void abrirRegistroProducto(ProductosFORM vista) {
         RegistroProductoFORM registroForm = new RegistroProductoFORM();
-        registroForm.setLocationRelativeTo(null); 
+        registroForm.setLocationRelativeTo(null);
         registroForm.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                vista.cargarTablaProductos(); 
+                vista.cargarTablaProductos();
             }
         });
         registroForm.setVisible(true);
     }
+
+    /**
+     * Método para abrir la ventana de actualización de un producto específico.
+     *
+     * @param idProductoActual El ID del producto que se va a editar.
+     */
+    public JFrame abrirRegistroProducto(Frame padre) {
+        RegistroProductoFORM registro = new RegistroProductoFORM();
+        return registro;
+    }
+    
+    public JFrame abrirActualizarProducto(Long idProducto) {
+    ActualizarProductoFORM actualizar = new ActualizarProductoFORM(idProducto);
+    return actualizar; 
+}
 }

@@ -9,6 +9,7 @@ import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.NuevoProductoDTO;
 import itson.restaurantedtos.ProductoDTO;
 import itson.restaurantedtos.TipoProducto;
+import itson.restaurantenegocio.adapters.ProductoAProductosDTOAdapter;
 import static itson.restaurantenegocio.adapters.ProductoAProductosDTOAdapter.convertirAListaDTO;
 import itson.restaurantepersistencia.IProductosDAO;
 import itson.restaurantepersistencia.PersistenciaException;
@@ -26,6 +27,16 @@ public class ProductosBO implements IProductosBO {
     private static final Logger LOGGER = Logger.getLogger(ProductosBO.class.getName());
     private final IProductosDAO productosDAO = new ProductosDAO();
 
+    /**
+     * Registra un nuevo producto en el sistema validando las reglas de negocio
+     * pertinentes.
+     *
+     * @param productoNuevo Objeto DTO que contiene la información del producto
+     * a registrar.
+     * @return El Producto (entidad).
+     * @throws NegocioException Si los datos del producto no cumplen con las
+     * validaciones o ocurre un error en la capa de negocio.
+     */
     @Override
     public Producto agregarProducto(NuevoProductoDTO productoNuevo) throws NegocioException {
         if (productoNuevo == null) {
@@ -67,6 +78,16 @@ public class ProductosBO implements IProductosBO {
         }
     }
 
+    /**
+     * Actualiza la información o el estado de un producto ya existente en la
+     * base de datos.
+     *
+     * @param productoActualizar Objeto DTO con los datos actualizados del
+     * producto.
+     * @return El Producto tras aplicar los cambios.
+     * @throws NegocioException Si el producto no existe o si los nuevos datos
+     * invalidan las reglas de negocio.
+     */
     @Override
     public Producto modificarProducto(ProductoDTO productoActualizar) throws NegocioException {
         if (productoActualizar == null) {
@@ -111,20 +132,39 @@ public class ProductosBO implements IProductosBO {
         }
     }
 
+    /**
+     * Recupera la información detallada de un producto mediante su ID.
+     *
+     * @param idProducto ID del producto a buscar.
+     * @return Un ProductoDTO con la información del producto encontrado.
+     * @throws NegocioException Si no se encuentra un producto con el ID
+     * proporcionado.
+     */
     @Override
-    public Producto obtenerProductoPorId(Long idProducto) throws NegocioException {
+    public ProductoDTO obtenerProductoPorId(Long idProducto) throws NegocioException {
         if (idProducto == null || idProducto <= 0) {
             throw new NegocioException("El ID del producto proporcionado es inválido.");
         }
 
         try {
-            return productosDAO.buscarPorId(idProducto);
+            Producto producto = productosDAO.buscarPorId(idProducto);
+            return ProductoAProductosDTOAdapter.convertirADTO(producto);
         } catch (PersistenciaException ex) {
             LOGGER.severe("Error en negocio al consultar ID " + idProducto + ": " + ex.getMessage());
             throw new NegocioException(ex.getMessage(), ex);
         }
     }
 
+    /**
+     * Verifica si un producto está marcado como activo y si cuenta con el stock
+     * suficiente de sus ingredientes para ser procesado.
+     *
+     * @param idProducto Identificador único del producto a verificar.
+     * @return True si el producto está disponible y tiene stock, False en caso
+     * contrario.
+     * @throws NegocioException Si ocurre un error al consultar el inventario o
+     * el estado del producto.
+     */
     @Override
     public boolean verificarDisponibilidad(Long idProducto) throws NegocioException {
         if (idProducto == null || idProducto <= 0) {
@@ -139,11 +179,20 @@ public class ProductosBO implements IProductosBO {
         }
     }
 
+    /**
+     * Busca productos que se encuentren en estado activo y cuyo nombre o
+     * categoría coincidan con el criterio de búsqueda.
+     *
+     * @param nombre Cadena de texto para filtrar la búsqueda por coincidencia.
+     * @return Una lista de ProductoDTO que cumplen con los criterios de
+     * búsqueda.
+     * @throws NegocioException Si ocurre un error durante la consulta.
+     */
     @Override
     public List<ProductoDTO> buscarPorNombreActivos(String nombre) throws NegocioException {
         try {
             if (nombre == null || nombre.trim().isEmpty()) {
-                return new ArrayList<>(); // O puedes lanzar excepción/traer todos, según prefieras
+                return new ArrayList<>();
             }
             List<Producto> productos = productosDAO.buscarPorNombreActivos(nombre);
             return convertirAListaDTO(productos);
@@ -152,16 +201,32 @@ public class ProductosBO implements IProductosBO {
         }
     }
 
+    /**
+     * Recupera el catálogo completo de productos registrados en el sistema,
+     * independientemente de su estado.
+     *
+     * @return Una lista con todos los ProductoDTO existentes.
+     * @throws NegocioException Si ocurre un error al recuperar la información.
+     */
     @Override
     public List<ProductoDTO> obtenerTodosLosProductos() throws NegocioException {
         try {
             List<Producto> productos = productosDAO.consultarTodosProductos();
-            return convertirAListaDTO(productos); 
+            return convertirAListaDTO(productos);
         } catch (PersistenciaException ex) {
             throw new NegocioException("Error al obtener el catálogo de productos.", ex);
         }
     }
 
+    /**
+     * Filtra y recupera los productos pertenecientes a un tipo o categoría
+     * específica.
+     *
+     * @param tipo El TipoProducto por el cual se desea filtrar.
+     * @return Una lista de ProductoDTO que pertenecen al tipo especificado.
+     * @throws NegocioException Si el tipo de producto es nulo o ocurre un error
+     * en la búsqueda.
+     */
     @Override
     public List<ProductoDTO> buscarPorTipo(TipoProducto tipo) throws NegocioException {
         try {

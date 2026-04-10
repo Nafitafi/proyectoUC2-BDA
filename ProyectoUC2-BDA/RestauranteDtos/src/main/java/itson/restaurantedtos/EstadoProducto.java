@@ -5,8 +5,8 @@
 package itson.restaurantedtos;
 
 /**
- *
- * @author nafbr
+ * Clase ENUM: Estado de producto.
+ * @author Nahomi FIgueroa
  */
 public enum EstadoProducto {
     ACTIVO, INACTIVO

@@ -5,8 +5,8 @@
 package itson.restaurantedominio;
 
 /**
- *
- * @author nafbr
+ * Clase ENUM: Representa el tipo de producto o la categoria de este mismo.
+ * @author Nahomi Figueroa
  */
 public enum TipoProducto {
     PLATILLO, BEBIDA, POSTRE, EXTRA

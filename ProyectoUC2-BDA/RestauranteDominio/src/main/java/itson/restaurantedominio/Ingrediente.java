@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -37,8 +38,9 @@ public class Ingrediente implements Serializable {
     @Column(name = "stock_actual", nullable = false)
     private Double stock;
     
-    @Column(name = "imagen", nullable = true, length = 255)
-    private String imagen;
+    @Lob //Large Object porque manejo un arreglo de Bytes
+    @Column(name = "imagen", nullable = true)
+    private byte[] imagen;
 
     public Ingrediente() {
     }
@@ -49,14 +51,14 @@ public class Ingrediente implements Serializable {
         this.stock = stock;
     }
 
-    public Ingrediente(String nombre, UnidadMedida unidadMedida, Double stock, String imagen) {
+    public Ingrediente(String nombre, UnidadMedida unidadMedida, Double stock, byte[] imagen) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.stock = stock;
         this.imagen = imagen;
     }
     
-    public Ingrediente(Long idIngrediente, String nombre, UnidadMedida unidadMedida, Double stock, String imagen) {
+    public Ingrediente(Long idIngrediente, String nombre, UnidadMedida unidadMedida, Double stock, byte[] imagen) {
         this.idIngrediente = idIngrediente;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
@@ -96,11 +98,11 @@ public class Ingrediente implements Serializable {
         this.stock = stock;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
     

@@ -38,6 +38,7 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
     DefaultTableModel modelo;
     ProductoDTO producto;
     TableRowSorter<DefaultTableModel> buscador;
+    Long idSeleccionado = -1L;
     boolean suficiente = false;
     private static final Logger LOGGER = Logger.getLogger(BuscadorInventarioJDialog.class.getName());
     
@@ -81,11 +82,12 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
         tablaIngredientes.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 1) {
                     int fila = tablaIngredientes.getSelectedRow();
                     if (fila != -1) {
                         int modeloFila = tablaIngredientes.convertRowIndexToModel(fila);
-                        //todo
+                        Object idTabla = tablaIngredientes.getModel().getValueAt(modeloFila, 0);
+                        idSeleccionado = Long.valueOf(idTabla.toString());
                     }
                 }
             }
@@ -282,11 +284,11 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
         int fila = tablaIngredientes.getSelectedRow();
             if (fila != -1) {
                 int modeloFila = tablaIngredientes.convertRowIndexToModel(fila);
-                Long idIngrediente = Long.valueOf(tablaIngredientes.getValueAt(modeloFila, 0).toString());
-                String nombre = tablaIngredientes.getValueAt(modeloFila, 1).toString();
-                String unidadStr = tablaIngredientes.getValueAt(modeloFila, 2).toString();
+                Long idIngrediente = Long.valueOf(tablaIngredientes.getModel().getValueAt(modeloFila, 0).toString());
+                String nombre = tablaIngredientes.getModel().getValueAt(modeloFila, 1).toString();
+                String unidadStr = tablaIngredientes.getModel().getValueAt(modeloFila, 2).toString();
                 UnidadMedida unidad = UnidadMedida.valueOf(unidadStr);
-                double stock = Double.valueOf(tablaIngredientes.getValueAt(modeloFila, 3).toString());
+                double stock = Double.valueOf(tablaIngredientes.getModel().getValueAt(modeloFila, 3).toString());
                 
                 IngredienteActualizadoDTO ingredienteNuevo = new IngredienteActualizadoDTO(
                         idIngrediente,
@@ -436,7 +438,7 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
             }
             
         } else {
-            if (getIngredienteSeleccionado() == null){
+            if (getIngredienteSeleccionado() == null || idSeleccionado == -1){
                 JOptionPane.showMessageDialog(
                         this, 
                         "No se seleccionó ningún ingrediente.", 

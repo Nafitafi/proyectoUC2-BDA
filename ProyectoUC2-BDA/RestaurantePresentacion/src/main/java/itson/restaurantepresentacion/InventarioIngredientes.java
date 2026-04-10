@@ -12,7 +12,9 @@ import itson.restaurantenegocio.IIngredientesBO;
 import itson.restaurantenegocio.IngredientesBO;
 import itson.restaurantenegocio.NegocioException;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,6 +30,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,7 +39,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class InventarioIngredientes extends javax.swing.JFrame {
     private IIngredientesBO ingredientesBO = new IngredientesBO();
-    String imagen;
+    byte[] imagen = null;
+    private JComboBox<UnidadMedida> cmbMedidaNuevo = new JComboBox<>(UnidadMedida.values());
     private JTextField txtNombreNuevo = new JTextField(100);
     private JTextField txtCantidadNueva = new JTextField();
     private JRadioButton inventariar = new JRadioButton("Inventariar");
@@ -105,6 +110,48 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 }
             }
         });
+        
+        tablaIngredientes.setRowHeight(60);
+        
+        tablaIngredientes.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof byte[]) {
+                    byte[] bytes = (byte[]) value;
+                    if (bytes.length > 0) {
+                        ImageIcon icono = new ImageIcon(bytes);
+                        Image img = icono.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+                        setIcon(new ImageIcon(img));
+                        setText("");
+                    } else {
+                        setIcon(null);
+                        setText("Sin Imagen");
+                    }
+                } else if (value instanceof String) {
+                    ImageIcon iconoOriginal;
+                    String celda = value.toString();
+                    try {
+                        if (celda.startsWith("http")) {
+                            iconoOriginal = new ImageIcon(new java.net.URL(celda));
+                        } else {
+                            iconoOriginal = new ImageIcon(celda);
+                        }
+                        Image img = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+                        setIcon(new ImageIcon(img));
+                        setText("");
+                        
+                    } catch (MalformedURLException ex){
+                        LOGGER.severe(ex.getMessage());
+                        JOptionPane.showMessageDialog(
+                                this, 
+                                "Error al obtener la imagen: No se reconoce el URL.",
+                                "Error", 
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -121,28 +168,51 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         }
         
         txtCantidad.setText(tablaIngredientes.getValueAt(fila, 3).toString());
-        imagen = tablaIngredientes.getValueAt(fila, 4).toString();
-
-        pnlImagen.removeAll();
+        Object valorCelda =  tablaIngredientes.getValueAt(fila, 4);
         
-        if (!imagen.equalsIgnoreCase("sin imagen")){
-            try {
-                URL url = new URL (imagen);
-                JLabel lblImagen = new JLabel(new ImageIcon(ImageIO.read(url)));
+        pnlImagen.removeAll();
+        byte[] imagenBytes = null;
 
+        if (valorCelda instanceof byte[]) {
+            imagenBytes = (byte[]) valorCelda;
+        } 
+        else if (valorCelda instanceof String) {
+            try {
+                ImageIcon iconoOriginal;
+                String celda = valorCelda.toString();
+                if (celda.startsWith("http")) {
+                    iconoOriginal = new ImageIcon(new java.net.URL(celda));
+                } else {
+                    iconoOriginal = new ImageIcon(celda);
+                }
+                Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+                lblImagen.setIcon(new ImageIcon(imagenEscalada));
+                lblImagen.setText(""); 
                 pnlImagen.add(lblImagen);
-                pnlImagen.revalidate();
-                pnlImagen.repaint();
-           } catch (IOException ex) {
+            } catch (MalformedURLException ex){
                 LOGGER.severe(ex.getMessage());
                 JOptionPane.showMessageDialog(
-                   null, 
-                   "Error al recuperar la imagen del URL", 
-                   "Error en la imagen",
-                   JOptionPane.ERROR_MESSAGE
+                        this, 
+                        "Error al obtener la imagen: No se reconoce el URL.",
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE
                 );
             }
         }
+
+        if (imagenBytes != null && imagenBytes.length > 0) {
+            ImageIcon iconoOriginal = new ImageIcon(imagenBytes);
+            Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+            lblImagen.setIcon(new ImageIcon(imagenEscalada));
+            lblImagen.setText(""); 
+            pnlImagen.add(lblImagen);
+        } else {
+            lblImagen.setText("Sin imagen");
+        }
+        pnlImagen.revalidate();
+        pnlImagen.repaint();
     }
     
     /**
@@ -152,7 +222,15 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         txtNombre.setText("");
         cmbMedida.setSelectedIndex(0);
         txtCantidad.setText("");
-        imagen = "Sin imagen";
+        imagen = null;
+        lblImagen.setIcon(null); 
+        lblImagen.setText("Sin Imagen");
+
+        pnlImagen.removeAll();
+        pnlImagen.add(lblImagen); 
+
+        pnlImagen.revalidate();
+        pnlImagen.repaint();
     }
     
     /**
@@ -162,7 +240,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         DefaultComboBoxModel<UnidadMedida> modelo = new DefaultComboBoxModel<>(UnidadMedida.values());
         cmbMedida.setModel(modelo);
     }
-    
+
     /**
      * Método que ayuda a convertir la información del formulario a un objeto DTO.
      * @return objeto tipo IngredienteNuevoDTO con la información obtenida del
@@ -173,7 +251,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             String nombre = txtNombre.getText();
             Double stock = Double.valueOf(txtCantidad.getText());
             UnidadMedida medida = (UnidadMedida) cmbMedida.getSelectedItem();
-            String imagenIngrediente = null;
+            byte[] imagenIngrediente = null;
             
             if (nombre.trim().isEmpty() || nombre.trim().isBlank()) {
                 JOptionPane.showMessageDialog(
@@ -191,8 +269,9 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             IngredienteNuevoDTO ingrediente = new IngredienteNuevoDTO(
                     nombre, 
                     medida, 
-                    stock, 
-                    imagenIngrediente);
+                    stock,
+                    imagenIngrediente
+            );
             
             if (ingrediente == null) {
                 JOptionPane.showMessageDialog(
@@ -221,14 +300,15 @@ public class InventarioIngredientes extends javax.swing.JFrame {
      * nueva para actualizar el ingrediente.
      */
     public JPanel ventanaActualizar(){
-        //TODO: INCLUYE LA IMAGEN
         JPanel modificar = new JPanel();
         modificar.setLayout(new GridLayout(0, 1, 3, 2));
+        modificar.setSize(500,500);
         modificar.add(new JLabel("Ingrese el nuevo nombre: "));
         txtNombreNuevo.setText(txtNombre.getText());
         modificar.add(txtNombreNuevo);
         modificar.add(new JLabel("Ingrese la nueva unidad de medida: "));
-        modificar.add(cmbMedida);
+        cmbMedidaNuevo.setSelectedIndex(cmbMedida.getSelectedIndex());
+        modificar.add(cmbMedidaNuevo);
         modificar.add(new JLabel("Ingrese la nueva cantidad: "));
         txtCantidadNueva.setText(txtCantidad.getText());
         modificar.add(txtCantidadNueva);
@@ -260,6 +340,23 @@ public class InventarioIngredientes extends javax.swing.JFrame {
     }
 
     /**
+     * Método que regresa la fila del ingrediente con el id del parámetro
+     * @param idIngrediente el id del ingrediente que se busca
+     * @return número entero que representa la fila donde se encuentra el 
+     * ingrediente buscado. -1 si no lo encuentra.
+     */
+    public int buscarFilaPorId(Long idIngrediente) {
+        for (int i = 0; i < tablaIngredientes.getRowCount(); i++) {
+            Object valorCelda = tablaIngredientes.getValueAt(i, 0);
+
+            if (valorCelda != null && valorCelda.toString().equals(idIngrediente.toString())) {
+                return i; 
+            }
+        }
+        return -1; 
+    }
+    
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -268,6 +365,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
         pnlEncabezado = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -284,6 +382,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         btnStock = new javax.swing.JButton();
         cmbMedida = new javax.swing.JComboBox<>();
         pnlImagen = new javax.swing.JPanel();
+        lblImagen = new javax.swing.JLabel();
         btnImagen = new javax.swing.JButton();
         scrollTabla = new javax.swing.JScrollPane();
         tablaIngredientes = new javax.swing.JTable();
@@ -298,6 +397,8 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
 
+        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setForeground(new java.awt.Color(51, 51, 51));
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -314,7 +415,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 .addComponent(btnRegresar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBuscar)
-                .addGap(42, 42, 42))
+                .addGap(36, 36, 36))
         );
         pnlEncabezadoLayout.setVerticalGroup(
             pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,19 +483,26 @@ public class InventarioIngredientes extends javax.swing.JFrame {
 
         cmbMedida.setBackground(new java.awt.Color(255, 255, 255));
 
+        pnlImagen.setBackground(new java.awt.Color(255, 255, 255));
+        pnlImagen.setForeground(new java.awt.Color(51, 51, 51));
         pnlImagen.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        lblImagen.setBackground(new java.awt.Color(255, 255, 255));
+        lblImagen.setForeground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout pnlImagenLayout = new javax.swing.GroupLayout(pnlImagen);
         pnlImagen.setLayout(pnlImagenLayout);
         pnlImagenLayout.setHorizontalGroup(
             pnlImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
         pnlImagenLayout.setVerticalGroup(
             pnlImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
 
+        btnImagen.setBackground(new java.awt.Color(255, 255, 255));
+        btnImagen.setForeground(new java.awt.Color(51, 51, 51));
         btnImagen.setText("Agregar Imagen");
         btnImagen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -406,42 +514,39 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         pnlFormulario.setLayout(pnlFormularioLayout);
         pnlFormularioLayout.setHorizontalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFormularioLayout.createSequentialGroup()
-                                .addComponent(txtNombre)
-                                .addGap(90, 90, 90))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCantidad)
-                                    .addComponent(cmbMedida, 0, 150, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pnlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGap(0, 24, Short.MAX_VALUE)
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnActualizar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnStock)))
-                .addGap(24, 24, 24))
             .addGroup(pnlFormularioLayout.createSequentialGroup()
+                .addGap(87, 87, 87)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                .addGap(0, 21, Short.MAX_VALUE)
+                .addComponent(btnAgregar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnActualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnStock))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                        .addComponent(btnImagen)
+                        .addGap(34, 34, 34)))
+                .addGap(24, 24, 24))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNombre)
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGap(289, 289, 289)
-                        .addComponent(btnImagen)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbMedida, 0, 170, Short.MAX_VALUE)
+                            .addComponent(txtCantidad))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(66, 66, 66))
         );
         pnlFormularioLayout.setVerticalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -450,17 +555,17 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                 .addComponent(lblTitulo)
                 .addGap(18, 18, 18)
                 .addComponent(lblNombre)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(18, 18, 18)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
                         .addComponent(lblMedida)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(9, 9, 9)
                         .addComponent(cmbMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
+                        .addGap(18, 18, 18)
                         .addComponent(lblCantidad)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -496,7 +601,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlEncabezado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -521,7 +626,6 @@ public class InventarioIngredientes extends javax.swing.JFrame {
      * @param evt click en el botón actualizar.
      */
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        //TODO: INCLUYE LA IMAGEN
         int fila = tablaIngredientes.getSelectedRow();
         if (fila != -1){
             
@@ -536,6 +640,7 @@ public class InventarioIngredientes extends javax.swing.JFrame {
             if (opcion == JOptionPane.OK_OPTION){
                 txtNombre.setText(txtNombreNuevo.getText());
                 txtCantidad.setText(txtCantidadNueva.getText());
+                cmbMedida.setSelectedIndex(cmbMedidaNuevo.getSelectedIndex());
                 
             try {
                 IngredienteNuevoDTO i = leerFormulario();
@@ -543,7 +648,8 @@ public class InventarioIngredientes extends javax.swing.JFrame {
                         Long.valueOf(tablaIngredientes.getValueAt(fila, 0).toString()),
                         i.getNombre(),
                         i.getUnidadMedida(),
-                        i.getStock()
+                        i.getStock(),
+                        imagen
                 );
                 
                 ingredientesBO.modificar(ingredienteActualizar);
@@ -609,26 +715,28 @@ public class InventarioIngredientes extends javax.swing.JFrame {
      * @param evt click en el botón agregar imagen
      */
     private void btnImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenActionPerformed
-       //TODO: agrega la imagen al ingrediente
-        imagen = JOptionPane.showInputDialog(
-               null, 
-               "Por favor, ingrese el URL de la imagen", 
-               "URL de Imagen",
-               JOptionPane.QUESTION_MESSAGE);
-       
-       try {
-           URL url = new URL (imagen);
-           JLabel lblImagen = new JLabel(new ImageIcon(ImageIO.read(url)));
-           pnlImagen.add(lblImagen);
-           
-       } catch (IOException ex) {
-            LOGGER.severe(ex.getMessage());
-            JOptionPane.showMessageDialog(
-               null, 
-               "Error al recuperar la imagen del URL", 
-               "Error en la imagen",
-               JOptionPane.ERROR_MESSAGE
-            );
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        javax.swing.filechooser.FileNameExtensionFilter filtro = new javax.swing.filechooser.FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png");
+        fileChooser.setFileFilter(filtro);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        if (fileChooser.showOpenDialog((java.awt.Component)evt.getSource()) == javax.swing.JFileChooser.APPROVE_OPTION) {
+            try {
+                java.io.File archivo = fileChooser.getSelectedFile();
+                imagen = java.nio.file.Files.readAllBytes(archivo.toPath());
+                
+                javax.swing.ImageIcon icono = new javax.swing.ImageIcon(imagen);
+                java.awt.Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), java.awt.Image.SCALE_SMOOTH);
+                
+                lblImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+                lblImagen.setText(""); 
+            } catch (Exception ex) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this, 
+                        "Error al cargar la imagen", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnImagenActionPerformed
 
@@ -685,6 +793,11 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    /**
+     * Botón que permite abrir una ventana para gestionar el stock de un ingrediente
+     * seleccionado.
+     * @param evt click en el botón gestionar stock
+     */
     private void btnStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStockActionPerformed
         int fila = tablaIngredientes.getSelectedRow();
         if (fila != -1){
@@ -747,9 +860,22 @@ public class InventarioIngredientes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnStockActionPerformed
 
+    /**
+     * Este botón abre un JDialog que sirve como buscador de ingredientes, el cual al
+     * seleccionar un ingrediente de la tabla y aceptar, este selecciona en la ventana 
+     * padre el ingrediente y llena el formulario con sus datos.
+     * @param evt click en el botón buscar
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         BuscadorInventarioJDialog buscador = new BuscadorInventarioJDialog(this, true, null);
-        
+        Long idBuscador = buscador.idSeleccionado;
+        int filaIngrediente = buscarFilaPorId(idBuscador);
+        if (filaIngrediente != -1){
+            tablaIngredientes.setRowSelectionInterval(filaIngrediente, filaIngrediente);
+            tablaIngredientes.scrollRectToVisible(tablaIngredientes.getCellRect(filaIngrediente, 0, true));
+            tablaIngredientes.requestFocus();
+            llenarFormulario(filaIngrediente);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
    
@@ -763,7 +889,9 @@ public class InventarioIngredientes extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnStock;
     private javax.swing.JComboBox<UnidadMedida> cmbMedida;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblMedida;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;

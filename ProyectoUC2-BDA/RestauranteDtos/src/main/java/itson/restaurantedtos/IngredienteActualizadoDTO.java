@@ -13,12 +13,12 @@ public class IngredienteActualizadoDTO {
     private String nombre;
     private UnidadMedida unidadMedida;
     private Double stock;
-    private String imagen;
+    private byte[] imagen;
 
     public IngredienteActualizadoDTO() {
     }
 
-    public IngredienteActualizadoDTO(Long idIngrediente, String nombre, UnidadMedida unidadMedida, Double stock, String imagen) {
+    public IngredienteActualizadoDTO(Long idIngrediente, String nombre, UnidadMedida unidadMedida, Double stock, byte[] imagen) {
         this.idIngrediente = idIngrediente;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
@@ -49,7 +49,7 @@ public class IngredienteActualizadoDTO {
         return stock;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 }

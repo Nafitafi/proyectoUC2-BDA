@@ -50,15 +50,13 @@ public class IngredientesDAOTest {
         IngredienteNuevoDTO ingrediente1 = new IngredienteNuevoDTO(
                 "Lechuga",
                 UnidadMedida.PIEZAS,
-                12.0,
-                "https://superlavioleta.com/cdn/shop/products/lechuga.jpg?v=1775052689"
+                12.0
             );
         
         IngredienteNuevoDTO ingrediente2 = new IngredienteNuevoDTO(
                 "Lechuga",
                 UnidadMedida.KILOGRAMOS,
-                10.0,
-                "https://superlavioleta.com/cdn/shop/products/lechuga.jpg?v=1775052689"
+                10.0
             );
         
         //No debería lanzar error si se intenta agregar este producto
@@ -83,8 +81,7 @@ public class IngredientesDAOTest {
             ingredientesDAO.agregar(new IngredienteNuevoDTO(
                 "Lechuga",
                 UnidadMedida.PIEZAS,
-                12.0,
-                "https://superlavioleta.com/cdn/shop/products/lechuga.jpg?v=1775052689"
+                12.0
             ));
             
             //un ingrediente nulo
@@ -118,15 +115,7 @@ public class IngredientesDAOTest {
                     null
             ));
             
-            //una imagen de más de 255 caracteres
-            ingredientesDAO.agregar(new IngredienteNuevoDTO(
-                    "Lechuga",
-                    UnidadMedida.PIEZAS,
-                    12.0,
-                    "https://www.vinculoconmasde255caracteres-vamosanombrarlosprimeros-100pokemonaversisellena:"
-                            + "BulbasaurIvysaurVenusaurCharmanderCharmeleonCharizardSquirtleWartortleBlastoise"
-                            + "CaterpieMetapodButterfreeWeedleKakunaBeedrillPidgeyPidgeottoPidgeotRattataRaticateSpearow"
-            ));
+            
         });
     }
     
@@ -254,8 +243,7 @@ public class IngredientesDAOTest {
         IngredienteNuevoDTO ingrediente1 = new IngredienteNuevoDTO(
                 "Gato sabroso",
                 UnidadMedida.PIEZAS,
-                12.0,
-                "https://superlavioleta.com/cdn/shop/products/lechuga.jpg?v=1775052689"
+                12.0
         );
         
         assertDoesNotThrow(() -> {

@@ -64,12 +64,7 @@ public class IngredientesDAO implements IIngredientesDAO{
             throw new PersistenciaException("El stock no puede ser negativo.");
         }
         
-        if (ingredienteNuevo.getImagen() != null){
-            if (ingredienteNuevo.getImagen().length() > 255) {
-                throw new PersistenciaException("El URL de imagen excede los 255 caracteres.");
-            }
-        }
-        
+       
         EntityManager entityManager = ManejadorConexiones.crearEntityManager();
 
         try {

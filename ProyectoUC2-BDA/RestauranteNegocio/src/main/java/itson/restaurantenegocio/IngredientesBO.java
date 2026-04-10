@@ -48,12 +48,7 @@ public class IngredientesBO implements IIngredientesBO {
         } else if (ingredienteNuevo.getStock() < 0) {
             throw new NegocioException("El stock no puede ser negativo.");
         }
-        
-        if (ingredienteNuevo.getImagen() != null){
-            if (ingredienteNuevo.getImagen().length() > 255) {
-                throw new NegocioException("El URL de imagen excede los 255 caracteres.");
-            }
-        }
+       
         
         try {
             Ingrediente ingrediente = ingredientesDAO.agregar(ingredienteNuevo);
@@ -89,12 +84,6 @@ public class IngredientesBO implements IIngredientesBO {
         if (ingredienteActualizar.getStock() != null){
             if (ingredienteActualizar.getStock() < 0) {
                 throw new NegocioException("El stock no puede ser negativo.");
-            }
-        }
-        
-        if (ingredienteActualizar.getImagen() != null){
-            if (ingredienteActualizar.getImagen().length() > 255) {
-                throw new NegocioException("El URL de imagen excede los 255 caracteres.");
             }
         }
         

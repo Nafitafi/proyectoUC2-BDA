@@ -12,12 +12,12 @@ public class IngredienteNuevoDTO {
     private String nombre;
     private UnidadMedida unidadMedida;
     private Double stock;
-    private String imagen;
+    private byte[] imagen;
 
     public IngredienteNuevoDTO() {
     }
 
-    public IngredienteNuevoDTO(String nombre, UnidadMedida unidadMedida, Double stock, String imagen) {
+    public IngredienteNuevoDTO(String nombre, UnidadMedida unidadMedida, Double stock, byte[] imagen) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.stock = stock;
@@ -42,7 +42,7 @@ public class IngredienteNuevoDTO {
         return stock;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
     

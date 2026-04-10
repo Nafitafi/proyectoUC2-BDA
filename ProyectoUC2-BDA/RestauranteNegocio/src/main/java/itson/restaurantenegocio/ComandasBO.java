@@ -228,6 +228,9 @@ public class ComandasBO implements IComandasBO {
     @Override
     public List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws NegocioException {
         try {
+            if (inicio.isAfter(fin)) {
+                throw new NegocioException("El rango de fechas es inválido.");
+            }
             return comandasDAO.obtenerComandasParaReporte(inicio, fin);
         } catch (PersistenciaException ex) {
             throw new NegocioException("Error al generar reporte de comandas", ex);

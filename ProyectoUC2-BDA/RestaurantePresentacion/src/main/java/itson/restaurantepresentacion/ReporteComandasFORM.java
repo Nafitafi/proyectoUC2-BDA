@@ -4,35 +4,62 @@
  */
 package itson.restaurantepresentacion;
 
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Zaira
  */
-public class ReporteComandas extends javax.swing.JFrame {
+public class ReporteComandasFORM extends javax.swing.JFrame {
 
     /**
      * Creates new form ReporteComandas
      */
-    public ReporteComandas() {
+    public ReporteComandasFORM() {
         initComponents();
     }
-    
-    
-    /**
-     * Método para generar la tabla de Comandas
-     */
-    public void crearTabla(){
-        String[] columnas = { "Fecha", "Hora", "Mesa", "Cliente", "Estado", "Total"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
-          @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }  
-        };
-        
+
+    public JButton getBtnGenerarPDF() {
+        return btnGenerarPDF;
     }
+
+    public JButton getBtnGenerarReporte() {
+        return btnGenerarReporte;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnRegresar() {
+        return btnRegresar;
+    }
+
+    public JButton getBtnReporteClientes() {
+        return btnReporteClientes;
+    }
+
+    public JLabel getLblVentaTotalCantidad() {
+        return lblVentaTotalCantidad;
+    }
+
+    public JTable getTablaComandas() {
+        return tablaComandas;
+    }
+
+    public JFormattedTextField getTxtFechaFin() {
+        return txtFechaFin;
+    }
+
+    public JFormattedTextField getTxtFechaInicio() {
+        return txtFechaInicio;
+    }
+    
+  
 
     /**
      * This method is called from within the constructor to initialize the form.

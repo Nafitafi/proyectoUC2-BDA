@@ -95,20 +95,20 @@ public class InicioControl {
     }
 
     private void abrirIngredientes() {
-        InventarioIngredientes ingredientesForm = new InventarioIngredientes();
+        InventarioIngredientesFORM ingredientesForm = new InventarioIngredientesFORM();
         ingredientesForm.setLocationRelativeTo(null);
         ingredientesForm.setVisible(true);
     }
 
     private void abrirReportesClientes() {
-        ReporteClientes reportesForm = new ReporteClientes();
+        ReporteClientesFORM reportesForm = new ReporteClientesFORM();
         new ReportesControl(reportesForm);
         reportesForm.setLocationRelativeTo(null);
         reportesForm.setVisible(true);
     }
     
     private void abrirReportesComandas() {
-        ReporteComandas reportesForm = new ReporteComandas();
+        ReporteComandasFORM reportesForm = new ReporteComandasFORM();
         new ReportesControl(reportesForm);
         reportesForm.setLocationRelativeTo(null);
         reportesForm.setVisible(true);

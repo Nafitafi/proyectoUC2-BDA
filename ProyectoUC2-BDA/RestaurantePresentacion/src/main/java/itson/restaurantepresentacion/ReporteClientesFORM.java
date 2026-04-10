@@ -4,35 +4,58 @@
  */
 package itson.restaurantepresentacion;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Zaira
  */
-public class ReporteClientes extends javax.swing.JFrame {
+public class ReporteClientesFORM extends javax.swing.JFrame {
 
     /**
      * Creates new form ReporteClientes
      */
-    public ReporteClientes() {
+    public ReporteClientesFORM() {
         initComponents();
     }
 
-    /**
-     * Método para generar la tabla de Clientes
-     */
-    public void crearTabla(){
-        String[] columnas = { "Nombre", "Visitas", "Total Gastado", "Última visita"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
-          @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }  
-        };
-        
+    public JButton getBtnGenerarPDF() {
+        return btnGenerarPDF;
     }
-    
+
+    public JButton getBtnGenerarReporte() {
+        return btnGenerarReporte;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnRegresar() {
+        return btnRegresar;
+    }
+
+    public JButton getBtnReporteComandas() {
+        return btnReporteComandas;
+    }
+
+    public JComboBox<String> getCmbMinimoVisitas() {
+        return cmbMinimoVisitas;
+    }
+
+    public JTable getTablaClientes() {
+        return tablaClientes;
+    }
+
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+   
     
     /**
      * This method is called from within the constructor to initialize the form.

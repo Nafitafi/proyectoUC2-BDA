@@ -103,6 +103,10 @@ public class IngredientesControl {
         }
         
         formaIngredientes.tablaIngredientes().setModel(modelo);
+        formaIngredientes.tablaIngredientes().getColumnModel().getColumn(0).setMinWidth(0);
+        formaIngredientes.tablaIngredientes().getColumnModel().getColumn(0).setPreferredWidth(0);
+        formaIngredientes.tablaIngredientes().getColumnModel().getColumn(0).setMaxWidth(0);
+        formaIngredientes.tablaIngredientes().getColumnModel().getColumn(0).setResizable(false);
             
         formaIngredientes.tablaIngredientes().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

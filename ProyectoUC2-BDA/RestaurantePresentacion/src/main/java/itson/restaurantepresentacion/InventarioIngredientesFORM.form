@@ -41,11 +41,10 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="pnlEncabezado" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="scrollTabla" pref="463" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="scrollTabla" pref="469" max="32767" attributes="0"/>
                   <Component id="pnlFormulario" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

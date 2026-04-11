@@ -27,7 +27,7 @@ public class InicioControl {
         inicioForm.getBtnMesero().addActionListener(e -> abrirMenuMesero());
         inicioForm.getBtnAdministrador().addActionListener(e -> abrirMenuAdministrador());
     }
-
+    
     /**
      * Abre el menú de mesero y configura sus botones.
      */
@@ -96,6 +96,7 @@ public class InicioControl {
 
     private void abrirIngredientes() {
         InventarioIngredientesFORM ingredientesForm = new InventarioIngredientesFORM();
+        IngredientesControl control = new IngredientesControl(ingredientesForm);
         ingredientesForm.setLocationRelativeTo(null);
         ingredientesForm.setVisible(true);
     }

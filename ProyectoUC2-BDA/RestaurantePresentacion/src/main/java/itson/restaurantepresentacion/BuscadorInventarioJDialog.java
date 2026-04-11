@@ -147,6 +147,10 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
             }
             
             tablaIngredientes.setModel(modelo);
+            tablaIngredientes.getColumnModel().getColumn(0).setMinWidth(0);
+            tablaIngredientes.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tablaIngredientes.getColumnModel().getColumn(0).setMaxWidth(0);
+            tablaIngredientes.getColumnModel().getColumn(0).setResizable(false);
             
             tablaIngredientes.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
                 @Override
@@ -201,6 +205,10 @@ public class BuscadorInventarioJDialog extends javax.swing.JDialog {
                 }
                 
                 tablaIngredientes.setModel(modelo);
+                tablaIngredientes.getColumnModel().getColumn(0).setMinWidth(0);
+                tablaIngredientes.getColumnModel().getColumn(0).setPreferredWidth(0);
+                tablaIngredientes.getColumnModel().getColumn(0).setMaxWidth(0);
+                tablaIngredientes.getColumnModel().getColumn(0).setResizable(false);
                 
             } catch (NegocioException ex) {
                 LOGGER.severe(ex.getMessage());

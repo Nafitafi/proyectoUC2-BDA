@@ -82,7 +82,7 @@ public class Mesa implements Serializable {
 
     @Override
     public String toString() {
-        return "itson.restaurantedominio.Mesa[ id=" + id + " ]";
+        return "mesa - "+numero;
     }
 
 }

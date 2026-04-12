@@ -52,6 +52,11 @@ public class ComandaEnviadaFORM extends javax.swing.JFrame {
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
         btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelSuperiorLayout = new javax.swing.GroupLayout(panelSuperior);
         panelSuperior.setLayout(panelSuperiorLayout);
@@ -180,10 +185,15 @@ public class ComandaEnviadaFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        MenuMeseroFORM menuMesero = new MenuMeseroFORM();
+        new MenuMeseroControl(menuMesero);
+        menuMesero.setLocationRelativeTo(null);
+        menuMesero.setVisible(true);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
+    
     public JButton getBtnRegresar() {
         return btnRegresar;
     }
@@ -222,7 +232,7 @@ public class ComandaEnviadaFORM extends javax.swing.JFrame {
     public JTable getTblComandaEnviada() {
         return tblComandaEnviada;
     }
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegresar;

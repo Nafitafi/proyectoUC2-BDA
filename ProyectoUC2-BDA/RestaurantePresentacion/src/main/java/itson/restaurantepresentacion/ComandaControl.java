@@ -1,4 +1,4 @@
-///*
+ ///*
 // * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 // * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
 // */
@@ -38,7 +38,7 @@ public class ComandaControl {
     private final IClientesFrecuentesBO clientesBO;
     private final IComandasBO comandasBO;
     private final IProductosBO productosBO;
-    
+
     private static final Logger LOGGER = Logger.getLogger(ComandaControl.class.getName());
 
     /**
@@ -216,9 +216,10 @@ public class ComandaControl {
      * Regresa al menú principal y cierra el formulario actual.
      */
     private void regresarMenu() {
-        InicioFORM menu = new InicioFORM();
-        menu.setLocationRelativeTo(null);
-        menu.setVisible(true);
+        MenuMeseroFORM menuMesero = new MenuMeseroFORM();
+        new MenuMeseroControl(menuMesero);
+        menuMesero.setLocationRelativeTo(null);
+        menuMesero.setVisible(true);
         comandaForm.dispose();
     }
 }

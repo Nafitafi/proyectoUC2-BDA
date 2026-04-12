@@ -36,6 +36,7 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         btnClientes = new javax.swing.JButton();
         btnReportesClientes = new javax.swing.JButton();
         btnReportesComandas = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,6 +112,10 @@ public class MenuAdminFORM extends javax.swing.JFrame {
             }
         });
 
+        btnRegresar.setBackground(new java.awt.Color(255, 153, 0));
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar a Inicio");
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -127,11 +132,17 @@ public class MenuAdminFORM extends javax.swing.JFrame {
                     .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReportesComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46))
+            .addGroup(panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnRegresar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addContainerGap()
+                .addComponent(btnRegresar)
+                .addGap(29, 29, 29)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -210,6 +221,10 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         return btnReportesComandas;
     }
 
+    public JButton getBtnRegresar() {
+        return btnRegresar;
+    }
+
    
 
     public JPanel getPanel() {
@@ -222,6 +237,7 @@ public class MenuAdminFORM extends javax.swing.JFrame {
     private javax.swing.JButton btnComandas;
     private javax.swing.JButton btnIngredientes;
     private javax.swing.JButton btnProductos;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnReportesClientes;
     private javax.swing.JButton btnReportesComandas;
     private javax.swing.JPanel panel;

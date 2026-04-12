@@ -28,6 +28,10 @@ public class MenuMeseroFORM extends javax.swing.JFrame {
         return panel;
     }
 
+    public JButton getBtnRegresar() {
+        return btnRegresar;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,6 +43,7 @@ public class MenuMeseroFORM extends javax.swing.JFrame {
 
         panel = new javax.swing.JPanel();
         btnAbrirComanda = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Mesero");
@@ -51,19 +56,30 @@ public class MenuMeseroFORM extends javax.swing.JFrame {
         btnAbrirComanda.setText("Abrir Comanda");
         btnAbrirComanda.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(62, 120, 193), 3, true));
 
+        btnRegresar.setBackground(new java.awt.Color(255, 153, 0));
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar a Inicio");
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGap(166, 166, 166)
-                .addComponent(btnAbrirComanda, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGap(166, 166, 166)
+                        .addComponent(btnAbrirComanda, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(btnRegresar)))
                 .addContainerGap(198, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGap(140, 140, 140)
+                .addGap(16, 16, 16)
+                .addComponent(btnRegresar)
+                .addGap(101, 101, 101)
                 .addComponent(btnAbrirComanda, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(170, Short.MAX_VALUE))
         );
@@ -84,6 +100,7 @@ public class MenuMeseroFORM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbrirComanda;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

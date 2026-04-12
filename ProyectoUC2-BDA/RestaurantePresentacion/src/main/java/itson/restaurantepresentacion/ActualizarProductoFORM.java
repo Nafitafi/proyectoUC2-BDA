@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi Figueroa
  */
 public class ActualizarProductoFORM extends javax.swing.JFrame {
 
@@ -32,12 +32,14 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
     private IngredienteActualizadoDTO ingredienteSeleccionado = null;
     private DefaultTableModel modeloTabla;
     private Long idProductoActual;
+    private ProductosControl control;
 
     /**
      * Creates new form ActualizarProductoFORM
      */
     public ActualizarProductoFORM(Long idProducto) {
         this.idProductoActual = idProducto;
+        this.control = new ProductosControl();
         initComponents();
         this.setLocationRelativeTo(null);
         modeloTabla = (javax.swing.table.DefaultTableModel) jTable1.getModel();
@@ -67,47 +69,31 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
      * formulario.
      */
     private void cargarDatosProducto() {
-        try {
-            IProductosBO productosBO = new ProductosBO();
-            IIngredientesBO ingredientesBO = new IngredientesBO();
+        ProductoDTO producto = control.obtenerProductoParaEdicion(idProductoActual, this);
 
-            ProductoDTO producto = productosBO.obtenerProductoPorId(idProductoActual);
-
+        if (producto != null) {
             txtNombre.setText(producto.getNombre());
             txtaDescripcion.setText(producto.getDescripcion());
             txtPrecioVenta.setText(String.valueOf(producto.getPrecio()));
             cbxTipo.setSelectedItem(producto.getTipo().toString());
-            cbxEstado.setSelectedItem(producto.getEstado());
+            cbxEstado.setSelectedItem(producto.getEstado().toString());
             imagenBytes = producto.getImagen();
 
             if (imagenBytes != null) {
-                ImageIcon icono = new javax.swing.ImageIcon(imagenBytes);
-                Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), java.awt.Image.SCALE_SMOOTH);
-                lblImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+                ImageIcon icono = new ImageIcon(imagenBytes);
+                int width = lblImagen.getWidth() > 0 ? lblImagen.getWidth() : 130;
+                int height = lblImagen.getHeight() > 0 ? lblImagen.getHeight() : 130;
+                Image imagenEscalada = icono.getImage().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+                lblImagen.setIcon(new ImageIcon(imagenEscalada));
                 lblImagen.setText("");
             }
+
             modeloTabla.setRowCount(0);
 
-            List<DetallesRecetaDTO> detalles = producto.getDetallesReceta();
-
-            if (detalles != null) {
-                for (DetallesRecetaDTO detalle : detalles) {
-                    Ingrediente ingredienteCompleto = ingredientesBO.buscar(detalle.getIdIngrediente());
-
-                    if (ingredienteCompleto != null) {
-                        modeloTabla.addRow(new Object[]{
-                            detalle.getIdIngrediente(),
-                            ingredienteCompleto.getNombre(),
-                            detalle.getCantidad(),
-                            ingredienteCompleto.getUnidadMedida(),
-                            "Borrar"
-                        });
-                    }
-                }
+            List<Object[]> filasIngredientes = control.obtenerFilasIngredientesTabla(producto.getDetallesReceta(), this);
+            for (Object[] fila : filasIngredientes) {
+                modeloTabla.addRow(fila);
             }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar los datos del producto: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -157,6 +143,7 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
         btnRegresar.setBackground(new java.awt.Color(237, 63, 39));
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(this::btnRegresarActionPerformed);
 
         javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
         pnlBanner.setLayout(pnlBannerLayout);
@@ -453,33 +440,39 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
         }
 
         try {
-            Double cantidad = Double.valueOf(cantidadStr);
+            float cantidad = Float.parseFloat(cantidadStr);
             if (cantidad <= 0) {
                 throw new NumberFormatException();
             }
 
+            boolean ingredienteExiste = false;
+
             for (int i = 0; i < modeloTabla.getRowCount(); i++) {
                 Long idExistente = (Long) modeloTabla.getValueAt(i, 0);
+                
                 if (idExistente.equals(ingredienteSeleccionado.getIdIngrediente())) {
-                    JOptionPane.showMessageDialog(this, "Ese ingrediente ya está en la receta.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
-                    return;
+                    modeloTabla.setValueAt(cantidad, i, 2);
+                    ingredienteExiste = true;
+                    break;
                 }
             }
 
-            modeloTabla.addRow(new Object[]{
-                ingredienteSeleccionado.getIdIngrediente(),
-                ingredienteSeleccionado.getNombre(),
-                cantidad,
-                ingredienteSeleccionado.getUnidadMedida(),
-                "Borrar"
-            });
-
+            if (!ingredienteExiste) {
+                modeloTabla.addRow(new Object[]{
+                    ingredienteSeleccionado.getIdIngrediente(),
+                    ingredienteSeleccionado.getNombre(),
+                    cantidad,
+                    ingredienteSeleccionado.getUnidadMedida(),
+                    "Borrar"
+                });
+            }
+            
             ingredienteSeleccionado = null;
             lblIngredienteencontrado.setText("Ningún ingrediente seleccionado");
             txtCantidad.setText("");
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido mayor a 0.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido mayor a 0.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarIngredienteActionPerformed
 
@@ -487,57 +480,25 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
         String nombre = txtNombre.getText().trim();
         String descripcion = txtaDescripcion.getText().trim();
         String precioStr = txtPrecioVenta.getText().trim();
+        String tipoStr = cbxTipo.getSelectedItem() != null ? cbxTipo.getSelectedItem().toString() : "";
+        String estadoStr = cbxEstado.getSelectedItem() != null ? cbxEstado.getSelectedItem().toString() : "";
 
-        if (nombre.isEmpty() || precioStr.isEmpty() || modeloTabla.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Nombre, Precio y al menos un ingrediente son obligatorios.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
-            return;
+        List<Object[]> ingredientes = new ArrayList<>();
+        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+            Long idIngrediente = (Long) modeloTabla.getValueAt(i, 0);
+            String cantidad = modeloTabla.getValueAt(i, 2).toString();
+            ingredientes.add(new Object[]{idIngrediente, cantidad});
         }
 
-        try {
-            Double precio = Double.valueOf(precioStr);
-            if (precio <= 0) {
-                JOptionPane.showMessageDialog(this, "El precio debe ser mayor a 0.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            String tipoStr = cbxTipo.getSelectedItem().toString().toUpperCase();
-            String estadoStr = cbxEstado.getSelectedItem().toString().trim().toUpperCase();
-            itson.restaurantedtos.TipoProducto tipoProducto = itson.restaurantedtos.TipoProducto.valueOf(tipoStr);
-            ProductoDTO productoActualizado = new ProductoDTO();
-            itson.restaurantedtos.EstadoProducto estadoEnum = itson.restaurantedtos.EstadoProducto.valueOf(estadoStr);
-            productoActualizado.setEstado(estadoEnum);
-            productoActualizado.setNombre(nombre);
-            productoActualizado.setDescripcion(descripcion);
-            productoActualizado.setPrecio(precio);
-            productoActualizado.setTipo(tipoProducto);
-            productoActualizado.setImagen(imagenBytes);
-            productoActualizado.setId(this.idProductoActual);
-            List<DetallesRecetaDTO> listaReceta = new ArrayList<>();
-
-            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-                Long idIngrediente = (Long) modeloTabla.getValueAt(i, 0);
-                Double cantidad = Double.valueOf(modeloTabla.getValueAt(i, 2).toString());
-
-                DetallesRecetaDTO detalle = new DetallesRecetaDTO();
-                detalle.setIdIngrediente(idIngrediente);
-                detalle.setCantidad(cantidad.doubleValue());
-                listaReceta.add(detalle);
-            }
-
-            productoActualizado.setDetallesReceta(listaReceta);
-            IProductosBO productosBO = new ProductosBO();
-            productosBO.modificarProducto(productoActualizado);
-            JOptionPane.showMessageDialog(this, "¡Producto actualizado exitosamente!", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Seleccione un Tipo de Producto válido.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
+        control.guardarActualizacionProducto(idProductoActual, nombre, descripcion, precioStr, tipoStr, estadoStr, imagenBytes, ingredientes, this);
     }//GEN-LAST:event_btnActualizarProductoActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        ProductosFORM productosForm = new ProductosFORM();
+        productosForm.setLocationRelativeTo(null);
+        productosForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

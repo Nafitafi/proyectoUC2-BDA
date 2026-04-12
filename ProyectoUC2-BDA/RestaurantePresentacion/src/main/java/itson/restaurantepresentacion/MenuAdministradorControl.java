@@ -25,7 +25,6 @@ public class MenuAdministradorControl {
 
     private void abrirProductos() {
         ProductosFORM productosForm = new ProductosFORM();
-        new ProductosControl(productosForm);
         productosForm.setLocationRelativeTo(null);
         productosForm.setVisible(true);
         menuAdmin.dispose();

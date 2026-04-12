@@ -12,7 +12,7 @@ import javax.swing.JScrollPane;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi FIgueroa
  */
 public class BuscadorProductosJDialog extends javax.swing.JDialog {
 
@@ -32,7 +32,12 @@ public class BuscadorProductosJDialog extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(parent);
 
-        control = new ProductosControl();
+        if (parent instanceof ProductosFORM) {
+            control = new ProductosControl((ProductosFORM) parent);
+        } else {
+            control = new ProductosControl(null);
+        }
+        
         popmCoincidencias = new JPopupMenu();
         modeloLista = new DefaultListModel<>();
         listCoincidencias = new javax.swing.JList<>(modeloLista);
@@ -186,8 +191,8 @@ public class BuscadorProductosJDialog extends javax.swing.JDialog {
 
     private void txtProductoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductoBuscarActionPerformed
         if (txtProductoBuscar.getText().trim().isEmpty()) {
-            txtProductoBuscar = null; // Nos aseguramos de que sea null
-            this.dispose(); // Cerramos la ventana
+            txtProductoBuscar = null; 
+            this.dispose(); 
         }
     }//GEN-LAST:event_txtProductoBuscarActionPerformed
 

@@ -129,7 +129,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "itson.restaurantedominio.Cliente[ id=" + idCliente + " ]";
+        return nombre +" "+apellidoP;
     }
 
 }

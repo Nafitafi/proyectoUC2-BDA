@@ -30,7 +30,6 @@ public class MenuAdminFORM extends javax.swing.JFrame {
     private void initComponents() {
 
         panel = new javax.swing.JPanel();
-        btnComandas = new javax.swing.JButton();
         btnProductos = new javax.swing.JButton();
         btnIngredientes = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
@@ -41,17 +40,6 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panel.setBackground(new java.awt.Color(253, 244, 227));
-
-        btnComandas.setBackground(new java.awt.Color(19, 70, 134));
-        btnComandas.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        btnComandas.setForeground(new java.awt.Color(255, 255, 255));
-        btnComandas.setText("Comandas");
-        btnComandas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(62, 120, 193), 3, true));
-        btnComandas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnComandasActionPerformed(evt);
-            }
-        });
 
         btnProductos.setBackground(new java.awt.Color(19, 70, 134));
         btnProductos.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -123,18 +111,21 @@ public class MenuAdminFORM extends javax.swing.JFrame {
             .addGroup(panelLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReportesClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReportesComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46))
             .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnRegresar)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnRegresar))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGap(203, 203, 203)
+                        .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
@@ -142,14 +133,12 @@ public class MenuAdminFORM extends javax.swing.JFrame {
             .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnRegresar)
-                .addGap(29, 29, 29)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnComandas, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(31, 31, 31)
+                .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReportesClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -173,10 +162,6 @@ public class MenuAdminFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnComandasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComandasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnComandasActionPerformed
-
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnProductosActionPerformed
@@ -199,10 +184,6 @@ public class MenuAdminFORM extends javax.swing.JFrame {
 
     public JButton getBtnClientes() {
         return btnClientes;
-    }
-
-    public JButton getBtnComandas() {
-        return btnComandas;
     }
 
     public JButton getBtnIngredientes() {
@@ -234,7 +215,6 @@ public class MenuAdminFORM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClientes;
-    private javax.swing.JButton btnComandas;
     private javax.swing.JButton btnIngredientes;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton btnRegresar;

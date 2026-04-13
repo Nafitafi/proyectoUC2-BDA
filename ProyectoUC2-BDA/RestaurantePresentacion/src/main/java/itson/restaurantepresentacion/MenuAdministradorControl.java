@@ -26,7 +26,6 @@ public class MenuAdministradorControl {
         menuAdmin.getBtnReportesClientes().addActionListener(e -> abrirReportesClientes());
         menuAdmin.getBtnReportesComandas().addActionListener(e -> abrirReportesComandas());
         menuAdmin.getBtnRegresar().addActionListener(e -> regresarInicio());
-        menuAdmin.getBtnComandas().addActionListener(e -> abrirComandas());
     }
 
     /**
@@ -81,13 +80,6 @@ public class MenuAdministradorControl {
         reportesForm.setLocationRelativeTo(null);
         reportesForm.setVisible(true);
         menuAdmin.dispose();
-    }
-    
-    /**
-     * Método para abrir la forma de comandas
-     */
-    public void abrirComandas(){
-        //todo
     }
 
     /**

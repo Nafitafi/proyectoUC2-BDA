@@ -615,6 +615,7 @@ public class IngredientesControl {
      */
     public void regresar(){
         MenuAdminFORM menu = new MenuAdminFORM();
+        MenuAdministradorControl controlAdmin = new MenuAdministradorControl(menu);
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
         formaIngredientes.dispose();

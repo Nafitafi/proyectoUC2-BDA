@@ -160,6 +160,7 @@ public class ReportesControl {
      */
     public void abrirReporteComandas(){
         ReporteComandasFORM comandas = new ReporteComandasFORM();
+        ReportesControl control = new ReportesControl(comandas);
         comandas.setLocationRelativeTo(null);
         comandas.setVisible(true);
         reporteClientes.dispose();
@@ -192,7 +193,7 @@ public class ReportesControl {
         };
         
         try{
-            List<Comanda> comandas = comandasBO.buscarPorRangoFechas(null,null);
+            List<Comanda> comandas = comandasBO.buscarPorRangoFechas(null, null);
             for (Comanda c : comandas) {
                 String cliente = c.getId() + "." + c.getCliente().getNombre() + " " + c.getCliente().getApellidoP();
                 Object[] fila = {
@@ -222,6 +223,7 @@ public class ReportesControl {
      */
     public void abrirReporteClientes(){
         ReporteClientesFORM clientes = new ReporteClientesFORM();
+        ReportesControl control = new ReportesControl(clientes);
         clientes.setLocationRelativeTo(null);
         clientes.setVisible(true);
         reporteComandas.dispose();
@@ -270,6 +272,7 @@ public class ReportesControl {
      */
     public void regresar(){
         MenuAdminFORM menu = new MenuAdminFORM();
+        MenuAdministradorControl controlAdmin = new MenuAdministradorControl(menu);
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
         if (this.equals(reporteComandas)){

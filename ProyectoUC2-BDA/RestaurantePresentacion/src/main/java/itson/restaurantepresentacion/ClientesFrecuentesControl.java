@@ -42,6 +42,11 @@ public class ClientesFrecuentesControl {
                         clientesForm.getTablaClientes(), this
                 ));
         cargarTabla("");
+        clientesForm.getBtnInventario().addActionListener(e -> abrirIngredientes());
+        clientesForm.getBtnPlatillos().addActionListener(e -> abrirProductos());
+        clientesForm.getBtnReporteClientes().addActionListener(e -> abrirReportesClientes());
+        clientesForm.getBtnReporteComandas().addActionListener(e -> abrirReportesComandas());
+        clientesForm.getBtnMenu().addActionListener(e -> regresar());
     }
 
     /**
@@ -188,5 +193,70 @@ public class ClientesFrecuentesControl {
                 cargarTabla("");
             }
         });
+    }
+    
+    /**
+     * Método para abrir la pantalla de productos.
+     */
+    private void abrirProductos() {
+        ProductosFORM productosForm = new ProductosFORM();
+        productosForm.setLocationRelativeTo(null);
+        productosForm.setVisible(true);
+        clientesForm.dispose();
+    }
+
+    /**
+     * Método para abrir el inventario de ingredientes
+     */
+    private void abrirIngredientes() {
+        InventarioIngredientesFORM ingredientesForm = new InventarioIngredientesFORM();
+        new IngredientesControl(ingredientesForm);
+        ingredientesForm.setLocationRelativeTo(null);
+        ingredientesForm.setVisible(true);
+        clientesForm.dispose();
+    }
+
+    /**
+     * Método para abrir la forma de clientes
+     */
+    private void abrirClientes() {
+        ClientesFrecuentesFORM clientesForm = new ClientesFrecuentesFORM();
+        new ClientesFrecuentesControl(clientesForm);
+        clientesForm.setLocationRelativeTo(null);
+        clientesForm.setVisible(true);
+        clientesForm.dispose();
+    }
+
+    /**
+     * Método para abrir el reporte de clientes
+     */
+    private void abrirReportesClientes() {
+        ReporteClientesFORM reportesForm = new ReporteClientesFORM();
+        new ReportesControl(reportesForm);
+        reportesForm.setLocationRelativeTo(null);
+        reportesForm.setVisible(true);
+        clientesForm.dispose();
+    }
+
+    /**
+     * Método para abrir el reporte de comandas
+     */
+    private void abrirReportesComandas() {
+        ReporteComandasFORM reportesForm = new ReporteComandasFORM();
+        new ReportesControl(reportesForm);
+        reportesForm.setLocationRelativeTo(null);
+        reportesForm.setVisible(true);
+        clientesForm.dispose();
+    }
+
+    /**
+     * Método para regresar al inicio
+     */
+    private void regresar() {
+        MenuAdminFORM menu = new MenuAdminFORM();
+        MenuAdministradorControl controlAdmin = new MenuAdministradorControl(menu);
+        menu.setLocationRelativeTo(null);
+        menu.setVisible(true);
+        clientesForm.dispose();
     }
 }

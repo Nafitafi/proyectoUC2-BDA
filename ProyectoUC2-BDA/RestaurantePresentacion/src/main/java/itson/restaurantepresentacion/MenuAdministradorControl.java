@@ -5,12 +5,17 @@
 
 package itson.restaurantepresentacion;
 
+import itson.restaurantenegocio.NegocioException;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Carmen Andrea Lara Osuna
  */
 public class MenuAdministradorControl {
     private final MenuAdminFORM menuAdmin;
+    private static final Logger LOGGER = Logger.getLogger(MenuAdministradorControl.class.getName());
 
     public MenuAdministradorControl(MenuAdminFORM menuAdmin) {
         this.menuAdmin = menuAdmin;
@@ -21,8 +26,12 @@ public class MenuAdministradorControl {
         menuAdmin.getBtnReportesClientes().addActionListener(e -> abrirReportesClientes());
         menuAdmin.getBtnReportesComandas().addActionListener(e -> abrirReportesComandas());
         menuAdmin.getBtnRegresar().addActionListener(e -> regresarInicio());
+        menuAdmin.getBtnComandas().addActionListener(e -> abrirComandas());
     }
 
+    /**
+     * Método para abrir la pantalla de productos.
+     */
     private void abrirProductos() {
         ProductosFORM productosForm = new ProductosFORM();
         productosForm.setLocationRelativeTo(null);
@@ -30,6 +39,9 @@ public class MenuAdministradorControl {
         menuAdmin.dispose();
     }
 
+    /**
+     * Método para abrir el inventario de ingredientes
+     */
     private void abrirIngredientes() {
         InventarioIngredientesFORM ingredientesForm = new InventarioIngredientesFORM();
         new IngredientesControl(ingredientesForm);
@@ -38,6 +50,9 @@ public class MenuAdministradorControl {
         menuAdmin.dispose();
     }
 
+    /**
+     * Método para abrir la forma de clientes
+     */
     private void abrirClientes() {
         ClientesFrecuentesFORM clientesForm = new ClientesFrecuentesFORM();
         new ClientesFrecuentesControl(clientesForm);
@@ -46,6 +61,9 @@ public class MenuAdministradorControl {
         menuAdmin.dispose();
     }
 
+    /**
+     * Método para abrir el reporte de clientes
+     */
     private void abrirReportesClientes() {
         ReporteClientesFORM reportesForm = new ReporteClientesFORM();
         new ReportesControl(reportesForm);
@@ -54,6 +72,9 @@ public class MenuAdministradorControl {
         menuAdmin.dispose();
     }
 
+    /**
+     * Método para abrir el reporte de comandas
+     */
     private void abrirReportesComandas() {
         ReporteComandasFORM reportesForm = new ReporteComandasFORM();
         new ReportesControl(reportesForm);
@@ -61,7 +82,17 @@ public class MenuAdministradorControl {
         reportesForm.setVisible(true);
         menuAdmin.dispose();
     }
+    
+    /**
+     * Método para abrir la forma de comandas
+     */
+    public void abrirComandas(){
+        //todo
+    }
 
+    /**
+     * Método para regresar al inicio
+     */
     private void regresarInicio() {
         InicioFORM inicioForm = new InicioFORM();
         new InicioControl(inicioForm);

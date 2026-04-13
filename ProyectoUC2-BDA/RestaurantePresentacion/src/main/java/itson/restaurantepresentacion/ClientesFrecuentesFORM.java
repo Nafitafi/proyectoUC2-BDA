@@ -6,6 +6,7 @@ package itson.restaurantepresentacion;
 
 import itson.restaurantedtos.ClienteFrecuenteDTO;
 import java.awt.Component;
+import javax.swing.JButton;
 import javax.swing.JTable;
 
 /**
@@ -38,6 +39,26 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         return jTable1;
     }
 
+    public JButton getBtnInventario() {
+        return btnInventario;
+    }
+
+    public JButton getBtnPlatillos() {
+        return btnPlatillos;
+    }
+
+    public JButton getBtnReporteClientes() {
+        return btnReporteClientes;
+    }
+
+    public JButton getBtnReporteComandas() {
+        return btnReporteComandas;
+    }
+
+    public JButton getBtnMenu() {
+        return btnMenu;
+    }
+    
     class BotonRenderer extends javax.swing.JButton implements javax.swing.table.TableCellRenderer {
         public BotonRenderer() {
             setOpaque(true);
@@ -125,13 +146,13 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
 
         pnlClientesFrecuentes = new javax.swing.JPanel();
         pnlMenu = new javax.swing.JPanel();
-        lblMenu = new javax.swing.JLabel();
         btnInventario = new javax.swing.JButton();
         btnPlatillos = new javax.swing.JButton();
         btnClientes = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
         btnReporteComandas = new javax.swing.JButton();
         btnReporteClientes = new javax.swing.JButton();
+        btnMenu = new javax.swing.JButton();
         lblClientes = new javax.swing.JLabel();
         pnlBuscador = new javax.swing.JPanel();
         lblBuscar = new javax.swing.JLabel();
@@ -147,11 +168,6 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         pnlClientesFrecuentes.setBackground(new java.awt.Color(253, 244, 227));
 
         pnlMenu.setBackground(new java.awt.Color(19, 70, 134));
-
-        lblMenu.setBackground(new java.awt.Color(253, 244, 227));
-        lblMenu.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        lblMenu.setForeground(new java.awt.Color(253, 244, 227));
-        lblMenu.setText("Menú");
 
         btnInventario.setBackground(new java.awt.Color(19, 70, 134));
         btnInventario.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
@@ -200,6 +216,13 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         btnReporteClientes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnReporteClientes.addActionListener(this::btnReporteClientesActionPerformed);
 
+        btnMenu.setBackground(new java.awt.Color(19, 70, 134));
+        btnMenu.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        btnMenu.setForeground(new java.awt.Color(253, 244, 227));
+        btnMenu.setText("Menú Principal");
+        btnMenu.setBorder(null);
+        btnMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
@@ -207,15 +230,15 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
             .addGroup(pnlMenuLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPlatillos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
                 .addContainerGap(23, Short.MAX_VALUE)
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnReporteComandas)
                     .addComponent(btnReporteClientes))
                 .addGap(20, 20, 20))
@@ -223,9 +246,9 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(lblMenu)
-                .addGap(18, 18, 18)
+                .addGap(74, 74, 74)
+                .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnPlatillos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -235,7 +258,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
                 .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnReporteComandas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnReporteClientes)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -383,6 +406,7 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnInventario;
+    private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnPlatillos;
     private javax.swing.JButton btnReporteClientes;
     private javax.swing.JButton btnReporteComandas;
@@ -391,7 +415,6 @@ public class ClientesFrecuentesFORM extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblClientes;
-    private javax.swing.JLabel lblMenu;
     private javax.swing.JPanel pnlBuscador;
     private javax.swing.JPanel pnlClientesFrecuentes;
     private javax.swing.JPanel pnlMenu;

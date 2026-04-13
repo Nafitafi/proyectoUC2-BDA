@@ -174,21 +174,21 @@ public class ComandasBO implements IComandasBO {
     /**
      * Método que permite consultar comandas por rango de fechas.
      *
-     * @param inicio Fecha inicial.
-     * @param fin Fecha final.
-     * @return Lista de comandas.
-     * @throws NegocioException si ocurre un error.
+     * @param inicio Fecha inicial (puede ser null).
+     * @param fin Fecha final (puede ser null).
+     * @return Lista de comandas dentro del rango especificado.
+     * @throws NegocioException si ocurre un error de validación o persistencia.
      */
     @Override
     public List<Comanda> buscarPorRangoFechas(LocalDate inicio, LocalDate fin) throws NegocioException {
         try {
-            if (inicio.isAfter(fin)) {
+            // Validación: solo si ambas fechas existen se compara el rango
+            if (inicio != null && fin != null && inicio.isAfter(fin)) {
                 throw new NegocioException("El rango de fechas es inválido.");
             }
             return comandasDAO.buscarPorRangoFechas(inicio, fin);
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
-
             throw new NegocioException("Error al consultar comandas.", ex);
         }
     }
@@ -198,21 +198,21 @@ public class ComandasBO implements IComandasBO {
      *
      * Solo considera comandas entregadas.
      *
-     * @param inicio Fecha inicial.
-     * @param fin Fecha final.
-     * @return total de ventas.
-     * @throws NegocioException si ocurre un error.
+     * @param inicio Fecha inicial (puede ser null).
+     * @param fin Fecha final (puede ser null).
+     * @return Total de ventas en el periodo indicado.
+     * @throws NegocioException si ocurre un error de validación o persistencia.
      */
     @Override
     public Double obtenerTotalVentasPorRango(LocalDate inicio, LocalDate fin) throws NegocioException {
         try {
-            if (inicio.isAfter(fin)) {
+            // Validación: solo si ambas fechas existen se compara el rango
+            if (inicio != null && fin != null && inicio.isAfter(fin)) {
                 throw new NegocioException("El rango de fechas es inválido.");
             }
             return comandasDAO.obtenerTotalVentasPorRango(inicio, fin);
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
-
             throw new NegocioException("Error al calcular ventas.", ex);
         }
     }
@@ -220,21 +220,22 @@ public class ComandasBO implements IComandasBO {
     /**
      * Genera el reporte de comandas en un rango de fechas.
      *
-     * @param inicio fecha inicial
-     * @param fin fecha final
-     * @return lista de comandas con datos completos
-     * @throws NegocioException si ocurre un error en la consulta
+     * @param inicio Fecha inicial (puede ser null).
+     * @param fin Fecha final (puede ser null).
+     * @return Lista de comandas con datos completos para el reporte.
+     * @throws NegocioException si ocurre un error de validación o persistencia.
      */
     @Override
     public List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws NegocioException {
         try {
-            if (inicio.isAfter(fin)) {
+            // Validación: solo si ambas fechas existen se compara el rango
+            if (inicio != null && fin != null && inicio.isAfter(fin)) {
                 throw new NegocioException("El rango de fechas es inválido.");
             }
             return comandasDAO.obtenerComandasParaReporte(inicio, fin);
         } catch (PersistenciaException ex) {
-            throw new NegocioException("Error al generar reporte de comandas", ex);
+            LOGGER.severe(ex.getMessage());
+            throw new NegocioException("Error al generar reporte de comandas.", ex);
         }
     }
-
 }

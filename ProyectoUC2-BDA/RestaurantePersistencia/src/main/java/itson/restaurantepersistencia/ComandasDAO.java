@@ -15,11 +15,17 @@ import itson.restaurantedtos.DetalleComandaDTO;
 import itson.restaurantepersistencia.adapters.EstadoComandaDTOAEstadoComandaAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * Clase que implementa la interfaz IComandasDAO.
@@ -285,16 +291,26 @@ public class ComandasDAO implements IComandasDAO {
     public List<Comanda> buscarPorRangoFechas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
         try {
             EntityManager em = ManejadorConexiones.crearEntityManager();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Comanda> criteria = builder.createQuery(Comanda.class);
+            Root<Comanda> comanda = criteria.from(Comanda.class);
 
-            String consultaJPQL = """
-                SELECT c FROM Comanda c
-                WHERE c.fechaHora BETWEEN :inicio AND :fin
-            """;
+            List<Predicate> predicates = new ArrayList<>();
 
-            return em.createQuery(consultaJPQL, Comanda.class)
-                    .setParameter("inicio", inicio)
-                    .setParameter("fin", fin)
-                    .getResultList();
+            if (inicio != null) {
+                LocalDateTime inicioDateTime = inicio.atStartOfDay();
+                predicates.add(builder.greaterThanOrEqualTo(comanda.get("fechaHora"), inicioDateTime));
+            }
+            if (fin != null) {
+                LocalDateTime finDateTime = fin.atTime(23, 59, 59);
+                predicates.add(builder.lessThanOrEqualTo(comanda.get("fechaHora"), finDateTime));
+            }
+
+            if (!predicates.isEmpty()) {
+                criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+            }
+
+            return em.createQuery(criteria).getResultList();
 
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());
@@ -316,22 +332,27 @@ public class ComandasDAO implements IComandasDAO {
     public Double obtenerTotalVentasPorRango(LocalDate inicio, LocalDate fin) throws PersistenciaException {
         try {
             EntityManager em = ManejadorConexiones.crearEntityManager();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Double> criteria = builder.createQuery(Double.class);
+            Root<Comanda> comanda = criteria.from(Comanda.class);
 
-            LocalDateTime inicioDateTime = inicio.atStartOfDay();
-            LocalDateTime finDateTime = fin.atTime(23, 59, 59);
-            String consultaJPQL = """
-               
-                    SELECT SUM(c.total) FROM Comanda c
-                    WHERE c.fechaHora BETWEEN :inicio AND :fin
-                    AND c.estado = :estado
-                """;
+            criteria.select(builder.sum(comanda.get("total")));
 
-            Double total = em.createQuery(consultaJPQL, Double.class)
-                    .setParameter("inicio", inicioDateTime)
-                    .setParameter("fin", finDateTime)
-                    .setParameter("estado", EstadoComanda.ENTREGADA)
-                    .getSingleResult();
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(builder.equal(comanda.get("estado"), EstadoComanda.ENTREGADA));
 
+            if (inicio != null) {
+                LocalDateTime inicioDateTime = inicio.atStartOfDay();
+                predicates.add(builder.greaterThanOrEqualTo(comanda.get("fechaHora"), inicioDateTime));
+            }
+            if (fin != null) {
+                LocalDateTime finDateTime = fin.atTime(23, 59, 59);
+                predicates.add(builder.lessThanOrEqualTo(comanda.get("fechaHora"), finDateTime));
+            }
+
+            criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+
+            Double total = em.createQuery(criteria).getSingleResult();
             return total != null ? total : 0.0;
 
         } catch (PersistenceException ex) {
@@ -353,21 +374,30 @@ public class ComandasDAO implements IComandasDAO {
     public List<Comanda> obtenerComandasParaReporte(LocalDate inicio, LocalDate fin) throws PersistenciaException {
         try {
             EntityManager em = ManejadorConexiones.crearEntityManager();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Comanda> criteria = builder.createQuery(Comanda.class);
+            Root<Comanda> comanda = criteria.from(Comanda.class);
 
-            LocalDateTime inicioDateTime = inicio.atStartOfDay();
-            LocalDateTime finDateTime = fin.atTime(23, 59, 59);
+            // Fetch joins para mesa y cliente
+            comanda.fetch("mesa", JoinType.INNER);
+            comanda.fetch("cliente", JoinType.LEFT);
 
-            String consultaJPQL = """
-            SELECT c FROM Comanda c
-            JOIN FETCH c.mesa
-            LEFT JOIN FETCH c.cliente
-            WHERE c.fechaHora BETWEEN :inicio AND :fin
-        """;
+            List<Predicate> predicates = new ArrayList<>();
 
-            return em.createQuery(consultaJPQL, Comanda.class)
-                    .setParameter("inicio", inicioDateTime)
-                    .setParameter("fin", finDateTime)
-                    .getResultList();
+            if (inicio != null) {
+                LocalDateTime inicioDateTime = inicio.atStartOfDay();
+                predicates.add(builder.greaterThanOrEqualTo(comanda.get("fechaHora"), inicioDateTime));
+            }
+            if (fin != null) {
+                LocalDateTime finDateTime = fin.atTime(23, 59, 59);
+                predicates.add(builder.lessThanOrEqualTo(comanda.get("fechaHora"), finDateTime));
+            }
+
+            if (!predicates.isEmpty()) {
+                criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+            }
+
+            return em.createQuery(criteria).getResultList();
 
         } catch (PersistenceException ex) {
             LOGGER.severe(ex.getMessage());

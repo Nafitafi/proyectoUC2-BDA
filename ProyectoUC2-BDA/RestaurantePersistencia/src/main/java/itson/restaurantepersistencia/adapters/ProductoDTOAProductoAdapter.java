@@ -8,11 +8,16 @@ import itson.restaurantedominio.Producto;
 import itson.restaurantedtos.ProductoDTO;
 
 /**
- *
- * @author nafbr
+ * Clase Adapter: Producto Entidad a ProductoDTO.
+ * @author Nahomi Figueroa
  */
 public class ProductoDTOAProductoAdapter {
 
+    /**
+     * Adapta un Producto a ProductoDTO
+     * @param productoActualizar
+     * @return 
+     */
     public static Producto adaptar(ProductoDTO productoActualizar) {
         if (productoActualizar == null) {
             return null;

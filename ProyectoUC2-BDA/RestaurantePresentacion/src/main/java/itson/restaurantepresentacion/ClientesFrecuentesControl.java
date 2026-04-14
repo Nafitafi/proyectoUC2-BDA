@@ -9,8 +9,6 @@ import itson.restaurantedtos.ClienteFrecuenteDTO;
 import itson.restaurantenegocio.ClientesFrecuentesBO;
 import itson.restaurantenegocio.IClientesFrecuentesBO;
 import itson.restaurantenegocio.NegocioException;
-import itson.restaurantepersistencia.ClientesFrecuentesDAO;
-import itson.restaurantepersistencia.IClientesFrecuentesDAO;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;

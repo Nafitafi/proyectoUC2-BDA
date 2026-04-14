@@ -4,6 +4,16 @@
  */
 package itson.restaurantepresentacion;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import itson.restaurantedominio.Comanda;
 import itson.restaurantedtos.ClienteFrecuenteDTO;
 import itson.restaurantedtos.ComandaDTO;
@@ -14,14 +24,18 @@ import itson.restaurantenegocio.IComandasBO;
 import itson.restaurantenegocio.NegocioException;
 import itson.restaurantepersistencia.ComandasDAO;
 import itson.restaurantepersistencia.IComandasDAO;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -52,16 +66,9 @@ public class ReportesControl {
         
         reporteClientes.getBtnRegresar().addActionListener(e -> regresar());
         reporteClientes.getBtnReporteComandas().addActionListener(e -> abrirReporteComandas());
-        reporteClientes.getCmbMinimoVisitas().addActionListener(e -> {
-            String seleccionado = (String)  reporteClientes.getCmbMinimoVisitas().getSelectedItem();
-            if (seleccionado == null || seleccionado.equals("Todas")) {
-                buscadorClientes.setRowFilter(null);
-            } else {
-                buscadorClientes.setRowFilter(RowFilter.regexFilter("^" + seleccionado + "$", 2));
-            }
-        });
-        
         reporteClientes.getBtnLimpiar().addActionListener(e ->  limpiarClientes());
+        reporteClientes.getBtnGenerarPDF().addActionListener(e -> generarPDFClientes());
+        reporteClientes.getBtnGenerarReporte().addActionListener(e -> filtrarClientes());
                 
     }
 
@@ -74,11 +81,62 @@ public class ReportesControl {
         IComandasDAO comandasDAO = new ComandasDAO();
         this.clientesBO = new ClientesFrecuentesBO();
         this.comandasBO = new ComandasBO(comandasDAO);
-        crearTablaComandas();
+        crearTablaComandas(null, null);
         
         reporteComandas.getBtnRegresar().addActionListener(e -> regresar());
         reporteComandas.getBtnReporteClientes().addActionListener(e -> abrirReporteClientes());
         reporteComandas.getBtnLimpiar().addActionListener(e -> limpiarComandas());
+        reporteComandas.getBtnGenerarPDF().addActionListener(e -> generarPDFComandas());
+        reporteComandas.getBtnGenerarReporte().addActionListener(e -> filtrarComandas());
+    }
+    
+    /**
+     * Método que filtra la tabla de clientes según el nombre y el mínimo de visitas
+     */
+    public void filtrarClientes() {
+        String nombreBuscado = reporteClientes.getTxtNombre().getText().trim().toLowerCase();
+        String seleccionVisitas = (String) reporteClientes.getCmbMinimoVisitas().getSelectedItem();
+        
+        int minimoVisitas = 0;
+        if (seleccionVisitas != null && !seleccionVisitas.equals("Todas")) {
+            minimoVisitas = Integer.parseInt(seleccionVisitas);
+        }
+        
+        final int minVisitasFinal = minimoVisitas;
+
+        RowFilter<DefaultTableModel, Integer> filtroPersonalizado = new RowFilter<DefaultTableModel, Integer>() {
+            @Override
+            public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
+                String nombreFila = entry.getStringValue(1).toLowerCase();
+                int visitasFila = Integer.parseInt(entry.getStringValue(2));
+
+                boolean coincideNombre = nombreBuscado.isEmpty() || nombreFila.contains(nombreBuscado);
+                boolean coincideVisitas = visitasFila >= minVisitasFinal;
+
+                return coincideNombre && coincideVisitas;
+            }
+        };
+        buscadorClientes.setRowFilter(filtroPersonalizado);
+    }
+    
+    /**
+     * Método que lee las fechas del LGoodDatePicker y actualiza la tabla
+     */
+    public void filtrarComandas() {
+        LocalDate fechaInicio = reporteComandas.getDtpFechaInicio().getDate(); 
+        LocalDate fechaFin = reporteComandas.getDtpFechaFin().getDate();
+
+        if (fechaInicio != null && fechaFin != null) {
+            if (fechaInicio.isAfter(fechaFin)) {
+                JOptionPane.showMessageDialog(reporteComandas, 
+                    "La fecha de inicio no puede ser mayor a la fecha de fin.", 
+                    "Fechas inválidas", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        crearTablaComandas(fechaInicio, fechaFin);
+        obtenerVentaTotal(); 
     }
     
     /**
@@ -106,7 +164,8 @@ public class ReportesControl {
                 modelo.addRow(fila);
             }
         } catch (NegocioException ex){
-            //todo
+            LOGGER.log(Level.SEVERE, "Error al cargar los clientes", ex);
+            JOptionPane.showMessageDialog(reporteClientes, "No se pudieron cargar los clientes.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
         reporteClientes.getTablaClientes().setModel(modelo);
@@ -154,6 +213,105 @@ public class ReportesControl {
     
     }
     
+    /**
+     * Método para manejar el botón de Generar PDF en Clientes.
+     */
+    public void generarPDFClientes() {
+        JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setDialogTitle("Guardar Reporte de Clientes");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
+
+        if (fileChooser.showSaveDialog(reporteClientes) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.toLowerCase().endsWith(".pdf")) ruta += ".pdf";
+
+            try {
+                String filtroNombre = reporteClientes.getTxtNombre().getText().isEmpty() ? "Todos" : reporteClientes.getTxtNombre().getText();
+                String filtroVisitas = reporteClientes.getCmbMinimoVisitas().getSelectedItem() != null ? reporteClientes.getCmbMinimoVisitas().getSelectedItem().toString() : "0";
+                String subtitulo = "Filtro por Nombre: " + filtroNombre + "\nMínimo de Visitas: " + filtroVisitas;
+                
+                exportarTablaAPDF(ruta, reporteClientes.getTablaClientes(), "Reporte de Clientes Frecuentes", subtitulo, "");
+                
+                JOptionPane.showMessageDialog(reporteClientes, "PDF generado con éxito en:\n" + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(reporteClientes, "Error al generar PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                LOGGER.log(Level.SEVERE, "Error al generar PDF de clientes", e);
+            }
+        }
+    }
+
+    /**
+     * Método para manejar el botón de Generar PDF en Comandas.
+     */
+    public void generarPDFComandas() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar Reporte de Comandas");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
+
+        if (fileChooser.showSaveDialog(reporteComandas) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.toLowerCase().endsWith(".pdf")) ruta += ".pdf";
+
+            try {
+                String subtitulo = "Periodo: " + reporteComandas.getDtpFechaInicio().getText() + " al " + reporteComandas.getDtpFechaFin().getText();
+                String total = "Venta Total: " + reporteComandas.getLblVentaTotalCantidad().getText();
+                
+                exportarTablaAPDF(ruta, reporteComandas.getTablaComandas(), "Reporte de Comandas", subtitulo, total);
+                
+                JOptionPane.showMessageDialog(reporteComandas, "PDF generado con éxito en:\n" + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(reporteComandas, "Error al generar PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                LOGGER.log(Level.SEVERE, "Error al generar PDF de comandas", e);
+            }
+        }
+    }
+
+    /**
+     * Método de utilería privado para construir el PDF como tal.
+     */
+    private void exportarTablaAPDF(String rutaDestino, JTable tabla, String tituloReporte, String subtitulo, String piePagina) throws Exception {
+        Document documento = new Document();
+        PdfWriter.getInstance(documento, new FileOutputStream(rutaDestino));
+        documento.open();
+
+        Font fuenteTitulo = com.itextpdf.text.FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+        Paragraph titulo = new Paragraph(tituloReporte + "\n\n", fuenteTitulo);
+        titulo.setAlignment(Element.ALIGN_CENTER);
+        documento.add(titulo);
+
+        if (subtitulo != null && !subtitulo.isEmpty()) {
+            documento.add(new Paragraph(subtitulo + "\n\n"));
+        }
+
+        int columnas = tabla.getColumnCount();
+        PdfPTable tablaPDF = new PdfPTable(columnas);
+        tablaPDF.setWidthPercentage(100);
+
+        Font fuenteCabecera = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+        for (int i = 0; i < columnas; i++) {
+            PdfPCell celda = new PdfPCell(new Phrase(tabla.getColumnName(i), fuenteCabecera));
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            tablaPDF.addCell(celda);
+        }
+
+        for (int filas = 0; filas < tabla.getRowCount(); filas++) {
+            for (int cols = 0; cols < columnas; cols++) {
+                Object valor = tabla.getValueAt(filas, cols);
+                tablaPDF.addCell(valor == null ? "" : valor.toString());
+            }
+        }
+        documento.add(tablaPDF);
+
+        if (piePagina != null && !piePagina.isEmpty()) {
+            Font fuenteTotal = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
+            Paragraph total = new Paragraph("\n" + piePagina, fuenteTotal);
+            total.setAlignment(Element.ALIGN_RIGHT);
+            documento.add(total);
+        }
+
+        documento.close();
+    }
     
      /**
      * Método que abre el reporte de comandas.
@@ -183,7 +341,7 @@ public class ReportesControl {
     /**
      * Método para generar la tabla de Comandas
      */
-    public void crearTablaComandas(){
+    public void crearTablaComandas(LocalDate inicio, LocalDate fin) {
         String[] columnas = { "Id", "Fecha y Hora", "Mesa", "Cliente", "Estado", "Total"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
           @Override
@@ -193,7 +351,8 @@ public class ReportesControl {
         };
         
         try{
-            List<Comanda> comandas = comandasBO.obtenerComandasParaReporte(null, null);
+            List<Comanda> comandas = comandasBO.obtenerComandasParaReporte(inicio, fin);
+            
             for (Comanda c : comandas) {
                 String cliente = c.getId() + "." + c.getCliente().getNombre() + " " + c.getCliente().getApellidoP();
                 Object[] fila = {
@@ -208,7 +367,7 @@ public class ReportesControl {
             }
             
         } catch (NegocioException ex) {
-            //todo
+            LOGGER.log(Level.SEVERE, "Error al buscar comandas", ex);
         }
         
         reporteComandas.getTablaComandas().setModel(modelo);
@@ -233,8 +392,8 @@ public class ReportesControl {
      * Método para limpiar los campos del reporte de Comandas
      */
     public void limpiarComandas(){
-        reporteComandas.getTxtFechaInicio().setText("");
-        reporteComandas.getTxtFechaFin().setText("");
+        reporteComandas.getDtpFechaInicio().clear();
+        reporteComandas.getDtpFechaFin().clear();
     }
     
     /**

@@ -26,12 +26,12 @@ public class ReporteClientesFORM extends javax.swing.JFrame {
         return btnGenerarPDF;
     }
 
-    public JButton getBtnGenerarReporte() {
-        return btnGenerarReporte;
-    }
-
     public JButton getBtnLimpiar() {
         return btnLimpiar;
+    }
+
+    public JButton getBtnGenerarReporte() {
+        return btnGenerarReporte;
     }
 
     public JButton getBtnRegresar() {
@@ -134,8 +134,11 @@ public class ReporteClientesFORM extends javax.swing.JFrame {
         btnGenerarPDF.setBackground(new java.awt.Color(255, 212, 125));
         btnGenerarPDF.setForeground(new java.awt.Color(51, 51, 51));
         btnGenerarPDF.setText("Generar PDF");
-
-        cmbMinimoVisitas.setBackground(new java.awt.Color(255, 255, 255));
+        btnGenerarPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarPDFActionPerformed(evt);
+            }
+        });
 
         lblMinimoVisitas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblMinimoVisitas.setForeground(new java.awt.Color(19, 70, 134));
@@ -148,8 +151,11 @@ public class ReporteClientesFORM extends javax.swing.JFrame {
         btnGenerarReporte.setBackground(new java.awt.Color(188, 202, 220));
         btnGenerarReporte.setForeground(new java.awt.Color(51, 51, 51));
         btnGenerarReporte.setText("Generar Reporte");
-
-        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
+        btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReporteActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setBackground(new java.awt.Color(237, 63, 39));
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
@@ -223,6 +229,14 @@ public class ReporteClientesFORM extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerarReporteActionPerformed
+
+    private void btnGenerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPDFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerarPDFActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarPDF;

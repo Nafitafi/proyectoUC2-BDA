@@ -4,6 +4,7 @@
  */
 package itson.restaurantepresentacion;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -51,16 +52,14 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
         return tablaComandas;
     }
 
-    public JFormattedTextField getTxtFechaFin() {
-        return txtFechaFin;
+    public DatePicker getDtpFechaFin() {
+        return dtpFechaFin;
     }
 
-    public JFormattedTextField getTxtFechaInicio() {
-        return txtFechaInicio;
+    public DatePicker getDtpFechaInicio() {
+        return dtpFechaInicio;
     }
-    
-  
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,11 +80,11 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
         btnGenerarReporte = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         lblTituloReporteComandas = new javax.swing.JLabel();
-        txtFechaInicio = new javax.swing.JFormattedTextField();
         lblFechaInicio = new javax.swing.JLabel();
-        txtFechaFin = new javax.swing.JFormattedTextField();
         lblVentaTotalTitulo = new javax.swing.JLabel();
         lblVentaTotalCantidad = new javax.swing.JLabel();
+        dtpFechaInicio = new com.github.lgooddatepicker.components.DatePicker();
+        dtpFechaFin = new com.github.lgooddatepicker.components.DatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -148,6 +147,11 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
         btnGenerarReporte.setBackground(new java.awt.Color(188, 202, 220));
         btnGenerarReporte.setForeground(new java.awt.Color(51, 51, 51));
         btnGenerarReporte.setText("Generar Reporte");
+        btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReporteActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setBackground(new java.awt.Color(237, 63, 39));
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
@@ -157,13 +161,9 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
         lblTituloReporteComandas.setForeground(new java.awt.Color(19, 70, 134));
         lblTituloReporteComandas.setText("Reporte de Comandas");
 
-        txtFechaInicio.setBackground(new java.awt.Color(255, 255, 255));
-
         lblFechaInicio.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblFechaInicio.setForeground(new java.awt.Color(19, 70, 134));
         lblFechaInicio.setText("Fecha Inicio:");
-
-        txtFechaFin.setBackground(new java.awt.Color(255, 255, 255));
 
         lblVentaTotalTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblVentaTotalTitulo.setForeground(new java.awt.Color(19, 70, 134));
@@ -193,12 +193,12 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlReporteComandasLayout.createSequentialGroup()
                             .addGap(12, 12, 12)
                             .addComponent(lblFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(24, 24, 24)
+                            .addGap(1, 1, 1)
+                            .addComponent(dtpFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(lblFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dtpFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnGenerarReporte)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -214,16 +214,21 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
                 .addComponent(lblTituloReporteComandas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnGenerarReporte)
-                        .addComponent(btnLimpiar)
-                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblFechaFin)
-                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblFechaInicio)))
-                .addGap(18, 18, 18)
-                .addComponent(scrollTablaComandas, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlReporteComandasLayout.createSequentialGroup()
+                        .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblFechaFin)
+                                .addComponent(dtpFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblFechaInicio)
+                                .addComponent(dtpFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(21, 21, 21))
+                    .addGroup(pnlReporteComandasLayout.createSequentialGroup()
+                        .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGenerarReporte)
+                            .addComponent(btnLimpiar))
+                        .addGap(18, 18, 18)))
+                .addComponent(scrollTablaComandas, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlReporteComandasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerarPDF)
@@ -246,6 +251,10 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerarReporteActionPerformed
+
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarPDF;
@@ -253,6 +262,8 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnReporteClientes;
+    private com.github.lgooddatepicker.components.DatePicker dtpFechaFin;
+    private com.github.lgooddatepicker.components.DatePicker dtpFechaInicio;
     private javax.swing.JLabel lblFechaFin;
     private javax.swing.JLabel lblFechaInicio;
     private javax.swing.JLabel lblTituloReporteComandas;
@@ -262,7 +273,5 @@ public class ReporteComandasFORM extends javax.swing.JFrame {
     private javax.swing.JPanel pnlReporteComandas;
     private javax.swing.JScrollPane scrollTablaComandas;
     private javax.swing.JTable tablaComandas;
-    private javax.swing.JFormattedTextField txtFechaFin;
-    private javax.swing.JFormattedTextField txtFechaInicio;
     // End of variables declaration//GEN-END:variables
 }

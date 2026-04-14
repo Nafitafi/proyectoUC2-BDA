@@ -4,15 +4,12 @@
  */
 package itson.restaurantepresentacion;
 
-import itson.restaurantedominio.Ingrediente;
-import itson.restaurantedtos.DetallesRecetaDTO;
 import itson.restaurantedtos.IngredienteActualizadoDTO;
 import itson.restaurantedtos.ProductoDTO;
-import itson.restaurantenegocio.IIngredientesBO;
-import itson.restaurantenegocio.IProductosBO;
-import itson.restaurantenegocio.IngredientesBO;
-import itson.restaurantenegocio.ProductosBO;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -42,18 +39,18 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
         this.control = new ProductosControl();
         initComponents();
         this.setLocationRelativeTo(null);
-        modeloTabla = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modeloTabla = (DefaultTableModel) jTable1.getModel();
         lblIngredienteencontrado.setText("Ningún ingrediente seleccionado");
         txtCantidad.setText("");
 
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTable1.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 int fila = jTable1.rowAtPoint(evt.getPoint());
                 int columna = jTable1.columnAtPoint(evt.getPoint());
                 if (fila >= 0 && columna == 4) {
-                    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(null,
-                            "¿Quitar este ingrediente?", "Confirmar", javax.swing.JOptionPane.YES_NO_OPTION);
+                    int confirmacion = JOptionPane.showConfirmDialog(null,
+                            "¿Quitar este ingrediente?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
                     if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
                         modeloTabla.removeRow(fila);
@@ -407,15 +404,15 @@ public class ActualizarProductoFORM extends javax.swing.JFrame {
         if (fileChooser.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
             try {
                 java.io.File archivo = fileChooser.getSelectedFile();
-                imagenBytes = java.nio.file.Files.readAllBytes(archivo.toPath());
+                imagenBytes = Files.readAllBytes(archivo.toPath());
 
-                javax.swing.ImageIcon icono = new javax.swing.ImageIcon(imagenBytes);
-                java.awt.Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), java.awt.Image.SCALE_SMOOTH);
+                ImageIcon icono = new ImageIcon(imagenBytes);
+                Image imagenEscalada = icono.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH);
 
-                lblImagen.setIcon(new javax.swing.ImageIcon(imagenEscalada));
+                lblImagen.setIcon(new ImageIcon(imagenEscalada));
                 lblImagen.setText("");
             } catch (Exception ex) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSeleccionarImagenActionPerformed

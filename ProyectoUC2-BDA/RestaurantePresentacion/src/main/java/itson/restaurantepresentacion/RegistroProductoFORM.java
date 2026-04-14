@@ -6,12 +6,15 @@ package itson.restaurantepresentacion;
 
 import itson.restaurantedtos.IngredienteActualizadoDTO;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.nio.file.Files;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,12 +35,12 @@ public class RegistroProductoFORM extends javax.swing.JFrame {
         control = new ProductosControl();
         initComponents();
         this.setLocationRelativeTo(null);
-        modeloTabla = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modeloTabla = (DefaultTableModel) jTable1.getModel();
         lblIngredienteencontrado.setText("Ningún ingrediente seleccionado");
         txtCantidad.setText("");
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTable1.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 int fila = jTable1.rowAtPoint(evt.getPoint());
                 int columna = jTable1.columnAtPoint(evt.getPoint());
                 if (fila >= 0 && columna == 4) {

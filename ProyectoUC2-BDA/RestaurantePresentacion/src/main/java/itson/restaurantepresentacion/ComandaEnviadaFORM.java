@@ -226,9 +226,6 @@ public class ComandaEnviadaFORM extends javax.swing.JFrame {
         return panelSuperior;
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public JTable getTblComandaEnviada() {
         return tblComandaEnviada;
     }

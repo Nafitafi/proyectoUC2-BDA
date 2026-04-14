@@ -21,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
- * @author nafbr
+ * @author Nahomi Figueroa
  */
 public class ProductosDAOTest {
 

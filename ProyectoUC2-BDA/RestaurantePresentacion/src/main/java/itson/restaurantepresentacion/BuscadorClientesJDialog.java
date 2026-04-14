@@ -7,14 +7,18 @@ package itson.restaurantepresentacion;
 import itson.restaurantedtos.ClienteFrecuenteDTO;
 import itson.restaurantenegocio.ClientesFrecuentesBO;
 import itson.restaurantenegocio.NegocioException;
+import java.awt.Frame;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
 /**
- *
- * @author nafbr
+ * Dialog reutilizable para buscar productos.
+ * @author Nahomi FIgueroa
  */
 public class BuscadorClientesJDialog extends javax.swing.JDialog {
 
@@ -29,19 +33,19 @@ public class BuscadorClientesJDialog extends javax.swing.JDialog {
     /**
      * Creates new form BuscadorClientesJDialog
      */
-    public BuscadorClientesJDialog(java.awt.Frame parent, boolean modal) {
+    public BuscadorClientesJDialog(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
         clientesBO = new ClientesFrecuentesBO();
         popmCoincidencias = new JPopupMenu();
         modeloLista = new DefaultListModel<>();
-        listCoincidencias = new javax.swing.JList<>(modeloLista);
+        listCoincidencias = new JList<>(modeloLista);
         JScrollPane scrllpLista = new JScrollPane(listCoincidencias);
         popmCoincidencias.add(scrllpLista);
-        txtClienteBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtClienteBuscar.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
+            public void keyReleased(KeyEvent evt) {
                 String textoBusqueda = txtClienteBuscar.getText().trim();
                 int keyCode = evt.getKeyCode();
                 if (keyCode == java.awt.event.KeyEvent.VK_UP || keyCode == java.awt.event.KeyEvent.VK_DOWN) {

@@ -5,8 +5,13 @@
 package itson.restaurantepresentacion;
 
 import itson.restaurantedtos.ProductoDTO;
+import java.awt.Cursor;
+import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
@@ -20,14 +25,14 @@ public class BuscadorProductosJDialog extends javax.swing.JDialog {
     private ProductosControl control;
     private DefaultListModel<String> modeloLista;
     private JPopupMenu popmCoincidencias;
-    private javax.swing.JList<String> listCoincidencias;
+    private JList<String> listCoincidencias;
     private List<ProductoDTO> encontrados;
     private ProductoDTO productoSeleccionado = null;
 
     /**
      * Creates new form BuscadorProductosJDialog
      */
-    public BuscadorProductosJDialog(java.awt.Frame parent, boolean modal) {
+    public BuscadorProductosJDialog(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
@@ -40,16 +45,16 @@ public class BuscadorProductosJDialog extends javax.swing.JDialog {
         
         popmCoincidencias = new JPopupMenu();
         modeloLista = new DefaultListModel<>();
-        listCoincidencias = new javax.swing.JList<>(modeloLista);
+        listCoincidencias = new JList<>(modeloLista);
         listCoincidencias.setFixedCellHeight(30);
-        listCoincidencias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        listCoincidencias.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
 
         JScrollPane scrllpLista = new JScrollPane(listCoincidencias);
-        scrllpLista.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        scrllpLista.setBorder(BorderFactory.createEmptyBorder());
         popmCoincidencias.add(scrllpLista);
         txtProductoBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
+            public void keyReleased(KeyEvent evt) {
                 String textoBusqueda = txtProductoBuscar.getText().trim();
                 int keyCode = evt.getKeyCode();
 
@@ -103,7 +108,7 @@ public class BuscadorProductosJDialog extends javax.swing.JDialog {
     /**
      * Método que regresa el producto seleccionado de la lista que se desplegó.
      *
-     * * @return ProductoDTO seleccionado o null si se canceló.
+     * @return ProductoDTO seleccionado o null si se canceló.
      */
     public ProductoDTO getProductoSeleccionado() {
         return productoSeleccionado;

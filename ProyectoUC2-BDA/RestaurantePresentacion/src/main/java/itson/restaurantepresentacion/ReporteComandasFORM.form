@@ -62,12 +62,12 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                               <Component id="lblFechaInicio" min="-2" pref="79" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtFechaInicio" min="-2" pref="126" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                              <Component id="dtpFechaInicio" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lblFechaFin" min="-2" pref="61" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtFechaFin" min="-2" pref="126" max="-2" attributes="0"/>
+                              <Component id="dtpFechaFin" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnGenerarReporte" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -88,19 +88,28 @@
                   <Component id="lblTituloReporteComandas" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnGenerarReporte" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnLimpiar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dtpFechaFin" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="lblFechaInicio" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dtpFechaInicio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                          <Component id="lblFechaFin" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtFechaInicio" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblFechaInicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnGenerarReporte" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnLimpiar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="scrollTablaComandas" pref="389" max="32767" attributes="0"/>
+                  <Component id="scrollTablaComandas" pref="388" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnGenerarPDF" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -225,6 +234,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Generar Reporte"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarReporteActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnLimpiar">
           <Properties>
@@ -248,13 +260,6 @@
             <Property name="text" type="java.lang.String" value="Reporte de Comandas"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtFechaInicio">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="lblFechaInicio">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -264,13 +269,6 @@
               <Color blue="86" green="46" red="13" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Fecha Inicio:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JFormattedTextField" name="txtFechaFin">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblVentaTotalTitulo">
@@ -293,6 +291,10 @@
               <Color blue="86" green="46" red="13" type="rgb"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFechaInicio">
+        </Component>
+        <Component class="com.github.lgooddatepicker.components.DatePicker" name="dtpFechaFin">
         </Component>
       </SubComponents>
     </Container>

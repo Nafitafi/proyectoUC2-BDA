@@ -79,5 +79,9 @@ public class ClienteFrecuenteActualizadoDTO {
         this.numeroTelefono = numeroTelefono;
     }
     
+    @Override
+    public String toString() {
+        return nombre +" "+apellidoP;
+    }
     
 }

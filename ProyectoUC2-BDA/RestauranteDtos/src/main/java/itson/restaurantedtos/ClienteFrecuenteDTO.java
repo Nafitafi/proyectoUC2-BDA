@@ -136,5 +136,8 @@ public class ClienteFrecuenteDTO {
         this.visitas = visitas;
     }
     
-    
+    @Override
+    public String toString() {
+        return nombre +" "+apellidoP;
+    }
 }

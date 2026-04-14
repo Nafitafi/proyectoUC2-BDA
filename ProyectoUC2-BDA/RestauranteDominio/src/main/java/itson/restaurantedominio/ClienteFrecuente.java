@@ -122,4 +122,9 @@ public class ClienteFrecuente extends Cliente {
         hash += (idCliente != null ? idCliente.hashCode() : 0);
         return hash;
     }
+    
+    @Override
+    public String toString() {
+        return nombre +" "+apellidoP;
+    }
 }

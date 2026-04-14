@@ -109,5 +109,8 @@ public class ClienteFrecuenteNuevoDTO {
     }
     
     
-    
+    @Override
+    public String toString() {
+        return nombre +" "+apellidoP;
+    }
 }

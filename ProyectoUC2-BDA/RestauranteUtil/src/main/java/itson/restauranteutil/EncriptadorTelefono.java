@@ -12,7 +12,7 @@ import java.util.Base64;
 public class EncriptadorTelefono {
 
     private static final String ALGORITMO = "AES";
-    private static final String CLAVE = "PROYECTO2BD";
+    private static final String CLAVE = "PROYECTO2BD12345";
 
     public static String encriptar(String telefono) throws Exception {
         SecretKeySpec key = new SecretKeySpec(CLAVE.getBytes(), ALGORITMO);

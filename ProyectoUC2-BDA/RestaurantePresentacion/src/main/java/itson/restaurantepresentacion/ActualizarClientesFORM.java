@@ -10,6 +10,8 @@ import itson.restaurantedtos.ClienteFrecuenteDTO;
 import itson.restaurantenegocio.ClientesFrecuentesBO;
 import itson.restaurantenegocio.IClientesFrecuentesBO;
 import itson.restaurantenegocio.NegocioException;
+import itson.restauranteutil.EncriptadorTelefono;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +19,8 @@ import javax.swing.JOptionPane;
  * @author Andrea Lara, Nahomi Figueroa, Zaira Barajas
  */
 public class ActualizarClientesFORM extends javax.swing.JFrame {
+
+    private static final Logger LOGGER = Logger.getLogger(ActualizarClientesFORM.class.getName());
 
     private IClientesFrecuentesBO clientesBO;
     ClienteFrecuenteDTO clienteAEditar;
@@ -321,7 +325,21 @@ public class ActualizarClientesFORM extends javax.swing.JFrame {
         this.txtNombre.setText(clienteAEditar.getNombre());
         this.txtApellidoP.setText(clienteAEditar.getApellidoP());
         this.txtApellidoM.setText(clienteAEditar.getApellidoM());
-        this.txtTelefono.setText(clienteAEditar.getNumeroTelefono());
+
+        try {
+            String telefonoPlano = EncriptadorTelefono.desencriptar(clienteAEditar.getNumeroTelefono());
+            this.txtTelefono.setText(telefonoPlano);
+        } catch (Exception ex) {
+            LOGGER.severe("Error al desencriptar teléfono: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No fue posible recuperar el número de teléfono.\nDetalle: " + ex.getMessage(),
+                    "Error de desencriptación",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            this.txtTelefono.setText(""); 
+        }
+
         this.txtCorreo.setText(clienteAEditar.getCorreo());
     }
 

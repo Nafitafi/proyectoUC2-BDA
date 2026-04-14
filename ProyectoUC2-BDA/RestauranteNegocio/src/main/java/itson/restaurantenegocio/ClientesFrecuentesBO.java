@@ -12,6 +12,7 @@ import static itson.restaurantenegocio.adapters.ClientesFrecuentesAClientesFrecu
 import itson.restaurantepersistencia.ClientesFrecuentesDAO;
 import itson.restaurantepersistencia.IClientesFrecuentesDAO;
 import itson.restaurantepersistencia.PersistenciaException;
+import itson.restauranteutil.EncriptadorTelefono;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -54,7 +55,6 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
             //convertimos a clienteFrecuenteDTO para mostrarlo luego
             List<ClienteFrecuenteDTO> listaDTO = convertirADTO(resultadosEntidad);
 
-            
             //A cada cliente le agregamos los datos de visitas, total gastado y los puntos calculados
             for (ClienteFrecuenteDTO dto : listaDTO) {
                 Long id = dto.getId();
@@ -85,11 +85,11 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
      */
     @Override
     public ClienteFrecuente crearCliente(ClienteFrecuenteNuevoDTO clienteNuevo) throws NegocioException {
-         if (clienteNuevo.getNombre() == null) {
+        if (clienteNuevo.getNombre() == null) {
             throw new NegocioException("El nombre es un campo obligatorio.");
         } else if (clienteNuevo.getNombre().length() > 100) {
             throw new NegocioException("El nombre es demasiado largo.");
-        } 
+        }
 
         if (clienteNuevo.getApellidoP() == null) {
             throw new NegocioException("El apellido paterno es un campo obligatorio.");
@@ -110,24 +110,32 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
         } else if (!clienteNuevo.getNumeroTelefono().matches("^(\\+?\\d{1,3})?[- .]?(\\d{10}|\\d{3}-\\d{3}-\\d{4})$")) {
             throw new NegocioException("Formato de teléfono no válido.");
         }
-        
+
         clienteNuevo.setNumeroTelefono(clienteNuevo.getNumeroTelefono().replaceAll("\\D", ""));
-        
+
         if (clienteNuevo.getCorreo() != null) {
             if (clienteNuevo.getCorreo().length() > 100) {
                 throw new NegocioException("El correo es demasiado largo.");
-            } else if (!clienteNuevo.getCorreo().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+            } else if (!clienteNuevo.getCorreo().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
                 throw new NegocioException("Formato de correo no válido.");
             }
         }
 
         try {
+            String telefonoPlano = clienteNuevo.getNumeroTelefono();
+            String telefonoEncriptado = EncriptadorTelefono.encriptar(telefonoPlano);
+            clienteNuevo.setNumeroTelefono(telefonoEncriptado);
+
             ClienteFrecuente cliente = clienteDAO.guardar(clienteNuevo);
             return cliente;
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NegocioException("No fue posible crear al cliente.");
+        } catch (Exception ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NegocioException("Error al encriptar el teléfono.", ex);
         }
+
     }
 
     /**
@@ -144,10 +152,10 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
      */
     @Override
     public ClienteFrecuente actualizarCliente(ClienteFrecuenteActualizadoDTO clienteActualizado) throws NegocioException {
-        if (clienteActualizado == null){
+        if (clienteActualizado == null) {
             throw new NegocioException("Cliente vacío, no hay cambios a realizar.");
         }
-        
+
         if (clienteActualizado.getNombre() != null && clienteActualizado.getNombre().length() > 100) {
             throw new NegocioException("El nombre es demasiado largo.");
         }
@@ -162,15 +170,26 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
 
         if (clienteActualizado.getNumeroTelefono() != null && clienteActualizado.getNumeroTelefono().length() > 20) {
             throw new NegocioException("El número de teléfono es demasiado largo.");
-        } else if (clienteActualizado.getNumeroTelefono() != null && !clienteActualizado.getNumeroTelefono().matches("^(\\+?\\d{1,3})?[- .]?(\\d{10}|\\d{3}-\\d{3}-\\d{4})$")){
+        } else if (clienteActualizado.getNumeroTelefono() != null
+                && !clienteActualizado.getNumeroTelefono().matches("^(\\+?\\d{1,3})?[- .]?(\\d{10}|\\d{3}-\\d{3}-\\d{4})$")) {
             throw new NegocioException("Formato de teléfono no válido.");
         }
-        
-        clienteActualizado.setNumeroTelefono(clienteActualizado.getNumeroTelefono().replaceAll("\\D", ""));
+
+        if (clienteActualizado.getNumeroTelefono() != null) {
+            clienteActualizado.setNumeroTelefono(clienteActualizado.getNumeroTelefono().replaceAll("\\D", ""));
+            try {
+                String telefonoEncriptado = EncriptadorTelefono.encriptar(clienteActualizado.getNumeroTelefono());
+                clienteActualizado.setNumeroTelefono(telefonoEncriptado);
+            } catch (Exception ex) {
+                LOGGER.severe(ex.getMessage());
+                throw new NegocioException("Error al encriptar el teléfono.", ex);
+            }
+        }
 
         if (clienteActualizado.getCorreo() != null && clienteActualizado.getCorreo().length() > 100) {
             throw new NegocioException("El correo es demasiado largo.");
-        } else if (clienteActualizado.getCorreo() != null && !clienteActualizado.getCorreo().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+        } else if (clienteActualizado.getCorreo() != null
+                && !clienteActualizado.getCorreo().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             throw new NegocioException("Formato de correo no válido.");
         }
 
@@ -179,9 +198,8 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
             return cliente;
         } catch (PersistenciaException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new NegocioException("No fue posible crear al cliente.");
+            throw new NegocioException("No fue posible actualizar al cliente.");
         }
-
     }
 
     /**
@@ -275,10 +293,10 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
 
         return (int) Math.floor(total / 20);
     }
-    
+
     /**
      * Método que consulta los datos de un cliente especifico por ID.
-     * 
+     *
      * @param idCliente Id correspondiente al cliente a buscar
      * @return DTO del cliente que coincide con la busqueda
      * @throws NegocioException en caso de haber algun fallo en la consulta
@@ -291,17 +309,17 @@ public class ClientesFrecuentesBO implements IClientesFrecuentesBO {
                 return null;
             }
             ClienteFrecuenteDTO clienteDTO = new ClienteFrecuenteDTO(
-                    cliente.getIdCliente(), 
-                    cliente.getNombre(), 
-                    cliente.getApellidoP(), 
-                    cliente.getApellidoM(), 
-                    cliente.getNumeroTelefono(), 
+                    cliente.getIdCliente(),
+                    cliente.getNombre(),
+                    cliente.getApellidoP(),
+                    cliente.getApellidoM(),
+                    cliente.getNumeroTelefono(),
                     cliente.getCorreo()
             );
             clienteDTO.setPuntos(cliente.getPuntos());
             return clienteDTO;
 
-        } catch (PersistenciaException ex) { 
+        } catch (PersistenciaException ex) {
             throw new NegocioException("Error al consultar el cliente por ID: " + ex.getMessage());
         }
     }

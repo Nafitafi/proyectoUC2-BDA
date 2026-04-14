@@ -17,6 +17,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import itson.restauranteutil.EncriptadorTelefono;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Clase de control para las formas de clientes frecuentes; consulta, registro y
@@ -28,6 +31,8 @@ public class ClientesFrecuentesControl {
 
     private final ClientesFrecuentesFORM clientesForm;
     private final IClientesFrecuentesBO clientesBO;
+    private static final Logger LOGGER = Logger.getLogger(ClientesFrecuentesControl.class.getName());
+    
 
     public ClientesFrecuentesControl(ClientesFrecuentesFORM clientesForm) {
         this.clientesBO = new ClientesFrecuentesBO();
@@ -62,11 +67,17 @@ public class ClientesFrecuentesControl {
             for (ClienteFrecuenteDTO cliente : listaClientes) {
                 String apellidoM = (cliente.getApellidoM() != null) ? " " + cliente.getApellidoM() : "";
                 String nombreCompleto = cliente.getNombre() + " " + cliente.getApellidoP() + apellidoM;
-
+                String telefono = cliente.getNumeroTelefono();
+                try {
+                    telefono = EncriptadorTelefono.desencriptar(telefono);
+                } catch (Exception ex){
+                    LOGGER.severe(ex.getMessage());
+                }
+                
                 Object[] fila = {
                     cliente.getId(),
                     nombreCompleto,
-                    cliente.getNumeroTelefono(),
+                    telefono,
                     cliente.getPuntos(),
                     cliente.getTotalGastado(),
                     "Modificar"

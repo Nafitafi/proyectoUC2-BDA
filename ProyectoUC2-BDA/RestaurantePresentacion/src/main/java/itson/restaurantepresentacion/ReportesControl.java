@@ -193,7 +193,7 @@ public class ReportesControl {
         };
         
         try{
-            List<Comanda> comandas = comandasBO.buscarPorRangoFechas(null, null);
+            List<Comanda> comandas = comandasBO.obtenerComandasParaReporte(null, null);
             for (Comanda c : comandas) {
                 String cliente = c.getId() + "." + c.getCliente().getNombre() + " " + c.getCliente().getApellidoP();
                 Object[] fila = {
@@ -275,9 +275,9 @@ public class ReportesControl {
         MenuAdministradorControl controlAdmin = new MenuAdministradorControl(menu);
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
-        if (this.equals(reporteComandas)){
+        if (reporteComandas != null && reporteComandas.isVisible()) {
             reporteComandas.dispose();
-        } else {
+        } else if (reporteClientes != null && reporteClientes.isVisible()) {
             reporteClientes.dispose();
         }
     }
